@@ -1,0 +1,22 @@
+Video analysis state log
+
+Face Model:	General
+Frame rate:	23.98
+
+Video Time	Emotion
+00:00:00.000	Unknown
+00:00:03.920	Neutral
+00:00:08.299	Unknown
+00:02:26.312	Neutral
+00:02:26.980	Unknown
+00:02:50.128	Neutral
+00:02:51.921	Unknown
+00:02:55.758	Neutral
+00:02:57.343	Unknown
+00:04:16.673	Neutral
+00:04:17.715	Unknown
+00:06:14.749	Neutral
+00:06:17.752	Unknown
+00:07:37.874	Neutral
+00:07:38.916	Unknown
+00:16:03.921	END

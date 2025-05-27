@@ -1,0 +1,52 @@
+Video analysis state log
+
+Face Model:	General
+Frame rate:	23.98
+
+Video Time	Emotion
+00:00:00.000	Unknown
+00:00:01.042	Neutral
+00:01:31.132	Unknown
+00:01:31.716	Neutral
+00:02:23.935	Unknown
+00:02:24.519	Neutral
+00:03:03.016	Unknown
+00:03:06.269	Neutral
+00:03:10.773	Unknown
+00:03:27.999	Neutral
+00:03:28.708	Unknown
+00:03:45.725	Neutral
+00:03:56.694	Unknown
+00:03:58.154	Neutral
+00:03:59.155	Unknown
+00:04:09.749	Neutral
+00:04:10.333	Unknown
+00:04:18.383	Neutral
+00:04:19.133	Unknown
+00:04:22.512	Neutral
+00:04:23.179	Unknown
+00:04:26.099	Neutral
+00:04:26.849	Unknown
+00:04:50.248	Neutral
+00:05:57.774	Unknown
+00:06:33.976	Neutral
+00:08:15.077	Unknown
+00:08:17.205	Neutral
+00:08:18.039	Unknown
+00:08:21.876	Neutral
+00:08:24.253	Sad
+00:08:28.174	Unknown
+00:08:28.716	Neutral
+00:08:35.014	Unknown
+00:08:36.182	Neutral
+00:08:58.496	Unknown
+00:09:00.873	Neutral
+00:09:18.891	Unknown
+00:09:19.559	Neutral
+00:09:58.973	Unknown
+00:09:59.640	Neutral
+00:13:12.208	Unknown
+00:13:52.081	Neutral
+00:13:55.459	Unknown
+00:13:57.253	Neutral
+00:16:03.921	END
