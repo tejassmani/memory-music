@@ -2,27 +2,80 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>EDA Visualization</title>
-    <style>
-      body {
-        font-family: sans-serif;
-      }
-      svg {
-        font-size: 12px;
-      }
-      .bar {
-        opacity: 0.8;
-      }
-      .dot {
-        stroke: #333;
-        stroke-width: 0.5px;
-      }
-    </style>
+    <title>Memory in Melody</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
   </head>
   <body>
-    <h1>A Comparison of EDA Across Vexing and Calming Sessions</h1>
-    <svg id="chart" width="1000" height="600"></svg>
+    <header>
+      <h1>Memory in Melody: How Music Affects Cognitive Ability</h1>
+      <p>Explore how calming and vexing music affect working memory and stress responses.</p>
+    </header>
+
+    <div class="chart-title">Chart 1: Mean Electrodermal Activity (EDA)</div>
+<div id="eda-chart-container">
+    <svg id="eda-chart" width="800" height="500"></svg>
+    <div id="eda-filter" style="text-align: center; margin-bottom: 1.5rem;">
+  <label for="participant-select"><strong>Filter by Participant:</strong></label>
+  <select id="participant-select">
+    <option value="All">All</option>
+    <option value="3F">3F</option>
+    <option value="4F">4F</option>
+    <option value="6M">6M</option>
+    <option value="8M">8M</option>
+    <option value="11F">11F</option>
+  </select>
+</div>
+
+</div>
+
+<div id="participant-legend"></div>
+
+<div class="chart-title">Chart 2: Accuracy by Trial and Condition</div>
+<div id="controls">
+    <label for="condition">Select Condition:</label>
+</div>
+<div id="chart-container">
+    <svg id="accuracy-chart" width="800" height="400"></svg>
+</div>
+    <!-- Chart 1: Mean EDA by condition
+    <section>
+      <h2>Chart 1: Mean Electrodermal Activity (EDA)</h2>
+      <svg id="eda-chart" width="800" height="500"></svg>
+    </section> -->
+
+    <!-- Chart 2: Accuracy by Trial -->
+    <!-- <section>
+      <h2>Chart 2: Accuracy by Trial and Condition</h2>
+      <div id="controls">
+          <label for="condition-select">Select Condition:</label>
+      </div>
+      <div id="chart-container">
+          <svg id="accuracy-chart" width="800" height="400"></svg>
+      </div>
+    </section> -->
+
+    <!-- Writeup -->
+    <section id="writeup">
+        <h2>Project Prototype</h2>
+        <h3>What we have done so far :</h3>
+        <p>In this prototype we have visualized the trial accuracy by condition and also the average Electrodermal Activity (EDA) by treatment type, we've done this throuhg two interactive charts.
+          We cleaned and processed a subset of the behaviroal and biometric data from "A Multimodal Dataset for Investigating Working Memory in Presence of Music" from PhysioNet.
+          We've made our charts interactive by adding participant and condition filters that lets user interact with the chart and explore subsets of the data. 
+          In the first chart we've boxplots to show the range and variability of the data and in the second chart we have the the confidence band to show the variability too and when you click a specific condition, the y axis is dynamically zoomed into for looking at changes at a smaller scale. 
+        </p>
+        
+
+        <h3>Most challenging part of project to design : </h3>
+        <p>The greatest challenge will be synchronizing multimodal data (EDA, HR, facial expression) with behavioral metrics and managing differing time scales and formats. Visually, we aim to design an interface that's informative without being overwhelming.
+          One of the most challenging parts of this project will be to combine all the different datasets such as EDA, heart rate, facial data. 
+          Once we combine this data it will still be difficult to compare as there are different levels of granularity and differetn formats.  
+          We also need to keep in mind that we need to have the reader engaged through a inviting visual layout and interesting interactive visualizations while not overwhelming them with information. 
+          We will also consider adding hovering tooltips and animations so that users can enjoy their experience to the maximum. 
+        </p>
+    </section>
 
     <script type="module" src="./main.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>

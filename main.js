@@ -1,6 +1,7 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
-const svg = d3.select("#chart");
+// const svg = d3.select("#chart");
+const svg = d3.select("#eda-chart");
 const width = +svg.attr("width");
 const height = +svg.attr("height");
 const margin = { top: 50, right: 100, bottom: 80, left: 60 };
@@ -45,10 +46,11 @@ g.append("text")
 
 // the one function we’ll call on “All” or on a single participant
 function updateChart(participant) {
-  // filter data if needed
-  const subset = participant
-    ? data.filter(d => d.participant === participant)
-    : data;
+
+  const subset = (participant === "All" || participant === null)
+  ? data
+  : data.filter(d => d.participant === participant);
+
 
   // regroup + stats
   const grouped = d3.groups(subset, d => d.condition)
@@ -133,6 +135,12 @@ function updateChart(participant) {
     .attr("y2", d => y(d.mean - d.sd))
     .attr("stroke","black")
     .attr("stroke-width",1.5);
+
+    document.getElementById("participant-select").addEventListener("change", function () {
+  updateChart(this.value);
+});
+
+
 }
 
 // load your data, build the clickable list, and render once
@@ -140,27 +148,27 @@ let data;
 d3.csv("data/df.csv", d3.autoType).then(raw => {
   data = raw;
 
-  // build a simple “legend” of clickable text
+  // Dropdown-based participant list
   const parts = ["All"].concat(
     Array.from(new Set(data.map(d => d.participant)))
   );
-  const legend = svg.append("g")
-    .attr("transform", `translate(${width - margin.right + 20},${margin.top})`);
 
-  legend.selectAll("text")
-    .data(parts)
-    .join("text")
-      .attr("x", 0)
-      .attr("y", (d,i) => i*20)
-      .text(d => d)
-      .style("cursor","pointer")
-      .on("click", (ev,d) => {
-        // optional highlight
-        legend.selectAll("text")
-          .style("font-weight", t => t === d ? "bold" : "normal");
-        updateChart(d === "All" ? null : d);
-      });
+  const select = document.getElementById("participant-select");
+  select.innerHTML = "";
+  parts.forEach(p => {
+    const option = document.createElement("option");
+    option.value = p;
+    option.textContent = p;
+    select.appendChild(option);
+  });
 
-  // finally, draw the full chart
+  // Bind dropdown event
+  select.addEventListener("change", function () {
+    updateChart(this.value === "All" ? null : this.value);
+  });
+
+  // Initial render
   updateChart(null);
 });
+
+
