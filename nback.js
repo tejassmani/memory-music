@@ -1,7 +1,21 @@
 const canvas = document.getElementById("nback_canvas");
 const ctx = canvas.getContext("2d");
 const letters = [
-  "A", "B", "C", "D", "E", "H", "I", "K", "L", "M", "O", "P", "R", "S", "T",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "H",
+  "I",
+  "K",
+  "L",
+  "M",
+  "O",
+  "P",
+  "R",
+  "S",
+  "T",
 ];
 
 let sequence = [];
@@ -36,7 +50,7 @@ function drawGenreScreen() {
 
   // === Settings ===
   const borderColor = "black";
-  const borderWidth = 1;  // Matches typical canvas border
+  const borderWidth = 1; // Matches typical canvas border
   const headerY = 30;
   const headerFontSize = 32;
   const headerBottom = headerY + headerFontSize + 8;
@@ -73,15 +87,20 @@ function drawGenreScreen() {
 
   // Left side: Classical
   ctx.fillText("🎻", canvas.width / 4, choiceCenterY - 40);
-  ctx.fillText("Click Here for Classical", canvas.width / 4, choiceCenterY + 10);
+  ctx.fillText(
+    "Click Here for Classical",
+    canvas.width / 4,
+    choiceCenterY + 10,
+  );
 
   // Right side: Pop
   ctx.fillText("🎤", (3 * canvas.width) / 4, choiceCenterY - 40);
-  ctx.fillText("Click Here for Pop", (3 * canvas.width) / 4, choiceCenterY + 10);
+  ctx.fillText(
+    "Click Here for Pop",
+    (3 * canvas.width) / 4,
+    choiceCenterY + 10,
+  );
 }
-
-
-
 
 function drawIntroScreen() {
   drawScreen([
@@ -157,7 +176,8 @@ function runTrial() {
     const now = performance.now();
     const rt = clickedThisTrial ? Math.round(now - stimulusStartTime) : 1500;
     const isMatch =
-      currentIndex >= N && sequence[currentIndex] === sequence[currentIndex - N];
+      currentIndex >= N &&
+      sequence[currentIndex] === sequence[currentIndex - N];
 
     let correct = false;
     if (isMatch && clickedThisTrial) {
@@ -233,7 +253,7 @@ function downloadCSV() {
   const csvHeader = "Trial,Stimulus,Match,Clicked,RT(ms),Correct\n";
   const csvRows = rtData.map(
     (d) =>
-      `${d.trial},${d.stimulus},${d.match},${d.clicked},${d.rt},${d.correct}`
+      `${d.trial},${d.stimulus},${d.match},${d.clicked},${d.rt},${d.correct}`,
   );
   const csvContent = csvHeader + csvRows.join("\n");
 
@@ -277,4 +297,3 @@ canvas.addEventListener("click", (e) => {
 
 // Initial screen
 drawGenreScreen();
-
