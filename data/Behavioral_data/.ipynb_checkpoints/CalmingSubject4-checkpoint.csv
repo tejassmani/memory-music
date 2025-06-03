@@ -1,0 +1,354 @@
+TrialNumber,n_back,Stimulus_Letter,Response_Time,Correct_Response,Response
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,L,0,3,NaN
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,838,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,374,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,405,4,4
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,39,4,4
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,O,190,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,272,4,4
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,486,4,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,H,165,3,4
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,J,310,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,D,443,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,B,184,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,L,95,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,86,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,92,4,4
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,N,42,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,94,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,L,378,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,162,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,444,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,J,310,3,3
+1,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,S,442,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,P,0,3,NaN
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,0,3,NaN
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,0,3,NaN
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,C,225,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,377,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,P,1182,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,C,1073,4,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,414,3,4
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,P,913,4,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,C,677,4,4
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,691,4,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,V,565,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,762,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,M,499,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,H,271,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,969,4,4
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,410,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,957,3,4
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Z,266,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,867,3,3
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,C,523,3,4
+2,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,H,1167,3,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,D,0,3,NaN
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,0,3,NaN
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,M,0,3,NaN
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,I,219,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,14,3,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,M,827,4,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,P,295,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,S,272,3,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,A,291,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,970,3,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,290,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,V,350,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,A,281,3,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,446,4,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,B,177,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,A,536,4,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,158,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,B,353,4,4
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,A,0,4,NaN
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,R,254,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,P,176,3,3
+3,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,C,1078,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,0,3,NaN
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,I,1484,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Q,342,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,H,592,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,C,305,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,N,963,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,389,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,293,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,426,4,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,K,281,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,K,58,4,4
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,I,234,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,I,372,4,4
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,O,89,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,434,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,D,471,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,101,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,95,4,4
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,N,98,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,N,273,4,4
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,D,124,3,3
+4,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,431,3,3
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,C,0,3,NaN
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,B,0,3,NaN
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,0,3,NaN
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,754,3,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,R,871,3,3
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,I,379,3,3
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,919,4,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,0,3,NaN
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,193,3,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,748,3,3
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,1110,3,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,U,486,3,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,H,795,4,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,U,710,3,3
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,U,262,3,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,H,345,4,3
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,426,3,3
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,U,270,4,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,H,480,4,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,359,3,4
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,I,204,3,3
+5,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,V,824,3,4
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,0,3,NaN
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,R,624,3,4
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,O,388,3,4
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,P,29,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,P,633,4,4
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,P,206,4,4
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,304,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Z,0,3,NaN
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,482,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,M,378,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,M,476,4,4
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,232,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,I,241,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,F,0,3,NaN
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,M,0,3,NaN
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,0,3,NaN
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,G,453,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,G,81,4,4
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,R,361,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Q,168,3,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,R,470,4,3
+6,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Q,0,3,NaN
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,S,0,3,NaN
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,R,753,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,17,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,465,4,4
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,O,156,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,200,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,C,372,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,N,465,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,448,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,402,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,161,4,4
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,J,185,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,33,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,17,4,4
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,31,4,4
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,465,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,452,4,4
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,J,251,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,I,154,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,S,240,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,447,3,3
+7,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,P,428,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,L,0,3,NaN
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,A,0,3,NaN
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,P,0,3,NaN
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,L,303,4,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,A,213,4,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,151,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,431,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,C,211,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,L,472,3,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,955,4,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,U,202,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,S,432,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,317,4,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,602,3,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,295,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,L,376,3,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,381,4,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,U,353,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,L,236,3,4
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,I,345,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,B,685,3,3
+8,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,T,364,3,3
+9,Rest,,NaN,NaN,NaN
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,E,0,3,NaN
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,G,0,3,NaN
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,S,0,3,NaN
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,J,2,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Z,109,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,118,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,165,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,K,674,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,1200,3,4
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,S,458,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,M,389,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,1190,3,4
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,S,1232,4,4
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,984,4,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,342,4,4
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,255,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,702,4,4
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,K,0,3,NaN
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,608,3,4
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,K,372,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,R,452,3,3
+10,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,557,4,4
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,B,0,3,NaN
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,B,29,4,4
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,34,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,P,431,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,P,471,4,4
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Q,367,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,112,3,4
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,408,4,4
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,M,417,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,M,438,4,4
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,M,6,4,4
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,T,242,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,472,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,R,453,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,X,23,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,110,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,L,107,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,B,134,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,R,308,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,425,3,3
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,362,4,4
+11,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,I,304,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,I,0,3,NaN
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,T,0,3,NaN
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,H,62,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,H,459,4,4
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,37,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,G,443,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,G,76,4,4
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,G,4,4,4
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,21,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,57,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,402,4,4
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,191,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,454,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,404,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,R,488,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,372,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,P,166,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Q,368,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,C,471,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,146,3,3
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,444,4,4
+12,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,L,171,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,A,0,3,NaN
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,H,0,3,NaN
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,U,0,3,NaN
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,J,265,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,V,342,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,209,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,J,428,3,4
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,V,486,4,4
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,578,4,4
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,U,567,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,V,988,4,4
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,E,615,3,4
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,D,224,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,330,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Q,294,3,4
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,O,304,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,797,4,4
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,179,3,4
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,O,549,4,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,P,444,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,T,291,3,3
+13,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,242,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,0,3,NaN
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,K,0,3,NaN
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,O,0,3,NaN
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,457,4,4
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,K,306,4,4
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,J,311,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,M,233,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,G,249,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,86,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,M,984,3,4
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,K,708,3,4
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,E,354,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,S,65,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,K,500,4,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,E,0,4,NaN
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,454,3,4
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,P,579,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,J,373,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,F,279,4,4
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,5,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,L,169,3,3
+14,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,T,376,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,V,0,3,NaN
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,J,0,3,NaN
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,414,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,J,748,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,J,190,4,4
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,J,202,4,4
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,K,494,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,K,34,3,4
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,F,461,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,F,380,4,4
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,M,447,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,B,0,3,NaN
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,O,420,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,B,168,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,494,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Z,318,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Z,198,4,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,307,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Z,622,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,E,463,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,366,3,3
+15,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,225,4,4
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,J,0,3,NaN
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,O,0,3,NaN
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,0,3,NaN
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,V,110,3,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,X,26,3,4
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,227,3,4
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,G,369,3,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,A,287,3,4
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,C,697,3,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,G,874,4,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,O,1111,4,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,L,539,3,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,H,542,3,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,O,458,4,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,Y,1205,3,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,H,562,4,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,I,275,3,4
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,279,3,3
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,I,203,3,4
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,D,408,3,4
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,N,195,4,4
+16,Three Back Task \n\n Press TARGET if current letter is same as the third previous letter\n\n,W,370,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,I,0,3,NaN
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,T,100,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,H,0,3,NaN
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,H,36,4,4
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,403,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,G,226,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,G,401,4,4
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,G,478,4,4
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Y,457,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,428,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,32,4,4
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,23,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,236,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,U,404,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,R,446,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,W,475,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,P,370,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,Q,432,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,C,414,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,384,3,3
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,A,377,4,4
+17,One Back Task \n\n Press TARGET if current letter is same as the previous letter\n\n,L,459,3,3
