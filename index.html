@@ -55,6 +55,51 @@
       </div>
     </section> -->
 
+
+<!-- stuti chart edits -->
+
+    <div class="chart-container">
+      <h2 class="chart-title">Response Times across Trials by Music Type and Participant</h2>
+      <div class="controls">
+        <label for="participantFilter">Filter by Participant:</label>
+        <select id="participantFilter">
+          <option value="All">All</option>
+          <option value="3">Subject 3</option>
+          <option value="4">Subject 4</option>
+          <option value="6">Subject 6</option>
+          <option value="8">Subject 8</option>
+          <option value="11">Subject 11</option>
+        </select>
+  
+        <label for="musicFilter" style="margin-left: 20px;">Filter by Music Type:</label>
+        <select id="musicFilter">
+          <option value="Both">Both</option>
+          <option value="Calming">Calming</option>
+          <option value="Vexing">Vexing</option>
+        </select>
+      </div>
+  
+      <!-- legend -->
+      <div id="legend" style="display: flex; justify-content: center; margin-bottom: 10px;">
+        <div style="display: flex; align-items: center; margin-right: 20px;">
+          <div style="width: 12px; height: 12px; background-color: #87CEFA; border-radius: 50%; margin-right: 5px;"></div>
+          <span style="font-size: 14px;">Calming Music</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <div style="width: 12px; height: 12px; background-color: #FF9999; border-radius: 50%; margin-right: 5px;"></div>
+          <span style="font-size: 14px;">Vexing Music</span>
+        </div>
+      </div>
+      
+    
+  
+      <svg id="lineChart" width="800" height="500"></svg>
+    </div>
+  
+    <script src="main.js"></script>
+    <!-- stuti chart edits  -->
+    
+
     <!-- Writeup -->
     <section id="writeup">
         <h2>Project Prototype</h2>
