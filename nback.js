@@ -1,5 +1,3 @@
-// js/nback.js
-
 const canvas = document.getElementById("nback_canvas");
 const ctx = canvas.getContext("2d");
 const letters = [
@@ -27,19 +25,85 @@ let acceptingResponse = false;
 let clickedThisTrial = false;
 let rtData = [];
 let quizStarted = false;
-let treatment = null;
+let genre = null;
+let currentScreen = "genre"; // 'genre' → 'instructions' → 'quiz'
+let currentAudio = null;
+let halfwayPoint = 0;
 
 const N = 2;
 const numTrials = 17;
 const matchChance = 0.25;
 
-function drawIntroScreen() {
+function drawScreen(lines) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.font = "24px Arial";
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  const introText = [
+  lines.forEach((line, i) => {
+    ctx.fillText(line, canvas.width / 2, 40 + i * 30);
+  });
+}
+
+function drawGenreScreen() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // === Settings ===
+  const borderColor = "black";
+  const borderWidth = 1; // Matches typical canvas border
+  const headerY = 30;
+  const headerFontSize = 32;
+  const headerBottom = headerY + headerFontSize + 8;
+
+  // === Header ===
+  ctx.font = `${headerFontSize}px Arial`;
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.fillText("Select Preferred Genre", canvas.width / 2, headerY);
+
+  // === Underline === (full width, matching border thickness/color)
+  ctx.beginPath();
+  ctx.moveTo(0, headerBottom);
+  ctx.lineTo(canvas.width, headerBottom);
+  ctx.strokeStyle = borderColor;
+  ctx.lineWidth = borderWidth;
+  ctx.stroke();
+
+  // === Partition line === (same thickness/color, starts below header)
+  ctx.beginPath();
+  ctx.moveTo(canvas.width / 2, headerBottom);
+  ctx.lineTo(canvas.width / 2, canvas.height);
+  ctx.strokeStyle = borderColor;
+  ctx.lineWidth = borderWidth;
+  ctx.stroke();
+
+  // === Choices ===
+  ctx.font = "28px Arial";
+  ctx.textBaseline = "middle";
+
+  // Compute vertical center for text/icon block
+  const choiceCenterY = headerBottom + (canvas.height - headerBottom) / 2;
+
+  // Left side: Classical
+  ctx.fillText("🎻", canvas.width / 4, choiceCenterY - 40);
+  ctx.fillText(
+    "Click Here for Classical",
+    canvas.width / 4,
+    choiceCenterY + 10,
+  );
+
+  // Right side: Pop
+  ctx.fillText("🎤", (3 * canvas.width) / 4, choiceCenterY - 40);
+  ctx.fillText(
+    "Click Here for Pop",
+    (3 * canvas.width) / 4,
+    choiceCenterY + 10,
+  );
+}
+
+function drawIntroScreen() {
+  drawScreen([
     "N-back working memory task",
     "",
     "In this task, you will see a sequence of letters.",
@@ -50,11 +114,8 @@ function drawIntroScreen() {
     "If you saw the same letter 2 trials ago, click the mouse.",
     "Otherwise, do not click.",
     "",
-    'Select a treatment and click "Start Quiz" to begin.',
-  ];
-  introText.forEach((line, i) => {
-    ctx.fillText(line, canvas.width / 2, 40 + i * 30);
-  });
+    "Click the mouse to begin the quiz.",
+  ]);
 }
 
 function drawStimulus(stim) {
@@ -99,6 +160,12 @@ function runTrial() {
     endTask();
     return;
   }
+
+  // Switch to vexing at halfway point
+  if (currentIndex === halfwayPoint) {
+    playMusic("vexing");
+  }
+
   drawStimulus(sequence[currentIndex]);
   stimulusStartTime = performance.now();
   acceptingResponse = true;
@@ -133,22 +200,22 @@ function runTrial() {
 
     currentIndex++;
     setTimeout(runTrial, 750);
-  }, 1000);
+  }, 1500);
 }
 
-function startMusic(type) {
+function playMusic(type) {
   stopMusic();
-  const audio =
-    type === "calming"
-      ? document.getElementById("calming-audio")
-      : document.getElementById("vexing-audio");
-  audio.currentTime = 0;
-  audio.play();
+  const path = `audio/${genre}/${type}.mp3`;
+  currentAudio = new Audio(path);
+  currentAudio.loop = true;
+  currentAudio.play();
 }
 
 function stopMusic() {
-  document.getElementById("calming-audio").pause();
-  document.getElementById("vexing-audio").pause();
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
 }
 
 function endTask() {
@@ -163,23 +230,22 @@ function endTask() {
       : "N/A";
 
   document.getElementById("stats").innerHTML = `
-        <h2>Task Complete!</h2>
-        <p>Accuracy: ${accuracy}%</p>
-        <p>Average Reaction Time (for clicks): ${avgRT} ms</p>
-        <button id="download_button">Download CSV</button>
-        <button id="restart_button">Restart Quiz</button>
-    `;
+    <h2>Task Complete!</h2>
+    <p>Accuracy: ${accuracy}%</p>
+    <p>Average Reaction Time (for clicks): ${avgRT} ms</p>
+    <button id="download_button">Download CSV</button>
+    <button id="restart_button">Restart Quiz</button>
+  `;
 
   document
     .getElementById("download_button")
     .addEventListener("click", downloadCSV);
   document.getElementById("restart_button").addEventListener("click", () => {
     quizStarted = false;
-    treatment = null;
-    stopMusic();
-    drawIntroScreen();
+    genre = null;
+    currentScreen = "genre";
+    drawGenreScreen();
     document.getElementById("stats").innerHTML = "";
-    document.getElementById("treatment-selection").style.display = "block";
   });
 }
 
@@ -202,28 +268,32 @@ function downloadCSV() {
   URL.revokeObjectURL(url);
 }
 
-document.getElementById("start-button").addEventListener("click", () => {
-  const selected = document.querySelector('input[name="treatment"]:checked');
-  if (!selected) {
-    alert("Please select a treatment before starting.");
-    return;
+// Handle ALL canvas clicks
+canvas.addEventListener("click", (e) => {
+  if (currentScreen === "genre") {
+    // Select genre by canvas side
+    const x = e.offsetX;
+    genre = x < canvas.width / 2 ? "classical" : "pop";
+    console.log(`Genre selected: ${genre}`);
+    currentScreen = "instructions";
+    drawIntroScreen();
+  } else if (currentScreen === "instructions") {
+    // Start quiz
+    currentScreen = "quiz";
+    quizStarted = true;
+    sequence = generateSequence(numTrials);
+    currentIndex = 0;
+    halfwayPoint = Math.floor(sequence.length / 2);
+    rtData = [];
+    document.getElementById("stats").innerHTML = "";
+    playMusic("calming");
+    runTrial();
+  } else if (currentScreen === "quiz") {
+    if (acceptingResponse && !clickedThisTrial) {
+      clickedThisTrial = true;
+    }
   }
-
-  treatment = selected.value;
-  document.getElementById("treatment-selection").style.display = "none";
-  quizStarted = true;
-  sequence = generateSequence(numTrials);
-  currentIndex = 0;
-  rtData = [];
-  document.getElementById("stats").innerHTML = "";
-  startMusic(treatment);
-  runTrial();
 });
 
-canvas.addEventListener("click", () => {
-  if (acceptingResponse && !clickedThisTrial) {
-    clickedThisTrial = true;
-  }
-});
-
-drawIntroScreen();
+// Initial screen
+drawGenreScreen();
