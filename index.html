@@ -64,35 +64,14 @@
     </section> -->
 
     <!-- N-Back Treatment Selection and Quiz -->
-    <body>
-      <div class="nback-container">
-        <div id="treatment-selection">
-          <h3>Select Music Treatment:</h3>
-          <label
-            ><input type="radio" name="treatment" value="calming" />
-            Calming</label
-          >
-          <label
-            ><input type="radio" name="treatment" value="vexing" />
-            Vexing</label
-          >
-          <button id="start-button">Start Quiz</button>
-        </div>
-
-        <canvas id="nback_canvas" width="800" height="400"></canvas>
-        <div id="stats"></div>
-
-        <!-- Audio -->
-        <audio id="calming-audio" loop>
-          <source src="audio/calming.mp3" type="audio/mpeg" />
-        </audio>
-        <audio id="vexing-audio" loop>
-          <source src="audio/vexing.mp3" type="audio/mpeg" />
-        </audio>
-      </div>
-
+  <!-- N-Back Quiz -->
+  <body>
+    <div class="nback-container">
+      <canvas id="nback_canvas" width="800" height="400"></canvas>
+      <div id="stats"></div>
       <script src="nback.js"></script>
-    </body>
+    </div>
+  </body>
 
     <!-- stuti chart edits -->
 
