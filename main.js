@@ -316,13 +316,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// stuti chart edits 
 
-
-
-
-
-
-// stuti chart edits 
 
 

@@ -58,41 +58,7 @@ select {
   line-height: 1.6;
 }
 
-/* stuti chart edits */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #fafafa;
-  color: #222;
-  margin: 0;
-  padding: 20px;
-}
 
-.chart-container {
-  text-align: center;
-  margin: 0 auto;
-  width: fit-content;
-}
-
-.controls {
-  margin-bottom: 10px;
-}
-
-.controls label {
-  margin: 0 5px;
-  font-weight: 500;
-}
-
-.chart-title {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.axis-label {
-  font-size: 14px;
-  fill: #333;
-  font-weight: bold;
-}
-/* stuti chart edits   */
 
 body {
   margin: 0;
