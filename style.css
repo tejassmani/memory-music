@@ -99,3 +99,23 @@ button {
   font-size: 16px;
   padding: 8px 16px;
 }
+
+/*Demo Chart Styling*/
+#chart {
+  width: 600px;
+  height: 400px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+#subchart {
+  width: 600px;
+  height: 400px;
+  border: 1px solid #ccc;
+  display: none;
+  margin-bottom: 20px;
+}
+#backButton {
+  display: none;
+  padding: 8px 16px;
+  font-size: 14px;
+}
