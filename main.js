@@ -784,12 +784,502 @@
 
 // main.js
 
+// import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+// const margin = { top: 60, right: 160, bottom: 50, left: 70 },
+//       width = 800 - margin.left - margin.right,
+//       height = 400 - margin.top - margin.bottom;
+
+// const colorMap = {
+//   "Calming": "#2196f3",
+//   "Vexing": "#f44336"
+// };
+
+// let fullData = [];
+
+// Promise.all([
+//   d3.csv("data/Behavioral_data/cleaned_df.csv", d3.autoType)
+// ]).then(([rawData]) => {
+//   fullData = rawData;
+
+//   // Populate participant dropdown
+//   const participants = [...new Set(fullData.map(d => d.participant_id))].sort();
+//   const participantSelect = d3.select("#participant");
+//   participants.forEach(p => {
+//     participantSelect.append("option").attr("value", p).text(p);
+//   });
+
+//   // Initial draw
+//   updateCharts();
+
+//   // Add event listeners
+//   d3.selectAll("#plot-target, #task-type, #x-axis, #participant").on("change", updateCharts);
+//   d3.selectAll(".session-type").on("change", updateCharts);
+//   d3.select("#trial-range").on("input", function() {
+//     const val = +this.value;
+//     d3.select("#trial-range-value").text(`1–${val}`);
+//     updateCharts();
+//   });
+// });
+
+// function updateCharts() {
+//   const plotTarget = d3.select("#plot-target").node().value;
+//   const taskFilter = d3.select("#task-type").node().value;
+//   const participant = d3.select("#participant").node().value;
+//   const xAxisChoice = d3.select("#x-axis").node().value;
+//   const trialMax = +d3.select("#trial-range").node().value;
+//   const sessionFilters = [];
+//   d3.selectAll(".session-type").each(function() {
+//     if (d3.select(this).property("checked")) {
+//       sessionFilters.push(this.value);
+//     }
+//   });
+
+//   const filtered = fullData.filter(d =>
+//     (taskFilter === "both" || d.n_back.toLowerCase() === taskFilter) &&
+//     (participant === "all" || d.participant_id === participant) &&
+//     sessionFilters.includes(d.session_type) &&
+//     (d.TrialNumber <= trialMax)
+//   );
+
+//   const accuracyData = aggregateData(filtered, xAxisChoice, "correct");
+//   const responseData = aggregateData(filtered, xAxisChoice, "Response_Time");
+
+//   if (plotTarget === "both" || plotTarget === "accuracy") {
+//     drawChart("#accuracy-chart-container", accuracyData, xAxisChoice, "Accuracy", d => d.mean);
+//   }
+//   if (plotTarget === "both" || plotTarget === "response") {
+//     drawChart("#response-chart-container", responseData, xAxisChoice, "Response Time (ms)", d => d.mean);
+//   }
+// }
+
+// function aggregateData(data, xKey, metric) {
+//   const nested = d3.rollups(
+//     data,
+//     v => {
+//       const vals = v.map(d => +d[metric]);
+//       return {
+//         mean: d3.mean(vals),
+//         std: d3.deviation(vals),
+//         session: v[0].session_type
+//       };
+//     },
+//     d => d[xKey],
+//     d => d.session_type
+//   );
+
+//   return nested.flatMap(([xVal, sessions]) =>
+//     sessions.map(([session, stats]) => ({
+//       [xKey]: xVal,
+//       session_type: session,
+//       mean: stats.mean,
+//       std: stats.std
+//     }))
+//   );
+// }
+
+// function drawChart(containerId, data, xKey, yLabel, yAccessor) {
+//   d3.select(containerId).selectAll("svg").remove();
+
+//   const svg = d3.select(containerId)
+//     .append("svg")
+//     .attr("width", width + margin.left + margin.right)
+//     .attr("height", height + margin.top + margin.bottom)
+//     .append("g")
+//     .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//   const xValues = [...new Set(data.map(d => d[xKey]))].sort();
+//   const x = d3.scalePoint().domain(xValues).range([0, width]);
+//   const y = d3.scaleLinear()
+//     .domain([0, d3.max(data, yAccessor) * 1.1])
+//     .range([height, 0]);
+
+//   svg.append("g")
+//     .attr("transform", `translate(0,${height})`)
+//     .call(d3.axisBottom(x));
+
+//   svg.append("g").call(d3.axisLeft(y));
+
+//   const line = d3.line()
+//     .x(d => x(d[xKey]))
+//     .y(d => y(yAccessor(d)));
+
+//   const grouped = d3.group(data, d => d.session_type);
+
+//   for (const [key, values] of grouped.entries()) {
+//     svg.append("path")
+//       .datum(values)
+//       .attr("fill", "none")
+//       .attr("stroke", colorMap[key])
+//       .attr("stroke-width", 2)
+//       .attr("d", line);
+
+//     svg.selectAll(`.dot-${key}`)
+//       .data(values)
+//       .enter()
+//       .append("circle")
+//       .attr("cx", d => x(d[xKey]))
+//       .attr("cy", d => y(yAccessor(d)))
+//       .attr("r", 4)
+//       .attr("fill", colorMap[key])
+//       .append("title")
+//       .text(d => `${xKey}: ${d[xKey]}\n${yLabel}: ${d3.format(".2f")(yAccessor(d))}\nType: ${d.session_type}`);
+//   }
+
+//   svg.append("text")
+//     .attr("x", width / 2)
+//     .attr("y", -20)
+//     .style("text-anchor", "middle")
+//     .style("font-size", "16px")
+//     .style("font-weight", "bold")
+//     .text(`${yLabel} by ${xKey}`);
+
+//   svg.append("text")
+//     .attr("x", width / 2)
+//     .attr("y", height + 40)
+//     .style("text-anchor", "middle")
+//     .text(xKey);
+
+//   svg.append("text")
+//     .attr("transform", "rotate(-90)")
+//     .attr("x", -height / 2)
+//     .attr("y", -50)
+//     .style("text-anchor", "middle")
+//     .text(yLabel);
+// }
+
+// import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+// const margin = { top: 60, right: 160, bottom: 50, left: 70 },
+//       width = 800 - margin.left - margin.right,
+//       height = 400 - margin.top - margin.bottom;
+
+// const colorMap = {
+//   "Calming": "#2196f3",
+//   "Vexing": "#f44336"
+// };
+
+// let fullData = [];
+
+// // We’ll keep two “last-used” filter objects—one for Accuracy, one for Response.
+// let accuracyFilters = {};
+// let responseFilters = [];
+
+// Promise.all([
+//   d3.csv("data/Behavioral_data/cleaned_df.csv", d3.autoType)
+// ]).then(([rawData]) => {
+//   fullData = rawData;
+
+//   // Populate the participant dropdown
+//   const participants = [...new Set(fullData.map(d => d.participant_id))].sort();
+//   const participantSelect = d3.select("#participant");
+//   participants.forEach(pid => {
+//     participantSelect
+//       .append("option")
+//       .attr("value", pid)
+//       .text(pid);
+//   });
+
+//   // Initialize both filter objects from whatever the HTML inputs currently show
+//   accuracyFilters = getCurrentFilters();
+//   responseFilters = getCurrentFilters();
+
+//   // Initial render
+//   updateCharts();
+
+//   // Event listeners on every input
+//   d3.selectAll("#plot-target, #task-type, #x-axis, #participant").on("change", updateCharts);
+//   d3.selectAll(".session-type").on("change", updateCharts);
+//   d3.select("#trial-range").on("input", function () {
+//     const val = +this.value;
+//     d3.select("#trial-range-value").text(`1–${val}`);
+//     updateCharts();
+//   });
+// });
+
+
+// // Map whatever the dropdown says into the actual CSV key.
+// // If the dropdown label/value contains “trial” (case‐insensitive), use "TrialNumber".
+// // Otherwise assume "Stimulus_Letter".
+// function mapXAxisChoice(rawValue) {
+//   rawValue = rawValue.toLowerCase();
+//   if (rawValue.includes("trial")) {
+//     return "TrialNumber";
+//   } else {
+//     return "Stimulus_Letter";
+//   }
+// }
+
+
+// // Read all HTML inputs into a JS object
+// function getCurrentFilters() {
+//   const taskFilterRaw  = d3.select("#task-type").node().value;     // "Both", "1-back", "3-back"
+//   const participant    = d3.select("#participant").node().value;    // "All" or a specific subject
+//   const xAxisRaw       = d3.select("#x-axis").node().value;         // e.g. "Trial Number" or "Stimulus Letter"
+//   const xAxisChoice    = mapXAxisChoice(xAxisRaw);
+//   const trialMax       = +d3.select("#trial-range").node().value;   // numeric up to 16
+//   const sessionTypes   = [];
+//   d3.selectAll(".session-type").each(function () {
+//     if (d3.select(this).property("checked")) {
+//       sessionTypes.push(this.value);  // “Calming” or “Vexing”
+//     }
+//   });
+
+//   // Normalize n_back to lowercase so filters match
+//   const taskFilter = taskFilterRaw.toLowerCase();
+
+//   return {
+//     taskFilter,      // "both", "1-back", or "3-back"
+//     participant,     // "all" or specific ID
+//     xAxisChoice,     // either "TrialNumber" or "Stimulus_Letter"
+//     trialMax,        // number ≤ 16
+//     sessionTypes     // array like ["Calming","Vexing"]
+//   };
+// }
+
+
+// // Called whenever any input changes
+// function updateCharts() {
+//   const plotTarget    = d3.select("#plot-target").node().value; // "accuracy", "response", or "both"
+//   const currentFilter = getCurrentFilters();
+
+//   if (plotTarget === "accuracy") {
+//     accuracyFilters = currentFilter;
+//   } else if (plotTarget === "response") {
+//     responseFilters = currentFilter;
+//   } else {
+//     // “both”
+//     accuracyFilters = currentFilter;
+//     responseFilters = currentFilter;
+//   }
+
+//   drawBothCharts();
+// }
+
+
+// // Remove and redraw both charts, each with its own filters
+// function drawBothCharts() {
+//   d3.select("#accuracy-chart-container").selectAll("*").remove();
+//   d3.select("#response-chart-container").selectAll("*").remove();
+
+//   const accFiltered = filterData(accuracyFilters);
+//   const resFiltered = filterData(responseFilters);
+
+//   const accAgg = aggregateData(accFiltered, accuracyFilters.xAxisChoice, "correct");
+//   const resAgg = aggregateData(resFiltered, responseFilters.xAxisChoice, "Response_Time");
+
+//   drawChart(
+//     "#accuracy-chart-container",
+//     accAgg,
+//     accuracyFilters.xAxisChoice,
+//     "Accuracy",
+//     d => d.mean
+//   );
+//   drawChart(
+//     "#response-chart-container",
+//     resAgg,
+//     responseFilters.xAxisChoice,
+//     "Response Time (ms)",
+//     d => d.mean
+//   );
+// }
+
+
+// // Apply one filter‐set to fullData and return the subset
+// function filterData(filters) {
+//   return fullData.filter(d =>
+//     // Task filter: either "both", or match the lowercase n_back
+//     (filters.taskFilter === "both" || d.n_back.toLowerCase() === filters.taskFilter) &&
+//     // Participant filter: "all" or exact match
+//     (filters.participant === "all" || d.participant_id === filters.participant) &&
+//     // Session type filter: array must include the row’s session_type
+//     filters.sessionTypes.includes(d.session_type) &&
+//     // TrialNumber filter: numeric ≤ trialMax AND exclude “rest” trial (9)
+//     +d.TrialNumber <= filters.trialMax &&
+//     +d.TrialNumber !== 9
+//   );
+// }
+
+
+// // Group by xKey (number or letter) and session_type, compute mean & std
+// function aggregateData(data, xKey, metric) {
+//   // If xKey is "TrialNumber", coerce to Number; otherwise treat as string
+//   const keyFn = xKey === "TrialNumber"
+//     ? d => +d[xKey]
+//     : d => d[xKey];
+
+//   const nested = d3.rollups(
+//     data,
+//     v => {
+//       const vals = v.map(d => +d[metric]);
+//       return {
+//         mean: d3.mean(vals),
+//         std:  d3.deviation(vals)
+//       };
+//     },
+//     keyFn,
+//     d => d.session_type
+//   );
+
+//   return nested.flatMap(([xVal, sessions]) =>
+//     sessions.map(([session, stats]) => ({
+//       [xKey]: xVal,
+//       session_type: session,
+//       mean: stats.mean,
+//       std: stats.std
+//     }))
+//   );
+// }
+
+
+// // Draw one chart into containerId using aggregated data
+// function drawChart(containerId, data, xKey, yLabel, yAccessor) {
+//   const svg = d3.select(containerId)
+//     .append("svg")
+//     .attr("width", width + margin.left + margin.right)
+//     .attr("height", height + margin.top + margin.bottom)
+//     .append("g")
+//     .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//   // 1) Build x‐scale 🡲 two cases: numeric for TrialNumber, categorical for Stimulus_Letter
+//   let x;
+//   if (xKey === "TrialNumber") {
+//     // Coerce to numbers, compute extent
+//     const numericX = data.map(d => +d[xKey]);
+//     const xExtent  = d3.extent(numericX); // [minTrial, maxTrial]
+//     x = d3.scaleLinear()
+//           .domain(xExtent)
+//           .nice()
+//           .range([0, width]);
+//   } else {
+//     // Categorical Stimulus_Letter → sort alphabetically
+//     const letters = [...new Set(data.map(d => d[xKey]))].sort((a, b) => d3.ascending(a, b));
+//     x = d3.scalePoint()
+//           .domain(letters)
+//           .range([0, width]);
+//   }
+
+//   // 2) Build y‐scale (always numeric)
+//   const y = d3.scaleLinear()
+//     .domain([0, d3.max(data, yAccessor) * 1.1])
+//     .nice()
+//     .range([height, 0]);
+
+//   // 3) Draw axes
+//   const xAxisGen = xKey === "TrialNumber"
+//     ? d3.axisBottom(x).ticks(Math.min(16, data.length))
+//     : d3.axisBottom(x);
+
+//   svg.append("g")
+//     .attr("transform", `translate(0,${height})`)
+//     .call(xAxisGen);
+
+//   svg.append("g")
+//     .call(d3.axisLeft(y));
+
+//   // 4) Build the line generator
+//   const line = d3.line()
+//     .defined(d => {
+//       if (xKey === "TrialNumber") {
+//         return !isNaN(+d[xKey]) && !isNaN(yAccessor(d));
+//       } else {
+//         return !isNaN(yAccessor(d));
+//       }
+//     })
+//     .x(d => {
+//       return xKey === "TrialNumber"
+//         ? x(+d[xKey])
+//         : x(d[xKey]);
+//     })
+//     .y(d => y(yAccessor(d)));
+
+//   // 5) Group by session_type and sort appropriately
+//   const grouped = d3.group(data, d => d.session_type);
+//   for (const [session, values] of grouped.entries()) {
+//     if (xKey === "TrialNumber") {
+//       // Numeric sort by trial number
+//       values.sort((a, b) => d3.ascending(+a[xKey], +b[xKey]));
+//     } else {
+//       // Lexicographic sort by letter
+//       values.sort((a, b) => d3.ascending(a[xKey], b[xKey]));
+//     }
+
+//     // 5a) Draw the line for this session
+//     svg.append("path")
+//       .datum(values)
+//       .attr("fill", "none")
+//       .attr("stroke", colorMap[session])
+//       .attr("stroke-width", 2)
+//       .attr("d", line);
+
+//     // 5b) Draw circles at each point
+//     svg.selectAll(null)
+//       .data(values)
+//       .enter()
+//       .append("circle")
+//       .attr("cx", d => {
+//         return xKey === "TrialNumber"
+//           ? x(+d[xKey])
+//           : x(d[xKey]);
+//       })
+//       .attr("cy", d => y(yAccessor(d)))
+//       .attr("r", 4)
+//       .attr("fill", colorMap[session])
+//       .append("title")
+//       .text(d =>
+//         `${xKey}: ${xKey === "TrialNumber" ? +d[xKey] : d[xKey]}\n` +
+//         `${yLabel}: ${d3.format(".2f")(yAccessor(d))}\n` +
+//         `Session: ${d.session_type}`
+//       );
+//   }
+
+//   // 6) Titles & Labels
+//   svg.append("text")
+//     .attr("x", width / 2)
+//     .attr("y", -20)
+//     .style("text-anchor", "middle")
+//     .style("font-size", "16px")
+//     .style("font-weight", "bold")
+//     .text(`${yLabel} by ${xKey}`);
+
+//   svg.append("text")
+//     .attr("x", width / 2)
+//     .attr("y", height + 40)
+//     .style("text-anchor", "middle")
+//     .text(xKey);
+
+//   svg.append("text")
+//     .attr("transform", "rotate(-90)")
+//     .attr("x", -height / 2)
+//     .attr("y", -50)
+//     .style("text-anchor", "middle")
+//     .text(yLabel);
+
+//   // 7) Legend
+//   const legend = svg.selectAll(".legend")
+//     .data(Array.from(grouped.keys()))
+//     .enter().append("g")
+//     .attr("transform", (d, i) => `translate(${width + 20},${i * 25})`);
+
+//   legend.append("rect")
+//     .attr("x", 0)
+//     .attr("width", 15)
+//     .attr("height", 15)
+//     .style("fill", d => colorMap[d]);
+
+//   legend.append("text")
+//     .attr("x", 20)
+//     .attr("y", 12)
+//     .text(d => d);
+// }
+
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 const margin = { top: 60, right: 160, bottom: 50, left: 70 },
-      width = 800 - margin.left - margin.right,
+      width  = 800 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
+// Color mapping for session types
 const colorMap = {
   "Calming": "#2196f3",
   "Vexing": "#f44336"
@@ -797,74 +1287,282 @@ const colorMap = {
 
 let fullData = [];
 
+// Two separate “last-used” filter objects:
+let accuracyFilters = {};
+let responseFilters = {};
+
+// Track which chart was active last (for “Both Charts” fallback)
+let lastPlotTarget = "both";
+
 Promise.all([
   d3.csv("data/Behavioral_data/cleaned_df.csv", d3.autoType)
 ]).then(([rawData]) => {
   fullData = rawData;
 
-  // Populate participant dropdown
+  // 1) Populate the Participant dropdown
   const participants = [...new Set(fullData.map(d => d.participant_id))].sort();
   const participantSelect = d3.select("#participant");
-  participants.forEach(p => {
-    participantSelect.append("option").attr("value", p).text(p);
+  participants.forEach(pid => {
+    participantSelect
+      .append("option")
+      .attr("value", pid)
+      .text(pid);
   });
 
-  // Initial draw
-  updateCharts();
+  // 2) Initialize both filter objects from whatever the UI currently shows
+  accuracyFilters = getCurrentFilters();
+  responseFilters = getCurrentFilters();
 
-  // Add event listeners
-  d3.selectAll("#plot-target, #task-type, #x-axis, #participant").on("change", updateCharts);
-  d3.selectAll(".session-type").on("change", updateCharts);
+  // 3) Draw both charts once on page load
+  drawBothCharts();
+
+  // 4) Listen for changes on the “Apply filters to” dropdown
+  d3.select("#plot-target").on("change", onPlotTargetChange);
+
+  // 5) Listen for changes on each filter input (task, session checkboxes, participant, X-Axis, trial‐range)
+  d3.selectAll("#task-type, #x-axis, #participant").on("change", onAnyFilterChange);
+  d3.selectAll(".session-type").on("change", onAnyFilterChange);
   d3.select("#trial-range").on("input", function() {
     const val = +this.value;
     d3.select("#trial-range-value").text(`1–${val}`);
-    updateCharts();
+    onAnyFilterChange();
   });
 });
 
-function updateCharts() {
-  const plotTarget = d3.select("#plot-target").node().value;
-  const taskFilter = d3.select("#task-type").node().value;
-  const participant = d3.select("#participant").node().value;
-  const xAxisChoice = d3.select("#x-axis").node().value;
-  const trialMax = +d3.select("#trial-range").node().value;
-  const sessionFilters = [];
-  d3.selectAll(".session-type").each(function() {
-    if (d3.select(this).property("checked")) {
-      sessionFilters.push(this.value);
-    }
-  });
 
-  const filtered = fullData.filter(d =>
-    (taskFilter === "both" || d.n_back.toLowerCase() === taskFilter) &&
-    (participant === "all" || d.participant_id === participant) &&
-    sessionFilters.includes(d.session_type) &&
-    (d.TrialNumber <= trialMax)
-  );
-
-  const accuracyData = aggregateData(filtered, xAxisChoice, "correct");
-  const responseData = aggregateData(filtered, xAxisChoice, "Response_Time");
-
-  if (plotTarget === "both" || plotTarget === "accuracy") {
-    drawChart("#accuracy-chart-container", accuracyData, xAxisChoice, "Accuracy", d => d.mean);
-  }
-  if (plotTarget === "both" || plotTarget === "response") {
-    drawChart("#response-chart-container", responseData, xAxisChoice, "Response Time (ms)", d => d.mean);
+// ─────────────────────────────────────────────────────────────
+// Map the raw X-Axis dropdown text into the CSV key.
+// If the raw dropdown text “includes” the word “trial” (case-insensitive),
+// return "TrialNumber". Otherwise return "Stimulus_Letter".
+// ─────────────────────────────────────────────────────────────
+function mapXAxisChoice(rawValue) {
+  rawValue = rawValue.toLowerCase();
+  if (rawValue.includes("trial")) {
+    return "TrialNumber";
+  } else {
+    return "Stimulus_Letter";
   }
 }
 
+
+// ─────────────────────────────────────────────────────────────
+// Read ALL UI inputs into a single JavaScript object:
+//
+//  • taskFilter:   “both” or “1-back” / “3-back”
+//  • participant:  “all” or a specific subject ID
+//  • rawXAxis:     whatever the X-Axis dropdown currently displays
+//  • xAxisChoice:  the actual CSV column hidden behind that raw value
+//  • trialMax:     the numeric slider value (≤ 16)
+//  • sessionTypes: array of [“Calming”, “Vexing”] depending on which checkboxes are checked
+//
+// By storing **rawXAxis** alongside **xAxisChoice**, we can later
+// restore exactly the same text in the dropdown (“Trial Number” vs “Stimulus Letter”).
+// ─────────────────────────────────────────────────────────────
+function getCurrentFilters() {
+  const taskFilterRaw = d3.select("#task-type").node().value;     // e.g. “Both”, “1-back”, “3-back”
+  const participant   = d3.select("#participant").node().value;    // e.g. “All” or “Subject11”
+  const rawXAxis      = d3.select("#x-axis").node().value;         // e.g. “Trial Number” or “Stimulus Letter”
+  const xAxisChoice   = mapXAxisChoice(rawXAxis);                  // → “TrialNumber” or “Stimulus_Letter”
+  const trialMax      = +d3.select("#trial-range").node().value;   // numeric up to 16
+
+  // Collect whichever session checkboxes are checked
+  const sessionTypes = [];
+  d3.selectAll(".session-type").each(function() {
+    if (d3.select(this).property("checked")) {
+      sessionTypes.push(this.value); // “Calming” or “Vexing”
+    }
+  });
+
+  return {
+    taskFilter:     taskFilterRaw.toLowerCase(), // “both”, “1-back”, or “3-back”
+    participant,                                // “all” or actual ID
+    rawXAxis,                                   // exactly what the dropdown currently shows
+    xAxisChoice,                                // “TrialNumber” or “Stimulus_Letter”
+    trialMax,                                   // number ≤ 16
+    sessionTypes                                // [“Calming”, “Vexing”] or subset
+  };
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Restore UI inputs **exactly** from a given filter-object.
+// In particular, set the X-Axis dropdown’s value to filters.rawXAxis
+// so that it never “mystery-changes” under us.
+// ─────────────────────────────────────────────────────────────
+function restoreInputsFrom(filters) {
+  // 1) Task Type dropdown
+  d3.select("#task-type").property("value", filters.taskFilter);
+
+  // 2) Participant dropdown
+  d3.select("#participant").property("value", filters.participant);
+
+  // 3) X-Axis dropdown: directly set its value to filters.rawXAxis (no guessing)
+  d3.select("#x-axis").property("value", filters.rawXAxis);
+
+  // 4) Trial-Range slider + label
+  d3.select("#trial-range").property("value", filters.trialMax);
+  d3.select("#trial-range-value").text(`1–${filters.trialMax}`);
+
+  // 5) Session-Type checkboxes (two of them)
+  d3.selectAll(".session-type").each(function() {
+    const cb = d3.select(this);
+    const val = cb.property("value"); // “Calming” or “Vexing”
+    cb.property("checked", filters.sessionTypes.includes(val));
+  });
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Whenever **any** filter input changes (task, sessions, participant, X-Axis, trial range):
+//  1) Read the UI into a “currentFilter” object
+//  2) Depending on which chart is currently selected, stash that object into
+//     either accuracyFilters or responseFilters (or both if “both charts”).
+//  3) Update lastPlotTarget if we are NOT in “both charts” mode.
+//  4) Redraw both charts with their respective filter sets.
+// ─────────────────────────────────────────────────────────────
+function onAnyFilterChange() {
+  const plotTarget    = d3.select("#plot-target").node().value; // “Accuracy Only”, “Response Time Only”, or “Both Charts”
+  const currentFilter = getCurrentFilters();
+
+  if (plotTarget === "accuracy") {
+    accuracyFilters = currentFilter;
+  } else if (plotTarget === "response") {
+    responseFilters = currentFilter;
+  } else {
+    // “both charts”
+    accuracyFilters = currentFilter;
+    responseFilters = currentFilter;
+  }
+
+  // If the user explicitly chose Accuracy Only or Response Only,
+  // remember which chart they were editing last.
+  if (plotTarget === "accuracy" || plotTarget === "response") {
+    lastPlotTarget = plotTarget;
+  }
+
+  drawBothCharts();
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// When the “Apply filters to” dropdown itself changes, we must:
+//  1) Stash the UI’s current values into the filter set for whichever chart
+//     was active just prior (tracked by lastPlotTarget).
+//  2) Then restore the UI inputs from whichever filter‐object belongs to
+//     the newly selected chart (or, if “Both Charts,” from whichever was last edited).
+//  3) Finally, redraw both charts.
+// ─────────────────────────────────────────────────────────────
+function onPlotTargetChange() {
+  const newTarget     = d3.select("#plot-target").node().value; // “accuracy”, “response”, or “both”
+  const currentFilter = getCurrentFilters();
+
+  // (1) Stash current UI into whichever filter was active prior:
+  if (lastPlotTarget === "accuracy") {
+    accuracyFilters = currentFilter;
+  } else if (lastPlotTarget === "response") {
+    responseFilters = currentFilter;
+  } else {
+    // lastPlotTarget was “both” (initially), so stash into both
+    accuracyFilters = currentFilter;
+    responseFilters = currentFilter;
+  }
+
+  // (2) Restore UI from the filter object for the newly selected target:
+  if (newTarget === "accuracy") {
+    restoreInputsFrom(accuracyFilters);
+  } else if (newTarget === "response") {
+    restoreInputsFrom(responseFilters);
+  } else {
+    // newTarget = “both charts” → restore from whichever was last edited
+    if (lastPlotTarget === "accuracy") {
+      restoreInputsFrom(accuracyFilters);
+    } else if (lastPlotTarget === "response") {
+      restoreInputsFrom(responseFilters);
+    } else {
+      // if lastPlotTarget was already “both” (first load), just restore accuracy by default
+      restoreInputsFrom(accuracyFilters);
+    }
+  }
+
+  // (3) Update lastPlotTarget to reflect the new selection
+  lastPlotTarget = newTarget;
+
+  // Redraw both charts using the (possibly updated) filter sets
+  drawBothCharts();
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Remove & redraw BOTH charts, each with its own filter set.
+// ─────────────────────────────────────────────────────────────
+function drawBothCharts() {
+  d3.select("#accuracy-chart-container").selectAll("*").remove();
+  d3.select("#response-chart-container").selectAll("*").remove();
+
+  const accFiltered = filterData(accuracyFilters);
+  const resFiltered = filterData(responseFilters);
+
+  const accAgg = aggregateData(accFiltered, accuracyFilters.xAxisChoice, "correct");
+  const resAgg = aggregateData(resFiltered, responseFilters.xAxisChoice, "Response_Time");
+
+  drawChart(
+    "#accuracy-chart-container",
+    accAgg,
+    accuracyFilters.xAxisChoice,
+    "Accuracy",
+    d => d.mean
+  );
+  drawChart(
+    "#response-chart-container",
+    resAgg,
+    responseFilters.xAxisChoice,
+    "Response Time (ms)",
+    d => d.mean
+  );
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// Apply one chart’s filter‐object to fullData and return the subset.
+// Also exclude TrialNumber 9 (rest trial).
+// ─────────────────────────────────────────────────────────────
+function filterData(filters) {
+  return fullData.filter(d =>
+    // 1) Task filter: “both” or exact lowercase match of n_back
+    (filters.taskFilter === "both" || d.n_back.toLowerCase() === filters.taskFilter) &&
+
+    // 2) Participant filter: “all” or exact match
+    (filters.participant === "all" || d.participant_id === filters.participant) &&
+
+    // 3) Session‐type filter: row’s session_type must be in array
+    filters.sessionTypes.includes(d.session_type) &&
+
+    // 4) TrialNumber filter: numeric ≤ trialMax and not equal to 9
+    +d.TrialNumber <= filters.trialMax &&
+    +d.TrialNumber !== 9
+  );
+}
+
+
+// ─────────────────────────────────────────────────────────────
+// From filtered data, group by xKey and session_type, compute mean & std.
+// ─────────────────────────────────────────────────────────────
 function aggregateData(data, xKey, metric) {
+  // If xKey is numeric, coerce; otherwise treat as string
+  const keyFn = xKey === "TrialNumber"
+    ? d => +d[xKey]
+    : d => d[xKey];
+
   const nested = d3.rollups(
     data,
     v => {
       const vals = v.map(d => +d[metric]);
       return {
         mean: d3.mean(vals),
-        std: d3.deviation(vals),
-        session: v[0].session_type
+        std:  d3.deviation(vals)
       };
     },
-    d => d[xKey],
+    keyFn,
     d => d.session_type
   );
 
@@ -878,9 +1576,12 @@ function aggregateData(data, xKey, metric) {
   );
 }
 
-function drawChart(containerId, data, xKey, yLabel, yAccessor) {
-  d3.select(containerId).selectAll("svg").remove();
 
+// ─────────────────────────────────────────────────────────────
+// Draw one chart into containerId using aggregated data.
+// If xKey === “TrialNumber”, use a numeric scale; otherwise a categorical scale.
+// ─────────────────────────────────────────────────────────────
+function drawChart(containerId, data, xKey, yLabel, yAccessor) {
   const svg = d3.select(containerId)
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -888,44 +1589,88 @@ function drawChart(containerId, data, xKey, yLabel, yAccessor) {
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  const xValues = [...new Set(data.map(d => d[xKey]))].sort();
-  const x = d3.scalePoint().domain(xValues).range([0, width]);
+  // 1) Build x-scale
+  let x;
+  if (xKey === "TrialNumber") {
+    const numericX = data.map(d => +d[xKey]);
+    const xExtent  = d3.extent(numericX); // e.g. [1, 16]
+    x = d3.scaleLinear()
+          .domain(xExtent)
+          .nice()
+          .range([0, width]);
+  } else {
+    const letters = [...new Set(data.map(d => d[xKey]))]
+                     .sort((a, b) => d3.ascending(a, b));
+    x = d3.scalePoint()
+          .domain(letters)
+          .range([0, width]);
+  }
+
+  // 2) Build y-scale (always numeric)
   const y = d3.scaleLinear()
     .domain([0, d3.max(data, yAccessor) * 1.1])
+    .nice()
     .range([height, 0]);
+
+  // 3) Draw axes
+  const xAxisGen = xKey === "TrialNumber"
+    ? d3.axisBottom(x).ticks(Math.min(16, data.length))
+    : d3.axisBottom(x);
 
   svg.append("g")
     .attr("transform", `translate(0,${height})`)
-    .call(d3.axisBottom(x));
+    .call(xAxisGen);
 
-  svg.append("g").call(d3.axisLeft(y));
+  svg.append("g")
+    .call(d3.axisLeft(y));
 
+  // 4) Build the line generator
   const line = d3.line()
-    .x(d => x(d[xKey]))
+    .defined(d => {
+      if (xKey === "TrialNumber") {
+        return !isNaN(+d[xKey]) && !isNaN(yAccessor(d));
+      } else {
+        return !isNaN(yAccessor(d));
+      }
+    })
+    .x(d => (xKey === "TrialNumber" ? x(+d[xKey]) : x(d[xKey])))
     .y(d => y(yAccessor(d)));
 
+  // 5) Group by session_type and sort appropriately
   const grouped = d3.group(data, d => d.session_type);
+  for (const [session, values] of grouped.entries()) {
+    if (xKey === "TrialNumber") {
+      values.sort((a, b) => d3.ascending(+a[xKey], +b[xKey]));
+    } else {
+      values.sort((a, b) => d3.ascending(a[xKey], b[xKey]));
+    }
 
-  for (const [key, values] of grouped.entries()) {
+    // 5a) Draw the line
     svg.append("path")
       .datum(values)
       .attr("fill", "none")
-      .attr("stroke", colorMap[key])
+      .attr("stroke", colorMap[session])
       .attr("stroke-width", 2)
       .attr("d", line);
 
-    svg.selectAll(`.dot-${key}`)
+    // 5b) Draw circles at each point
+    svg.selectAll(null)
       .data(values)
       .enter()
       .append("circle")
-      .attr("cx", d => x(d[xKey]))
+      .attr("cx", d => (xKey === "TrialNumber" ? x(+d[xKey]) : x(d[xKey])))
       .attr("cy", d => y(yAccessor(d)))
       .attr("r", 4)
-      .attr("fill", colorMap[key])
+      .attr("fill", colorMap[session])
       .append("title")
-      .text(d => `${xKey}: ${d[xKey]}\n${yLabel}: ${d3.format(".2f")(yAccessor(d))}\nType: ${d.session_type}`);
+      .text(d =>
+        `${xKey}: ${xKey === "TrialNumber" ? +d[xKey] : d[xKey]}\n` +
+        `${yLabel}: ${d3.format(".2f")(yAccessor(d))}\n` +
+        `Session: ${d.session_type}`
+      );
   }
 
+  // 6) Titles & Labels
   svg.append("text")
     .attr("x", width / 2)
     .attr("y", -20)
@@ -946,4 +1691,21 @@ function drawChart(containerId, data, xKey, yLabel, yAccessor) {
     .attr("y", -50)
     .style("text-anchor", "middle")
     .text(yLabel);
+
+  // 7) Legend
+  const legend = svg.selectAll(".legend")
+    .data(Array.from(grouped.keys()))
+    .enter().append("g")
+    .attr("transform", (d, i) => `translate(${width + 20},${i * 25})`);
+
+  legend.append("rect")
+    .attr("x", 0)
+    .attr("width", 15)
+    .attr("height", 15)
+    .style("fill", d => colorMap[d]);
+
+  legend.append("text")
+    .attr("x", 20)
+    .attr("y", 12)
+    .text(d => d);
 }
