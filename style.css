@@ -1,4 +1,4 @@
-body {
+/* body {
   font-family: "Arial", sans-serif;
   margin: 2rem;
   background-color: #f9f9f9;
@@ -98,4 +98,96 @@ button {
   margin-top: 10px;
   font-size: 16px;
   padding: 8px 16px;
+} */
+
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+}
+
+.dashboard {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.charts-column {
+  flex: 3;
+}
+
+.filters-panel {
+  flex: 1;
+  border-left: 1px solid #ccc;
+  padding-left: 1.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.filters-panel h3 {
+  margin-top: 0;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+}
+
+.filter-group {
+  margin-bottom: 1.2rem;
+}
+
+.filter-group label,
+.filter-group select,
+.filter-group input[type="checkbox"],
+.filter-group input[type="range"] {
+  font-size: 14px;
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.filter-group input[type="range"] {
+  width: 100%;
+}
+
+.chart-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+svg {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip {
+  font-size: 14px;
+  pointer-events: none;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  background-color: white;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  position: absolute;
+  opacity: 0;
+  z-index: 10;
+  transition: opacity 0.3s ease;
+}
+
+select, input[type="checkbox"] {
+  margin-top: 0.3rem;
 }

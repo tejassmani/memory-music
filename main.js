@@ -458,9 +458,335 @@
 
 // // stuti chart edits 
 
+// const margin = { top: 60, right: 100, bottom: 50, left: 70 },
+//       width = 800 - margin.left - margin.right,
+//       height = 400 - margin.top - margin.bottom;
 
-// Line chart for accuracy and response time
-const margin = { top: 60, right: 100, bottom: 50, left: 70 },
+// const colorMap = {
+//   "Calming": "#2196f3",
+//   "Vexing": "#f44336"
+// };
+
+// function createLineChart(csvFile, metric, yLabel, containerId) {
+//   d3.csv(csvFile).then(data => {
+//     data.forEach(d => {
+//       d.trial = +d.trial;
+//       d[metric] = +d[metric];
+//     });
+
+//     const svg = d3.select(containerId)
+//       .append("svg")
+//       .attr("width", width + margin.left + margin.right)
+//       .attr("height", height + margin.top + margin.bottom)
+//       .append("g")
+//       .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//     const x = d3.scaleLinear()
+//       .domain([1, 16])
+//       .range([0, width]);
+
+//     const y = d3.scaleLinear()
+//       .domain([0, d3.max(data, d => d[metric]) * 1.1])
+//       .range([height, 0]);
+
+//     const xAxis = d3.axisBottom(x).ticks(16).tickFormat(d3.format("d"));
+//     const yAxis = d3.axisLeft(y);
+
+//     // Horizontal gridlines
+//     svg.append("g")
+//       .attr("class", "grid")
+//       .call(
+//         d3.axisLeft(y)
+//           .tickSize(-width)
+//           .tickFormat("")
+//       )
+//       .attr("stroke-opacity", 0.1);
+
+//     // Vertical gridlines
+//     svg.append("g")
+//       .attr("class", "grid")
+//       .attr("transform", `translate(0,${height})`)
+//       .call(
+//         d3.axisBottom(x)
+//           .tickSize(-height)
+//           .tickFormat("")
+//       )
+//       .attr("stroke-opacity", 0.1);
+
+//     svg.append("g")
+//       .attr("transform", `translate(0,${height})`)
+//       .call(xAxis);
+
+//     svg.append("g")
+//       .call(yAxis);
+
+//     const line = d3.line()
+//       .x(d => x(d.trial))
+//       .y(d => y(d[metric]));
+
+//     const grouped = d3.group(data, d => d.session_type);
+
+//     for (const [key, values] of grouped.entries()) {
+//       svg.append("path")
+//         .datum(values)
+//         .attr("fill", "none")
+//         .attr("stroke", colorMap[key])
+//         .attr("stroke-width", 2)
+//         .attr("d", line);
+
+//       // Add points
+//       svg.selectAll(`.dot-${key}`)
+//         .data(values)
+//         .enter()
+//         .append("circle")
+//         .attr("cx", d => x(d.trial))
+//         .attr("cy", d => y(d[metric]))
+//         .attr("r", 4)
+//         .attr("fill", colorMap[key]);
+//     }
+
+//     // Title and labels
+//     svg.append("text")
+//       .attr("x", width / 2)
+//       .attr("y", -20)
+//       .style("text-anchor", "middle")
+//       .style("font-size", "18px")
+//       .style("font-weight", "bold")
+//       .text(`${yLabel} vs. Trial Number`);
+
+//     svg.append("text")
+//       .attr("x", width / 2)
+//       .attr("y", height + 40)
+//       .style("text-anchor", "middle")
+//       .style("font-size", "14px")
+//       .text("Trial Number");
+
+//     svg.append("text")
+//       .attr("transform", "rotate(-90)")
+//       .attr("x", -height / 2)
+//       .attr("y", -50)
+//       .style("text-anchor", "middle")
+//       .style("font-size", "14px")
+//       .text(yLabel);
+
+//     // Legend
+//     const sessionTypes = ["Calming", "Vexing"];
+//     const legend = svg.append("g")
+//       .attr("transform", `translate(${width + 20}, 10)`);
+
+//     sessionTypes.forEach((type, i) => {
+//       const legendRow = legend.append("g")
+//         .attr("transform", `translate(0, ${i * 25})`);
+
+//       legendRow.append("rect")
+//         .attr("width", 15)
+//         .attr("height", 15)
+//         .attr("fill", colorMap[type]);
+
+//       legendRow.append("text")
+//         .attr("x", 20)
+//         .attr("y", 12)
+//         .attr("text-anchor", "start")
+//         .style("text-transform", "capitalize")
+//         .text(type);
+//     });
+//   });
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   createLineChart("data/Behavioral_data/fixed_cleaned_accuracy.csv", "mean_accuracy", "Accuracy", "#accuracy-chart-container");
+//   createLineChart("data/Behavioral_data/fixed_cleaned_response.csv", "mean_rt", "Response Time (ms)", "#response-chart-container");
+// });
+
+// WORKING CODE
+
+
+// const margin = { top: 60, right: 160, bottom: 50, left: 70 },
+//       width = 800 - margin.left - margin.right,
+//       height = 400 - margin.top - margin.bottom;
+
+// const colorMap = {
+//   "Calming": "#2196f3",
+//   "Vexing": "#f44336"
+// };
+
+// function createLineChart(csvFile, metric, yLabel, containerId) {
+//   d3.csv(csvFile).then(data => {
+//     data.forEach(d => {
+//       d.trial = +d.trial;
+//       d[metric] = +d[metric];
+//     });
+
+//     const svg = d3.select(containerId)
+//       .append("svg")
+//       .attr("width", width + margin.left + margin.right)
+//       .attr("height", height + margin.top + margin.bottom)
+//       .append("g")
+//       .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//     const x = d3.scaleLinear().domain([1, 16]).range([0, width]);
+//     const y = d3.scaleLinear()
+//       .domain([0, d3.max(data, d => d[metric]) * 1.1])
+//       .range([height, 0]);
+
+//     const xAxis = d3.axisBottom(x).ticks(16).tickFormat(d3.format("d"));
+//     const yAxis = d3.axisLeft(y);
+
+//     // Horizontal & Vertical Gridlines
+//     svg.append("g")
+//       .attr("class", "grid")
+//       .call(d3.axisLeft(y).tickSize(-width).tickFormat(""))
+//       .attr("stroke-opacity", 0.1);
+
+//     svg.append("g")
+//       .attr("class", "grid")
+//       .attr("transform", `translate(0,${height})`)
+//       .call(d3.axisBottom(x).tickSize(-height).tickFormat(""))
+//       .attr("stroke-opacity", 0.1);
+
+//     svg.append("g").attr("transform", `translate(0,${height})`).call(xAxis);
+//     svg.append("g").call(yAxis);
+
+//     const line = d3.line().x(d => x(d.trial)).y(d => y(d[metric]));
+//     const grouped = d3.group(data, d => d.session_type);
+
+//     const tooltip = d3.select("body").append("div")
+//       .attr("class", "tooltip")
+//       .style("opacity", 0)
+//       .style("position", "absolute")
+//       .style("padding", "8px")
+//       .style("background", "white")
+//       .style("border", "1px solid #ccc")
+//       .style("border-radius", "4px")
+//       .style("font-size", "12px");
+
+//     const sessionVisibility = { "Calming": true, "Vexing": true };
+
+//     function updateChart() {
+//       svg.selectAll(".line, .dot, .legendRow").remove();
+
+//       for (const [key, values] of grouped.entries()) {
+//         if (!sessionVisibility[key]) continue;
+
+//         svg.append("path")
+//           .datum(values)
+//           .attr("class", "line")
+//           .attr("fill", "none")
+//           .attr("stroke", colorMap[key])
+//           .attr("stroke-width", 2)
+//           .attr("d", line);
+
+//         svg.selectAll(`.dot-${key}`)
+//           .data(values)
+//           .enter()
+//           .append("circle")
+//           .attr("class", `dot dot-${key}`)
+//           .attr("cx", d => x(d.trial))
+//           .attr("cy", d => y(d[metric]))
+//           .attr("r", 5)
+//           .attr("fill", colorMap[key])
+//           .attr("stroke", d => d.task_type === "1-back" ? "gray" : "black")
+//           .attr("stroke-width", 1.5)
+//           .on("mouseover", (event, d) => {
+//             tooltip.transition().duration(200).style("opacity", .95);
+//             tooltip.html(
+//               `Trial: ${d.trial}<br>Type: ${d.session_type}<br>${yLabel}: ${d3.format(".2f")(d[metric])}<br>Task: ${d.task_type}`
+//             ).style("left", (event.pageX + 10) + "px")
+//              .style("top", (event.pageY - 30) + "px");
+
+//             d3.selectAll(".line").style("opacity", 0.2);
+//             d3.selectAll(`.dot`).style("opacity", 0.2);
+//             d3.selectAll(`.dot-${d.session_type}`).style("opacity", 1);
+//             d3.select(`.line-${d.session_type}`).style("opacity", 1);
+//           })
+//           .on("mouseout", () => {
+//             tooltip.transition().duration(300).style("opacity", 0);
+//             d3.selectAll(".line, .dot").style("opacity", 1);
+//           });
+//       }
+//     }
+
+//     // Initial chart render
+//     updateChart();
+
+//     // Title and Labels
+//     svg.append("text")
+//       .attr("x", width / 2)
+//       .attr("y", -20)
+//       .style("text-anchor", "middle")
+//       .style("font-size", "18px")
+//       .style("font-weight", "bold")
+//       .text(`${yLabel} vs. Trial Number`);
+
+//     svg.append("text")
+//       .attr("x", width / 2)
+//       .attr("y", height + 40)
+//       .style("text-anchor", "middle")
+//       .style("font-size", "14px")
+//       .text("Trial Number");
+
+//     svg.append("text")
+//       .attr("transform", "rotate(-90)")
+//       .attr("x", -height / 2)
+//       .attr("y", -50)
+//       .style("text-anchor", "middle")
+//       .style("font-size", "14px")
+//       .text(yLabel);
+
+//     // Checkbox filters
+//     const checkboxContainer = d3.select(containerId)
+//       .append("div")
+//       .style("margin-top", "10px");
+
+//     ["Calming", "Vexing"].forEach(type => {
+//       const label = checkboxContainer.append("label")
+//         .style("margin-right", "20px");
+
+//       label.append("input")
+//         .attr("type", "checkbox")
+//         .property("checked", true)
+//         .on("change", function () {
+//           sessionVisibility[type] = this.checked;
+//           updateChart();
+//         });
+
+//       label.append("span").text(` ${type}`);
+//     });
+
+//     // Add Task Type Legend
+//     const legend = svg.append("g").attr("transform", `translate(${width + 20}, 10)`);
+
+//     const sessionTypes = ["Calming", "Vexing"];
+//     sessionTypes.forEach((type, i) => {
+//       const row = legend.append("g")
+//         .attr("class", "legendRow")
+//         .attr("transform", `translate(0, ${i * 25})`);
+//       row.append("rect").attr("width", 15).attr("height", 15).attr("fill", colorMap[type]);
+//       row.append("text").attr("x", 20).attr("y", 12).text(type);
+//     });
+
+//     const taskLegend = svg.append("g").attr("transform", `translate(${width + 20}, 70)`);
+//     [["1-back", "gray"], ["3-back", "black"]].forEach(([label, color], i) => {
+//       const row = taskLegend.append("g")
+//         .attr("class", "legendRow")
+//         .attr("transform", `translate(0, ${i * 20})`);
+//       row.append("circle").attr("r", 6).attr("cx", 7).attr("cy", 7)
+//         .attr("fill", "white").attr("stroke", color).attr("stroke-width", 2);
+//       row.append("text").attr("x", 20).attr("y", 11).text(label);
+//     });
+//   });
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   createLineChart("data/Behavioral_data/final_accuracy_with_task.csv", "mean_accuracy", "Accuracy", "#accuracy-chart-container");
+//   createLineChart("data/Behavioral_data/final_response_with_task.csv", "mean_rt", "Response Time (ms)", "#response-chart-container");
+// });
+
+// main.js
+
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+const margin = { top: 60, right: 160, bottom: 50, left: 70 },
       width = 800 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
@@ -469,85 +795,155 @@ const colorMap = {
   "Vexing": "#f44336"
 };
 
-function createLineChart(csvFile, metric, yLabel, containerId) {
-  d3.csv(csvFile).then(data => {
-    data.forEach(d => {
-      d.TrialNumber = +d.TrialNumber;
-      d[metric] = +d[metric];
-    });
+let fullData = [];
 
-    const svg = d3.select(containerId)
-      .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+Promise.all([
+  d3.csv("data/Behavioral_data/cleaned_df.csv", d3.autoType)
+]).then(([rawData]) => {
+  fullData = rawData;
 
-    const x = d3.scaleLinear()
-      .domain(d3.extent(data, d => d.TrialNumber))
-      .range([0, width]);
-
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d[metric]) * 1.1])
-      .range([height, 0]);
-
-    const xAxis = d3.axisBottom(x).ticks(16).tickFormat(d3.format("d"));
-    const yAxis = d3.axisLeft(y);
-
-    svg.append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(xAxis);
-
-    svg.append("g")
-      .call(yAxis);
-
-    const line = d3.line()
-      .x(d => x(d.TrialNumber))
-      .y(d => y(d[metric]));
-
-    const grouped = d3.group(data, d => d.session_type);
-
-    for (const [key, values] of grouped.entries()) {
-      svg.append("path")
-        .datum(values)
-        .attr("fill", "none")
-        .attr("stroke", colorMap[key])
-        .attr("stroke-width", 2)
-        .attr("d", line);
-
-      svg.append("text")
-        .attr("x", width - 80)
-        .attr("y", y(values[values.length - 1][metric]))
-        .attr("fill", colorMap[key])
-        .text(key);
-    }
-
-    svg.append("text")
-      .attr("x", width / 2)
-      .attr("y", -20)
-      .style("text-anchor", "middle")
-      .style("font-size", "18px")
-      .style("font-weight", "bold")
-      .text(`${yLabel} vs. Trial Number`);
-
-    svg.append("text")
-      .attr("x", width / 2)
-      .attr("y", height + 40)
-      .style("text-anchor", "middle")
-      .style("font-size", "14px")
-      .text("Trial Number");
-
-    svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("x", -height / 2)
-      .attr("y", -50)
-      .style("text-anchor", "middle")
-      .style("font-size", "14px")
-      .text(yLabel);
+  // Populate participant dropdown
+  const participants = [...new Set(fullData.map(d => d.participant_id))].sort();
+  const participantSelect = d3.select("#participant");
+  participants.forEach(p => {
+    participantSelect.append("option").attr("value", p).text(p);
   });
+
+  // Initial draw
+  updateCharts();
+
+  // Add event listeners
+  d3.selectAll("#plot-target, #task-type, #x-axis, #participant").on("change", updateCharts);
+  d3.selectAll(".session-type").on("change", updateCharts);
+  d3.select("#trial-range").on("input", function() {
+    const val = +this.value;
+    d3.select("#trial-range-value").text(`1–${val}`);
+    updateCharts();
+  });
+});
+
+function updateCharts() {
+  const plotTarget = d3.select("#plot-target").node().value;
+  const taskFilter = d3.select("#task-type").node().value;
+  const participant = d3.select("#participant").node().value;
+  const xAxisChoice = d3.select("#x-axis").node().value;
+  const trialMax = +d3.select("#trial-range").node().value;
+  const sessionFilters = [];
+  d3.selectAll(".session-type").each(function() {
+    if (d3.select(this).property("checked")) {
+      sessionFilters.push(this.value);
+    }
+  });
+
+  const filtered = fullData.filter(d =>
+    (taskFilter === "both" || d.n_back.toLowerCase() === taskFilter) &&
+    (participant === "all" || d.participant_id === participant) &&
+    sessionFilters.includes(d.session_type) &&
+    (d.TrialNumber <= trialMax)
+  );
+
+  const accuracyData = aggregateData(filtered, xAxisChoice, "correct");
+  const responseData = aggregateData(filtered, xAxisChoice, "Response_Time");
+
+  if (plotTarget === "both" || plotTarget === "accuracy") {
+    drawChart("#accuracy-chart-container", accuracyData, xAxisChoice, "Accuracy", d => d.mean);
+  }
+  if (plotTarget === "both" || plotTarget === "response") {
+    drawChart("#response-chart-container", responseData, xAxisChoice, "Response Time (ms)", d => d.mean);
+  }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  createLineChart("data/Behavioral_data/agg_accuracy.csv", "mean_accuracy", "Accuracy", "#accuracy-chart-container");
-  createLineChart("data/Behavioral_data/agg_response.csv", "mean_rt", "Response Time (ms)", "#response-chart-container");
-});
+function aggregateData(data, xKey, metric) {
+  const nested = d3.rollups(
+    data,
+    v => {
+      const vals = v.map(d => +d[metric]);
+      return {
+        mean: d3.mean(vals),
+        std: d3.deviation(vals),
+        session: v[0].session_type
+      };
+    },
+    d => d[xKey],
+    d => d.session_type
+  );
+
+  return nested.flatMap(([xVal, sessions]) =>
+    sessions.map(([session, stats]) => ({
+      [xKey]: xVal,
+      session_type: session,
+      mean: stats.mean,
+      std: stats.std
+    }))
+  );
+}
+
+function drawChart(containerId, data, xKey, yLabel, yAccessor) {
+  d3.select(containerId).selectAll("svg").remove();
+
+  const svg = d3.select(containerId)
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const xValues = [...new Set(data.map(d => d[xKey]))].sort();
+  const x = d3.scalePoint().domain(xValues).range([0, width]);
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(data, yAccessor) * 1.1])
+    .range([height, 0]);
+
+  svg.append("g")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x));
+
+  svg.append("g").call(d3.axisLeft(y));
+
+  const line = d3.line()
+    .x(d => x(d[xKey]))
+    .y(d => y(yAccessor(d)));
+
+  const grouped = d3.group(data, d => d.session_type);
+
+  for (const [key, values] of grouped.entries()) {
+    svg.append("path")
+      .datum(values)
+      .attr("fill", "none")
+      .attr("stroke", colorMap[key])
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
+    svg.selectAll(`.dot-${key}`)
+      .data(values)
+      .enter()
+      .append("circle")
+      .attr("cx", d => x(d[xKey]))
+      .attr("cy", d => y(yAccessor(d)))
+      .attr("r", 4)
+      .attr("fill", colorMap[key])
+      .append("title")
+      .text(d => `${xKey}: ${d[xKey]}\n${yLabel}: ${d3.format(".2f")(yAccessor(d))}\nType: ${d.session_type}`);
+  }
+
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", -20)
+    .style("text-anchor", "middle")
+    .style("font-size", "16px")
+    .style("font-weight", "bold")
+    .text(`${yLabel} by ${xKey}`);
+
+  svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", height + 40)
+    .style("text-anchor", "middle")
+    .text(xKey);
+
+  svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -height / 2)
+    .attr("y", -50)
+    .style("text-anchor", "middle")
+    .text(yLabel);
+}
