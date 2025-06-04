@@ -97,7 +97,133 @@
     </div>
   </div>
 
-  <script type="module" src="main.js"></script>
-</body>
+  <!-- N-Back Treatment Selection and Quiz -->
+  <!-- N-Back Quiz -->
+  <body>
+    <div class="nback-container">
+      <canvas id="nback_canvas" width="800" height="400"></canvas>
+      <div id="stats"></div>
+      <script src="nback.js"></script>
+    </div>
+  </body>
+
+  <h2>Response Time by Trial</h2>
+  <div id="response-chart-container"></div>
+
+
+
+    <!-- Writeup -->
+    <section id="writeup">
+      <h2>Project Prototype</h2>
+      <h3>What we have done so far :</h3>
+      <p>
+        In this prototype we have visualized the trial accuracy by condition and
+        also the average Electrodermal Activity (EDA) by treatment type, we've
+        done this throuhg two interactive charts. We cleaned and processed a
+        subset of the behaviroal and biometric data from "A Multimodal Dataset
+        for Investigating Working Memory in Presence of Music" from PhysioNet.
+        We've made our charts interactive by adding participant and condition
+        filters that lets user interact with the chart and explore subsets of
+        the data. In the first chart we've boxplots to show the range and
+        variability of the data and in the second chart we have the the
+        confidence band to show the variability too and when you click a
+        specific condition, the y axis is dynamically zoomed into for looking at
+        changes at a smaller scale.
+      </p>
+
+      <h3>Most challenging part of project to design :</h3>
+      <p>
+        The greatest challenge will be synchronizing multimodal data (EDA, HR,
+        facial expression) with behavioral metrics and managing differing time
+        scales and formats. Visually, we aim to design an interface that's
+        informative without being overwhelming. One of the most challenging
+        parts of this project will be to combine all the different datasets such
+        as EDA, heart rate, facial data. Once we combine this data it will still
+        be difficult to compare as there are different levels of granularity and
+        differetn formats. We also need to keep in mind that we need to have the
+        reader engaged through a inviting visual layout and interesting
+        interactive visualizations while not overwhelming them with information.
+        We will also consider adding hovering tooltips and animations so that
+        users can enjoy their experience to the maximum.
+      </p>
+    </section>
+
+    <h2>Mean RT Interactive Line Plot</h2>
+    <div id="chart"></div>
+    <div id="subchart"></div>
+    <button id="backButton">Back to Full Visualization</button>
+
+
+    <script type="module" src="./demo.js"></script>
+    <script type="module" src="./main.js"></script>
+    <script src="script.js"></script>
+      <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="nback.js"></script>
+
+
+<!-- playlist display static -->
+  <section id="playlist" class="playlist">
+    <div class="playlist-header">
+      <div class="cover-box"></div>
+      <div class="playlist-info">
+        <h2>Classical Focus</h2>
+        <p>A playlist generated for you</p>
+        <p><strong>by Music for Memory</strong></p>
+      </div>
+    </div>
+
+    <div class="playlist-controls">
+      <button class="control-btn" title="Play">&#9658;</button>
+      <button class="control-btn" title="Pause">&#10074;&#10074;</button>
+      <button class="control-btn" title="Shuffle">&#128256;</button>
+    </div>
+  
+    <table class="playlist-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Album</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Clair de Lune</td>
+          <td>Claude Debussy</td>
+          <td>5:04</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Nocturne in E-flat Major</td>
+          <td>Frédéric Chopin</td>
+          <td>4:45</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Gymnopédie No.1</td>
+          <td>Erik Satie</td>
+          <td>3:30</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Canon in D</td>
+          <td>Johann Pachelbel</td>
+          <td>6:00</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Moonlight Sonata (1st Movement)</td>
+          <td>Ludwig van Beethoven</td>
+          <td>5:20</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+<!-- playlist display static -->
+  
+  </body>
 </html>
 
