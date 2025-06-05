@@ -1,231 +1,115 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Memory in Melody Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music for Memory</title>
   <style>
-    .dashboard {
+    /* Reset some default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+    }
+
+    /* Banner / Header */
+    header {
+      background-color: #3b2c6f; /* Deep purple/navy tone */
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header img {
+      max-height: 60px;
+      width: auto;
+    }
+
+    /* Main container */
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    /* Button container */
+    .button-group {
+      margin: 30px 0;
       display: flex;
-      align-items: flex-start;
-      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
     }
-    .charts-column {
-      flex: 3;
+
+    .button-group a {
+      text-decoration: none;
+      background-color: #6c5497; /* complementary purple shade */
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease;
     }
-    .filters-panel {
-      flex: 1;
-      border-left: 1px solid #ccc;
-      padding-left: 1rem;
+
+    .button-group a:hover {
+      background-color: #5a4480;
+      transform: translateY(-2px);
     }
-    .filters-panel h3 {
-      margin-top: 0;
+
+    .button-group a:active {
+      transform: translateY(0);
     }
-    .filter-group {
-      margin-bottom: 1rem;
+
+    /* Mission statement styling */
+    .mission {
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 30px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+      text-align: left;
+      font-size: 1rem;
+      line-height: 1.5;
     }
-    label {
-      display: block;
-      margin-bottom: 0.3rem;
+
+    .mission p + p {
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
+  <!-- Banner with logo -->
   <header>
-    <h1>Memory in Melody: How Music Affects Cognitive Ability</h1>
-    <p>Explore how calming and vexing music affect working memory and stress responses.</p>
+    <!-- Replace 'logo.png' with the actual path to your logo file -->
+    <img src="music_memory_logo.png" alt="Music for Memory Logo" />
   </header>
 
-  <div class="dashboard">
-    <div class="charts-column">
-      <h2>Chart 1: Accuracy</h2>
-      <div id="accuracy-chart-container"></div>
-
-      <h2>Chart 2: Response Time</h2>
-      <div id="response-chart-container"></div>
+  <!-- Main content area -->
+  <div class="container">
+    <!-- Two primary buttons -->
+    <div class="button-group">
+      <!-- Update href attributes to your actual quiz and explore pages -->
+      <a href="quiz.html">Take the Quiz</a>
+      <a href="explore.html">Explore the Data</a>
     </div>
 
-    <div class="filters-panel">
-      <h3>Filters</h3>
-
-      <div class="filter-group">
-        <label for="plot-target">Apply filters to:</label>
-        <select id="plot-target">
-          <option value="both">Both Charts</option>
-          <option value="accuracy">Accuracy Only</option>
-          <option value="response">Response Time Only</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label for="task-type">Task Type:</label>
-        <select id="task-type">
-          <option value="both">Both</option>
-          <option value="1-back">1-back</option>
-          <option value="3-back">3-back</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Session Type:</label>
-        <label><input type="checkbox" class="session-type" value="Calming" checked /> Calming</label>
-        <label><input type="checkbox" class="session-type" value="Vexing" checked /> Vexing</label>
-      </div>
-
-      <div class="filter-group">
-        <label for="participant">Participant:</label>
-        <select id="participant">
-          <option value="all">All</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label for="x-axis">X-Axis:</label>
-        <select id="x-axis">
-          <option value="trial">Trial Number</option>
-          <option value="Stimulus_Letter">Stimulus Letter</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label for="trial-range">Trial Range:</label>
-        <input type="range" id="trial-range" min="1" max="16" value="16" />
-        <span id="trial-range-value">1–16</span>
-      </div>
-    </div>
-  </div>
-
-   <!-- <h2>Mean RT Interactive Line Plot</h2> -->
-    <div id="chart"></div>
-    <div id="subchart"></div>
-    <button id="backButton">Back to Full Visualization</button>
-
-  <!-- N-Back Treatment Selection and Quiz -->
-  <!-- N-Back Quiz -->
-  <body>
-    <div class="nback-container">
-      <canvas id="nback_canvas" width="800" height="400"></canvas>
-      <div id="stats"></div>
-      <script src="nback.js"></script>
-    </div>
-  </body>
-
-  <h2>Response Time by Trial</h2>
-  <div id="response-chart-container"></div>
-
-
-
-    <!-- Writeup -->
-    <section id="writeup">
-      <h2>Project Prototype</h2>
-      <h3>What we have done so far :</h3>
+    <!-- Mission statement section -->
+    <section class="mission">
       <p>
-        In this prototype we have visualized the trial accuracy by condition and
-        also the average Electrodermal Activity (EDA) by treatment type, we've
-        done this throuhg two interactive charts. We cleaned and processed a
-        subset of the behaviroal and biometric data from "A Multimodal Dataset
-        for Investigating Working Memory in Presence of Music" from PhysioNet.
-        We've made our charts interactive by adding participant and condition
-        filters that lets user interact with the chart and explore subsets of
-        the data. In the first chart we've boxplots to show the range and
-        variability of the data and in the second chart we have the the
-        confidence band to show the variability too and when you click a
-        specific condition, the y axis is dynamically zoomed into for looking at
-        changes at a smaller scale.
+        Our motivation for creating <strong>Music for Memory</strong> was to explore how different types of music—specifically calming versus vexing—affect working memory and stress response during cognitive tasks.
       </p>
-
-      <h3>Most challenging part of project to design :</h3>
       <p>
-        The greatest challenge will be synchronizing multimodal data (EDA, HR,
-        facial expression) with behavioral metrics and managing differing time
-        scales and formats. Visually, we aim to design an interface that's
-        informative without being overwhelming. One of the most challenging
-        parts of this project will be to combine all the different datasets such
-        as EDA, heart rate, facial data. Once we combine this data it will still
-        be difficult to compare as there are different levels of granularity and
-        differetn formats. We also need to keep in mind that we need to have the
-        reader engaged through a inviting visual layout and interesting
-        interactive visualizations while not overwhelming them with information.
-        We will also consider adding hovering tooltips and animations so that
-        users can enjoy their experience to the maximum.
+        While many people rely on music to stay focused, there hasn’t been an easy way to see how music impacts performance on an individual level. That’s where our tool comes in. Take our quiz to determine what type of study playlist suits you best, and explore the larger research done to gain a deeper understanding of how music shapes cognitive function.
       </p>
     </section>
-
-   
-
-
-    <script type="module" src="./demo.js"></script>
-    <script type="module" src="./main.js"></script>
-    <script src="script.js"></script>
-      <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script src="nback.js"></script>
-
-
-<!-- playlist display static -->
-  <section id="playlist" class="playlist">
-    <div class="playlist-header">
-      <div class="cover-box"></div>
-      <div class="playlist-info">
-        <h2>Classical Focus</h2>
-        <p>A playlist generated for you</p>
-        <p><strong>by Music for Memory</strong></p>
-      </div>
-    </div>
-
-    <div class="playlist-controls">
-      <button class="control-btn" title="Play">&#9658;</button>
-      <button class="control-btn" title="Pause">&#10074;&#10074;</button>
-      <button class="control-btn" title="Shuffle">&#128256;</button>
-    </div>
-  
-    <table class="playlist-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Title</th>
-          <th>Album</th>
-          <th>Duration</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Clair de Lune</td>
-          <td>Claude Debussy</td>
-          <td>5:04</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Nocturne in E-flat Major</td>
-          <td>Frédéric Chopin</td>
-          <td>4:45</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Gymnopédie No.1</td>
-          <td>Erik Satie</td>
-          <td>3:30</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>Canon in D</td>
-          <td>Johann Pachelbel</td>
-          <td>6:00</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>Moonlight Sonata (1st Movement)</td>
-          <td>Ludwig van Beethoven</td>
-          <td>5:20</td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-<!-- playlist display static -->
-  
-  </body>
+  </div>
+</body>
 </html>
-
