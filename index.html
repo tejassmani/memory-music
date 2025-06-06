@@ -1,36 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music for Memory</title>
+  <style>
+    /* Reset some default browser styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+    }
+
+    /* Banner / Header */
+    header {
+      background-color: #3b2c6f; /* Deep purple/navy tone */
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header img {
+      max-height: 60px;
+      width: auto;
+    }
+
+    /* Main container */
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    /* Button container */
+    .button-group {
+      margin: 30px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .button-group a {
+      text-decoration: none;
+      background-color: #6c5497; /* complementary purple shade */
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    }
+
+    .button-group a:hover {
+      background-color: #5a4480;
+      transform: translateY(-2px);
+    }
+
+    .button-group a:active {
+      transform: translateY(0);
+    }
+
+    /* Mission statement styling */
+    .mission {
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 30px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+      text-align: left;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .mission p + p {
+      margin-top: 1rem;
+    }
+  </style>
 </head>
-
 <body>
+  <!-- Banner with logo -->
+  <header>
+    <img src="music_memory_logo.png" alt="Music for Memory Logo" />
+  </header>
 
-<header class="page-header">
-  <h1>Does Music Affect Cognitive Function?</h1>
-  <p class="citation">
-    Khazaei, S., Parshi, S., Alam, S., Amin, M. R., &amp; Faghih, R. T. (2025). 
-    <em>A Multimodal Dataset for Investigating Working Memory in Presence of Music</em> (version 1.0.0). 
-    PhysioNet. RRID:SCR_007345. 
-    <a href="https://doi.org/10.13026/6vh4-dk68" target="_blank">
-      https://doi.org/10.13026/6vh4-dk68
-    </a>
-  </p>
-</header>
+  <!-- Main content area -->
+  <div class="container">
+    <!-- Two primary buttons -->
+    <div class="button-group">
+      <!-- Update href attributes to your actual quiz and explore pages -->
+      <a href="quiz.html">Take the Quiz</a>
+      <a href="explore.html">Explore the Data</a>
+    </div>
 
-<section class="full-width-gray">
-  <div class="content-wrapper">
-    As a student, or any worker, you may be concerned with your productivity... [etc]
+    <!-- Mission statement section -->
+    <section class="mission">
+      <p>
+        Our motivation for creating <strong>Music for Memory</strong> was to explore how different types of music—specifically calming versus vexing—affect working memory and stress response during cognitive tasks.
+      </p>
+      <p>
+        While many people rely on music to stay focused, there hasn’t been an easy way to see how music impacts performance on an individual level. That’s where our tool comes in. Take our quiz to determine what type of study playlist suits you best, and explore the larger research done to gain a deeper understanding of how music shapes cognitive function.
+      </p>
+    </section>
   </div>
-</section>
-
-<div id="chart"></div>
-<div id="subchart"></div>
-<button id="backButton">Back to Full Visualization</button>
-
-<!-- Your JS script here -->
-<script type="module" src="main.js"></script>
-
 </body>
-
 </html>
