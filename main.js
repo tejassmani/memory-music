@@ -1295,7 +1295,7 @@ let responseFilters = {};
 let lastPlotTarget = "both";
 
 Promise.all([
-  d3.csv("data/Behavioral_data/cleaned_df.csv", d3.autoType)
+  d3.csv("../data/Behavioral_data/cleaned_df.csv", d3.autoType)
 ]).then(([rawData]) => {
   fullData = rawData;
 

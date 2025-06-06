@@ -374,7 +374,7 @@ let lastPlotTarget = "both";
 // ───────────────────────────────────────────────────
 // 1) Load the CSV and kick off everything
 // ───────────────────────────────────────────────────
-d3.csv("./data/df.csv", d3.autoType).then(data => {
+d3.csv("../data/df.csv", d3.autoType).then(data => {
   // Assume data rows look like: { participant: "3F", condition: "Calming_1", mean_rt: 550, ... }
 
   // Filter to just participant “3F” and non-null RT

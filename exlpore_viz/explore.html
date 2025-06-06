@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Music for Memory: Explore the Data</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
   <!-- HEADER SECTION -->
@@ -25,6 +25,9 @@
     <em>A Multimodal Dataset for Investigating Working Memory in Presence of Music</em> discover just how the tunes you listen to affect your focus. Leverage your results from the quiz alongside the takeaways from the following visualizations to become more productive.
   </div>
 </section>
+
+<!-- Stacked Swarm plot for Accuracy and Mean_RT -->
+  <svg id="swarm"></svg>
 
 <div id="chart"></div>
 
@@ -88,9 +91,9 @@
     </div>
   </div>
 
-    <script type="module" src="./demo.js"></script>
-    <script type="module" src="./main.js"></script>
-    <script type="module" src="script.js"></script>
+    <script type="module" src="../demo.js"></script>
+    <script type="module" src="../main.js"></script>
+    <script type="module" src="swarm.js"></script>
   
   </body>
 </html>
