@@ -1,5 +1,81 @@
 /* <--- Index Page --->*/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+    }
+
+    /* Banner / Header */
+    header {
+      background-color: #3b2c6f; /* Deep purple/navy tone */
+      padding: 20px 0;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+      max-height: 200px;
+      width: auto;
+    }
+
+    /* Main container */
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    /* Button container */
+    .button-group {
+      margin: 30px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .button-group a {
+      text-decoration: none;
+      background-color: #6c5497; /* complementary purple shade */
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    }
+
+    .button-group a:hover {
+      background-color: #5a4480;
+      transform: translateY(-2px);
+    }
+
+    .button-group a:active {
+      transform: translateY(0);
+    }
+
+    /* Mission statement styling */
+    .mission {
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 30px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+      text-align: left;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .mission p + p {
+      margin-top: 1rem;
+    }
 
 /* <--- Quiz Page --->*/
       * {
