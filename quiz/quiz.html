@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>N-Back Memory Challenge</title>
+    <style>
+      /* Main Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        position: relative;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        max-width: 800px;
+        width: 90%;
+      }
+
+      h1 {
+        color: #4a5568;
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      #nback_canvas {
+        border: 3px solid #4a5568;
+        border-radius: 15px;
+        background: white;
+        margin: 1rem 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      #nback_canvas:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+
+      #stats {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        min-height: 60px;
+      }
+
+      #stats h2 {
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+        font-size: 1.8rem;
+      }
+
+      #stats p {
+        margin: 0.5rem 0;
+        font-size: 1.1rem;
+        color: #4a5568;
+      }
+
+      button {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      /* Visualization Styles */
+      .viz-container {
+        margin-top: 2rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      #chart,
+      #subchart {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      #backButton {
+        background: linear-gradient(45deg, #e53e3e, #fc8181);
+        display: none;
+      }
+
+      #backButton:hover {
+        background: linear-gradient(45deg, #c53030, #e53e3e);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        .container {
+          padding: 1rem;
+          width: 95%;
+        }
+
+        #nback_canvas {
+          width: 100%;
+          max-width: 400px;
+          height: 300px;
+        }
+      }
+
+      /* Audio status indicator */
+      .audio-status {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 12px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .audio-status.show {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🧠 N-Back Memory Challenge</h1>
+      <canvas id="nback_canvas" width="600" height="400"></canvas>
+      <div id="stats"></div>
+
+      <!-- Visualization Section -->
+      <div class="viz-container" style="display: none" id="vizContainer">
+        <h2>📊 Your Performance Analysis</h2>
+        <div id="chart"></div>
+        <div id="subchart" style="display: none"></div>
+        <button id="backButton">← Back to Overview</button>
+      </div>
+    </div>
+
+    <!-- Audio status indicator -->
+    <div id="audioStatus" class="audio-status"></div>
+
+    <script type="module">
+      import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+      // Main N-Back Task Code
+      const canvas = document.getElementById("nback_canvas");
+      const ctx = canvas.getContext("2d");
+      const letters = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "H",
+        "I",
+        "K",
+        "L",
+        "M",
+        "O",
+        "P",
+        "R",
+        "S",
+        "T",
+      ];
+
+      let sequence = [];
+      let currentIndex = 0;
+      let stimulusStartTime = 0;
+      let acceptingResponse = false;
+      let clickedThisTrial = false;
+      let rtData = [];
+      let quizStarted = false;
+      let genre = null;
+      let currentScreen = "genre";
+      let currentAudio = null;
+      let halfwayPoint = 0;
+
+      const N = 2;
+      const numTrials = 17;
+      const matchChance = 0.25;
+
+      function drawScreen(lines) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.font = "20px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+
+        const maxWidth = canvas.width - 40;
+        const lineHeight = 28;
+        let yPosition = 30;
+
+        lines.forEach((line) => {
+          if (line === "") {
+            yPosition += lineHeight * 0.5;
+          } else {
+            const words = line.split(" ");
+            let currentLine = "";
+
+            for (let word of words) {
+              const testLine = currentLine + (currentLine ? " " : "") + word;
+              const metrics = ctx.measureText(testLine);
+
+              if (metrics.width > maxWidth && currentLine !== "") {
+                ctx.fillText(currentLine, canvas.width / 2, yPosition);
+                yPosition += lineHeight;
+                currentLine = word;
+              } else {
+                currentLine = testLine;
+              }
+            }
+
+            if (currentLine) {
+              ctx.fillText(currentLine, canvas.width / 2, yPosition);
+              yPosition += lineHeight;
+            }
+          }
+        });
+      }
+
+      function drawGenreScreen() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const borderColor = "black";
+        const borderWidth = 1;
+        const headerY = 20;
+        const headerFontSize = 28;
+        const headerBottom = headerY + headerFontSize + 8;
+
+        ctx.font = `${headerFontSize}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+
+        const headerText = "Select Preferred Genre";
+        const headerMaxWidth = canvas.width - 40;
+        const headerMetrics = ctx.measureText(headerText);
+
+        if (headerMetrics.width > headerMaxWidth) {
+          ctx.font = `24px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+        }
+
+        ctx.fillText(headerText, canvas.width / 2, headerY);
+
+        ctx.beginPath();
+        ctx.moveTo(20, headerBottom);
+        ctx.lineTo(canvas.width - 20, headerBottom);
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = borderWidth;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, headerBottom);
+        ctx.lineTo(canvas.width / 2, canvas.height - 20);
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = borderWidth;
+        ctx.stroke();
+
+        const choiceFont = canvas.width < 500 ? "20px" : "24px";
+        ctx.font = `${choiceFont} 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+        ctx.textBaseline = "middle";
+
+        const choiceCenterY = headerBottom + (canvas.height - headerBottom) / 2;
+        const leftX = canvas.width / 4;
+        const rightX = (3 * canvas.width) / 4;
+
+        ctx.fillText("🎻", leftX, choiceCenterY - 30);
+
+        const classicalText = "Click Here for Classical";
+        const classicalMaxWidth = canvas.width / 2 - 40;
+        const classicalMetrics = ctx.measureText(classicalText);
+
+        if (classicalMetrics.width > classicalMaxWidth) {
+          ctx.fillText("Click Here for", leftX, choiceCenterY + 5);
+          ctx.fillText("Classical", leftX, choiceCenterY + 25);
+        } else {
+          ctx.fillText(classicalText, leftX, choiceCenterY + 15);
+        }
+
+        ctx.fillText("🎤", rightX, choiceCenterY - 30);
+
+        const popText = "Click Here for Pop";
+        const popMetrics = ctx.measureText(popText);
+
+        if (popMetrics.width > classicalMaxWidth) {
+          ctx.fillText("Click Here for", rightX, choiceCenterY + 5);
+          ctx.fillText("Pop", rightX, choiceCenterY + 25);
+        } else {
+          ctx.fillText(popText, rightX, choiceCenterY + 15);
+        }
+      }
+
+      function drawIntroScreen() {
+        drawScreen([
+          "N-back working memory task",
+          "",
+          "In this task, you will see a sequence of letters.",
+          "Each letter is shown for a few seconds.",
+          "You need to decide if you saw the same letter 2 trials ago.",
+          "That is, this is a n=2-back task.",
+          "",
+          "If you saw the same letter 2 trials ago, click the mouse.",
+          "Otherwise, do not click.",
+          "",
+          "Click the mouse to begin the quiz.",
+        ]);
+      }
+
+      function drawStimulus(stim) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        let fontSize = Math.min(canvas.width * 0.25, canvas.height * 0.35, 150);
+        ctx.font = `${fontSize}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "black";
+
+        const metrics = ctx.measureText(stim);
+        const textWidth = metrics.width;
+        const maxWidth = canvas.width - 40;
+
+        if (textWidth > maxWidth) {
+          fontSize = fontSize * (maxWidth / textWidth);
+          ctx.font = `${fontSize}px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+        }
+
+        ctx.fillText(stim, canvas.width / 2, canvas.height / 2);
+      }
+
+      function generateSequence(length) {
+        const seq = [];
+        for (let i = 0; i < length; i++) {
+          if (i >= N && Math.random() < matchChance) {
+            seq.push(seq[i - N]);
+          } else {
+            let newLetter;
+            do {
+              newLetter = letters[Math.floor(Math.random() * letters.length)];
+            } while (i >= N && newLetter === seq[i - N]);
+            seq.push(newLetter);
+          }
+        }
+        return seq;
+      }
+
+      function flash(color) {
+        ctx.save();
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.3;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.restore();
+        setTimeout(() => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawStimulus(sequence[currentIndex - 1]);
+        }, 500);
+      }
+
+      function runTrial() {
+        if (currentIndex >= sequence.length) {
+          endTask();
+          return;
+        }
+
+        if (currentIndex === halfwayPoint) {
+          playMusic("vexing");
+        }
+
+        drawStimulus(sequence[currentIndex]);
+        stimulusStartTime = performance.now();
+        acceptingResponse = true;
+        clickedThisTrial = false;
+
+        setTimeout(() => {
+          acceptingResponse = false;
+          const now = performance.now();
+          const rt = clickedThisTrial
+            ? Math.round(now - stimulusStartTime)
+            : 1500;
+          const isMatch =
+            currentIndex >= N &&
+            sequence[currentIndex] === sequence[currentIndex - N];
+
+          let correct = false;
+          if (isMatch && clickedThisTrial) {
+            correct = true;
+            flash("green");
+          } else if (!isMatch && !clickedThisTrial) {
+            correct = true;
+          } else if (clickedThisTrial) {
+            flash("red");
+          }
+
+          rtData.push({
+            trial: currentIndex + 1,
+            stimulus: sequence[currentIndex],
+            match: isMatch,
+            clicked: clickedThisTrial,
+            rt: rt,
+            correct: correct,
+            condition:
+              currentIndex < halfwayPoint
+                ? `Calming_${genre}`
+                : `Vexing_${genre}`,
+          });
+
+          currentIndex++;
+          setTimeout(runTrial, 750);
+        }, 1500);
+      }
+
+      // Fixed audio implementation
+      function showAudioStatus(message) {
+        const statusDiv = document.getElementById("audioStatus");
+        statusDiv.textContent = message;
+        statusDiv.classList.add("show");
+        setTimeout(() => {
+          statusDiv.classList.remove("show");
+        }, 2000);
+      }
+
+      async function playMusic(type) {
+        stopMusic();
+
+        try {
+          const path = `../audio/${genre}/${type}.mp3`;
+          console.log(`Attempting to play: ${path}`);
+
+          currentAudio = new Audio(path);
+          currentAudio.loop = true;
+          currentAudio.volume = 0.3;
+
+          // Set up event listeners before loading
+          currentAudio.addEventListener("loadeddata", () => {
+            console.log("Audio loaded successfully");
+          });
+
+          currentAudio.addEventListener("canplaythrough", async () => {
+            try {
+              await currentAudio.play();
+              console.log(`Playing ${type} ${genre} music`);
+              showAudioStatus(`🎵 Playing ${type} ${genre} music`);
+            } catch (error) {
+              console.log("Autoplay blocked:", error);
+              showAudioStatus(
+                `🎵 ${type} ${genre} music ready (click to enable)`,
+              );
+
+              // Try to play on next user interaction
+              const playOnClick = async () => {
+                try {
+                  await currentAudio.play();
+                  showAudioStatus(`🎵 Now playing ${type} ${genre} music`);
+                  document.removeEventListener("click", playOnClick);
+                } catch (e) {
+                  console.log("Still blocked:", e);
+                }
+              };
+              document.addEventListener("click", playOnClick, { once: true });
+            }
+          });
+
+          currentAudio.addEventListener("error", (e) => {
+            console.error("Audio error:", e);
+            console.error("Failed to load:", path);
+            showAudioStatus(`❌ Could not load ${type} ${genre} music`);
+          });
+
+          // Start loading the audio
+          currentAudio.load();
+        } catch (error) {
+          console.error("Audio creation failed:", error);
+          showAudioStatus(`❌ Audio system error`);
+        }
+      }
+
+      function stopMusic() {
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+          currentAudio = null;
+          console.log("Music stopped");
+        }
+      }
+
+      function endTask() {
+        stopMusic();
+
+        const totalCorrect = rtData.filter((d) => d.correct).length;
+        const accuracy = Math.round((totalCorrect / rtData.length) * 100);
+        const rtList = rtData.filter((d) => d.clicked).map((d) => d.rt);
+        const avgRT =
+          rtList.length > 0
+            ? Math.round(rtList.reduce((a, b) => a + b) / rtList.length)
+            : "N/A";
+
+        document.getElementById("stats").innerHTML = `
+                <h2>🎉 Task Complete!</h2>
+                <p><strong>Accuracy:</strong> ${accuracy}%</p>
+                <p><strong>Average Reaction Time:</strong> ${avgRT} ms</p>
+                <button id="download_button">📥 Download CSV</button>
+                <button id="restart_button">🔄 Restart Quiz</button>
+                <button id="visualize_button">📊 View Analysis</button>
+            `;
+
+        document
+          .getElementById("download_button")
+          .addEventListener("click", downloadCSV);
+        document
+          .getElementById("restart_button")
+          .addEventListener("click", restartQuiz);
+        document
+          .getElementById("visualize_button")
+          .addEventListener("click", showVisualization);
+      }
+
+      function downloadCSV() {
+        const csvHeader =
+          "Trial,Stimulus,Match,Clicked,RT(ms),Correct,Condition\n";
+        const csvRows = rtData.map(
+          (d) =>
+            `${d.trial},${d.stimulus},${d.match},${d.clicked},${d.rt},${d.correct},${d.condition}`,
+        );
+        const csvContent = csvHeader + csvRows.join("\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "nback_results.csv";
+        a.click();
+
+        URL.revokeObjectURL(url);
+      }
+
+      function restartQuiz() {
+        quizStarted = false;
+        genre = null;
+        currentScreen = "genre";
+        drawGenreScreen();
+        document.getElementById("stats").innerHTML = "";
+        document.getElementById("vizContainer").style.display = "none";
+      }
+
+      function showVisualization() {
+        document.getElementById("vizContainer").style.display = "block";
+        createVisualization();
+      }
+
+      // Handle canvas clicks
+      canvas.addEventListener("click", (e) => {
+        if (currentScreen === "genre") {
+          const x = e.offsetX;
+          genre = x < canvas.width / 2 ? "classical" : "pop";
+          console.log(`Genre selected: ${genre}`);
+          currentScreen = "instructions";
+          drawIntroScreen();
+        } else if (currentScreen === "instructions") {
+          currentScreen = "quiz";
+          quizStarted = true;
+          sequence = generateSequence(numTrials);
+          currentIndex = 0;
+          halfwayPoint = Math.floor(sequence.length / 2);
+          rtData = [];
+          document.getElementById("stats").innerHTML = "";
+
+          // Start music with slight delay after user interaction
+          setTimeout(() => playMusic("calming"), 200);
+          runTrial();
+        } else if (currentScreen === "quiz") {
+          if (acceptingResponse && !clickedThisTrial) {
+            clickedThisTrial = true;
+          }
+        }
+      });
+
+      // Visualization Code
+      function createVisualization() {
+        if (rtData.length === 0) return;
+
+        const filtered = rtData.map((d, i) => ({
+          ...d,
+          mean_rt: d.rt,
+          participant: "You",
+        }));
+
+        const width = 600,
+          height = 400,
+          margin = { top: 40, right: 40, bottom: 40, left: 60 };
+
+        d3.select("#chart").selectAll("*").remove();
+
+        const svg = d3
+          .select("#chart")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+        const xScale = d3
+          .scaleLinear()
+          .domain([0, filtered.length - 1])
+          .range([margin.left, width - margin.right]);
+
+        const yScale = d3
+          .scaleLinear()
+          .domain([0, d3.max(filtered, (d) => d.mean_rt)])
+          .nice()
+          .range([height - margin.bottom, margin.top]);
+
+        const line = d3
+          .line()
+          .x((d, i) => xScale(i))
+          .y((d) => yScale(d.mean_rt));
+
+        svg
+          .append("path")
+          .datum(filtered)
+          .attr("fill", "none")
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 2)
+          .attr("d", line);
+
+        svg
+          .append("g")
+          .attr("transform", `translate(0,${height - margin.bottom})`)
+          .call(d3.axisBottom(xScale));
+
+        svg
+          .append("g")
+          .attr("transform", `translate(${margin.left},0)`)
+          .call(d3.axisLeft(yScale));
+
+        const partitionX = xScale(halfwayPoint - 0.5);
+        svg
+          .append("line")
+          .attr("x1", partitionX)
+          .attr("x2", partitionX)
+          .attr("y1", margin.top)
+          .attr("y2", height - margin.bottom)
+          .attr("stroke", "red")
+          .attr("stroke-width", 2)
+          .attr("stroke-dasharray", "4,4");
+
+        svg
+          .append("text")
+          .attr("x", width / 2)
+          .attr("y", 20)
+          .attr("text-anchor", "middle")
+          .attr("font-size", "18px")
+          .attr("font-weight", "bold")
+          .text("Your Reaction Time Over Trials");
+
+        svg
+          .append("text")
+          .attr("x", width / 2)
+          .attr("y", height - 5)
+          .attr("text-anchor", "middle")
+          .attr("font-size", "14px")
+          .text("Trial Number");
+
+        svg
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 15)
+          .attr("x", -height / 2)
+          .attr("text-anchor", "middle")
+          .attr("font-size", "14px")
+          .text("Reaction Time (ms)");
+      }
+
+      document.getElementById("backButton").addEventListener("click", () => {
+        d3.select("#subchart").style("display", "none");
+        d3.select("#chart").style("display", "block");
+        d3.select("#backButton").style("display", "none");
+      });
+
+      // Initialize
+      drawGenreScreen();
+    </script>
+  </body>
+</html>
