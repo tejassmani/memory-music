@@ -1,3 +1,169 @@
+/* <--- Index Page --->*/
+
+
+/* <--- Quiz Page --->*/
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #c266ea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        position: relative;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        max-width: 800px;
+        width: 90%;
+      }
+
+      h1 {
+        color: #4a5568;
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        background: linear-gradient(45deg, #c266ea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      #nback_canvas {
+        border: 3px solid #4a5568;
+        border-radius: 15px;
+        background: white;
+        margin: 1rem 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      #nback_canvas:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      }
+
+      #stats {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        min-height: 60px;
+      }
+
+      #stats h2 {
+        color: #2d3748;
+        margin-bottom: 0.5rem;
+        font-size: 1.8rem;
+      }
+
+      #stats p {
+        margin: 0.5rem 0;
+        font-size: 1.1rem;
+        color: #4a5568;
+      }
+
+      button {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      /* Visualization Styles */
+      .viz-container {
+        margin-top: 2rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      #chart,
+      #subchart {
+        background: white;
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      #backButton {
+        background: linear-gradient(45deg, #e53e3e, #fc8181);
+        display: none;
+      }
+
+      #backButton:hover {
+        background: linear-gradient(45deg, #c53030, #e53e3e);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+
+        .container {
+          padding: 1rem;
+          width: 95%;
+        }
+
+        #nback_canvas {
+          width: 100%;
+          max-width: 400px;
+          height: 300px;
+        }
+      }
+
+      /* Audio status indicator */
+      .audio-status {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-size: 12px;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .audio-status.show {
+        opacity: 1;
+      }
+/* <--- Visualization Page --->*/
 /* === RESET === */
 body {
   margin: 0;
@@ -6,6 +172,8 @@ body {
   color: #333;
   line-height: 1.6;
 }
+
+
 
 /* === HEADER === */
 header.page-header {
