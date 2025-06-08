@@ -751,7 +751,7 @@ function createVisualization() {
   addInteractionZone(
     zone1_start,
     zone1_end,
-    "Early Performance: First 10 Trials of Each Music Type",
+    "Early Performance: Which Music Type Engages you Earlier",
     () => showZone1Plot(filtered),
     svg,
     xScale,
@@ -773,7 +773,7 @@ function createVisualization() {
   addInteractionZone(
     zone3_start,
     zone3_end,
-    "Late Performance: Last 10 Trials - Which Music Maintains Focus",
+    "Late Performance: Which Music Maintains Yours Focus",
     () => showZone3Plot(filtered),
     svg,
     xScale,
@@ -850,7 +850,7 @@ function showZone1Plot(filtered) {
     { type: "Vexing", mean_rt: averageMeanRT(first10Vexing) },
   ];
 
-  drawBarplot(barData, "Early Performance: First 10 Trials of Each Music Type");
+  drawBarplot(barData, "Early Performance: Which Music Engages You Earlier", "Compare the First 10 Rounds of Calming versus the First 10 Rounds of Vexing");
 }
 
 // === Zone 2 ===
@@ -863,7 +863,8 @@ function showZone2Plot(filtered, zone2_start, zone2_end) {
 
   drawLineplotWithPartition(
     trials,
-    "Transition Period: 20 Trials Around Music Switch",
+    "Transition Period: How Your Focus Changes During Music Switch",
+    "Compare How Your Focus Fluctuates Over the 20 Rounds Surrounding the Music Switch"
   );
 }
 
@@ -885,11 +886,11 @@ function showZone3Plot(filtered) {
     { type: "Vexing", mean_rt: averageMeanRT(last10Vexing) },
   ];
 
-  drawBarplot(barData, "Late Performance: Last 10 Trials of Each Music Type");
+  drawBarplot(barData, "Late Performance: Which Music Type Keeps You Engaged", "Compare the Last 10 Rounds of Calming versus the Last 10 Rounds of Vexing");
 }
 
 // === Barplot ===
-function drawBarplot(data, titleText) {
+function drawBarplot(data, titleText, subtitleText) {
   const width = 650;
   const height = 400;
   const margin = { top: 80, right: 40, bottom: 60, left: 80 };
@@ -910,6 +911,18 @@ function drawBarplot(data, titleText) {
     .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
     .style("font-weight", "600")
     .text(titleText);
+  
+  // Subtitle, just under the title
+  subSvg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 55)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "14px")
+    .style("font-family", "'Gotham', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-weight", "400")
+    .style("fill", "#555")
+    .text(subtitleText);
 
   const x = d3
     .scaleBand()
@@ -980,7 +993,7 @@ function drawBarplot(data, titleText) {
 }
 
 // === Lineplot with Partition ===
-function drawLineplotWithPartition(trials, titleText) {
+function drawLineplotWithPartition(trials, titleText, subtitleText) {
   const width = 650;
   const height = 400;
   const margin = { top: 80, right: 40, bottom: 60, left: 80 };
@@ -1001,6 +1014,18 @@ function drawLineplotWithPartition(trials, titleText) {
     .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
     .style("font-weight", "600")
     .text(titleText);
+  
+  // Subtitle
+  subSvg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 55)
+    .attr("text-anchor", "middle")
+    .attr("font-size", "14px")
+    .style("font-family", "'Gotham', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-weight", "400")
+    .style("fill", "#555")
+    .text(subtitleText);
 
   const x = d3
     .scaleLinear()
