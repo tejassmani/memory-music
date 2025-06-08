@@ -6,6 +6,8 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 // Click: filter to that participant, fade & disable other legend entries.
 // Click again: clear filter, restore everything.
 
+
+
 // 1) Dimensions
 const margin = { top: 20, right: 150, bottom: 40, left: 60 };
 const singleChartHeight = 250;
@@ -19,7 +21,9 @@ const svgHeight = margin.top
 const chartWidth = svgWidth - margin.left - margin.right;
 
 // 2) Create SVG
-const svg = d3.select("#swarm")
+
+// const svg = d3.select("#swarm")
+const svg = d3.select("#vis1").append("svg").attr("id", "swarm")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
 

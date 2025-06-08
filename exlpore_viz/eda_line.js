@@ -1,12 +1,22 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
+
+
+
 // 1) SVG & margins
-const svg = d3.select("#eda-line"),
-      margin = { top: 60, right: 40, bottom: 80, left: 60 },
-      width  = +svg.attr("width")  - margin.left - margin.right,
-      height = +svg.attr("height") - margin.top  - margin.bottom;
+// const svg = d3.select("#eda-line"),
+const svg = d3.select("#vis2").append("svg")
+  .attr("id", "eda-line")
+  .attr("width", 800)
+  .attr("height", 450);
+
+const margin = { top: 60, right: 40, bottom: 80, left: 60 };
+const width  = +svg.attr("width")  - margin.left - margin.right;
+const height = +svg.attr("height") - margin.top  - margin.bottom;
+
 const g = svg.append("g")
              .attr("transform", `translate(${margin.left},${margin.top})`);
+
 
 // 2) Color palette
 const condColor = d3.scaleOrdinal()

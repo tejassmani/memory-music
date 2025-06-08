@@ -313,3 +313,62 @@ section.full-width-gray .content-wrapper {
   margin: 0 auto 40px auto;
   display: block;
 }
+
+
+/* stuti changes  */
+/* reset + base */
+body {
+    margin: 0;
+    font-family: sans-serif;
+  }
+  
+  /* two-column flex container */
+  .scrolly {
+    display: flex;
+  }
+  
+  /* LEFT column: the text steps */
+  .scrolly__text {
+    width: 40%;
+    padding: 2rem;
+  }
+  .step {
+    height: 100vh;             /* each step fills one viewport */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0.3;
+    transition: opacity 0.3s;
+  }
+  .step.is-active {
+    opacity: 1;
+  }
+  
+  /* RIGHT column: the sticky graphic */
+  .scrolly__graphic {
+    position: sticky;
+    top: 0;
+    width: 60%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+  }
+  
+  /* Each viz container starts hidden */
+  .viz-container {
+    width: 90%;
+    height: 80%;
+    display: none;
+  }
+  
+  .subheading {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #ddd;
+    margin: 0.5rem 0 1rem;
+  }
+  
+  /* stuti changes  */
