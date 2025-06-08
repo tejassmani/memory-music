@@ -12,11 +12,12 @@ body {
   background-color: #f9f9f9;
 }
 
-    /* Banner / Header */
-    header {
-      padding: 20px 0;
-      text-align: center;
-    }
+/* Banner / Header */
+header {
+    background-color: #3b2c6f;
+    padding: 20px 0;
+    text-align: center;
+  }
 
 img {
   max-height: 200px;
@@ -86,7 +87,7 @@ img {
 
 body {
   font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #c266ea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #d097e9 0%, #c38afc 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
