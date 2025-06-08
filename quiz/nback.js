@@ -635,220 +635,191 @@ setTimeout(() => {
 }, 100);
 
 function createVisualization() {
-  // Clear any existing visualization
-  d3.select("#chart").selectAll("*").remove();
+  // 1) grab & clear the container
+  const container = d3.select("#chart");
+  container.selectAll("*").remove();
 
-  // Convert rtData to the format expected by the visualization
+  // 2) prep your data
   const filtered = rtData.map((d, i) => ({
-    trial: d.trial,
-    mean_rt: d.rt,
+    trial:     d.trial,
+    mean_rt:   d.rt,
     condition: i < halfwayPoint ? "Calming" : "Vexing",
-    participant: "current_user",
   }));
 
-  const width = 800;
-  const height = 500;
+  // 3) measure how big #chart actually is
+  const { width, height } = container.node().getBoundingClientRect();
   const margin = { top: 60, right: 60, bottom: 60, left: 80 };
 
-  const svg = d3
-    .select("#chart")
+  // 4) append a responsive SVG
+  const svg = container
     .append("svg")
-    .attr("width", width)
-    .attr("height", height);
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .style("width",  "100%")
+      .style("height", "100%");
 
-  const xScale = d3
-    .scaleLinear()
-    .domain([1, filtered.length])
+  // 5) build scales against that dynamic width/height
+  //    → use actual trial numbers so the first point sits on the y-axis
+  const xScale = d3.scaleLinear()
+    .domain(d3.extent(filtered, d => d.trial))
     .range([margin.left, width - margin.right]);
 
-  const yScale = d3
-    .scaleLinear()
-    .domain([0, d3.max(filtered, (d) => d.mean_rt)])
+  const yScale = d3.scaleLinear()
+    .domain([0, d3.max(filtered, d => d.mean_rt)])
     .nice()
     .range([height - margin.bottom, margin.top]);
 
-  const line = d3
-    .line()
-    .x((d) => xScale(d.trial))
-    .y((d) => yScale(d.mean_rt));
+  // 6) line generator
+  const line = d3.line()
+    .x(d => xScale(d.trial))
+    .y(d => yScale(d.mean_rt));
 
-  // Add grid lines
-  svg
-    .append("g")
-    .attr("class", "grid")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(
-      d3
-        .axisLeft(yScale)
-        .tickSize(-(width - margin.left - margin.right))
-        .tickFormat(""),
-    )
+  // 7) grid lines
+  //    → add tickSizeOuter(0) + remove the domain path to drop that stray bar
+  svg.append("g")
+      .attr("class", "grid")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(
+        d3.axisLeft(yScale)
+          .tickSize(-(width - margin.left - margin.right))
+          .tickSizeOuter(0)
+          .tickFormat("")
+      )
+      .call(g => g.select(".domain").remove())
     .selectAll("line")
-    .attr("stroke", "#e0e0e0")
-    .attr("stroke-width", 1);
+      .attr("stroke", "#e0e0e0")
+      .attr("stroke-width", 1);
 
-  svg
-    .append("g")
-    .attr("class", "grid")
-    .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(
-      d3
-        .axisBottom(xScale)
-        .tickSize(-(height - margin.top - margin.bottom))
-        .tickFormat(""),
-    )
+  svg.append("g")
+      .attr("class", "grid")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(
+        d3.axisBottom(xScale)
+          .tickSize(-(height - margin.top - margin.bottom))
+          .tickSizeOuter(0)
+          .tickFormat("")
+      )
+      .call(g => g.select(".domain").remove())
     .selectAll("line")
-    .attr("stroke", "#e0e0e0")
-    .attr("stroke-width", 1);
+      .attr("stroke", "#e0e0e0")
+      .attr("stroke-width", 1);
 
-  // Add the line
-  svg
-    .append("path")
-    .datum(filtered)
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 3)
-    .attr("d", line);
+  // 8) the performance line
+  svg.append("path")
+      .datum(filtered)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 3)
+      .attr("d", line);
 
-  // Add axes
+  // 9) axes
   const xAxis = d3.axisBottom(xScale).ticks(10).tickFormat(d3.format("d"));
-
   const yAxis = d3.axisLeft(yScale);
 
-  svg
-    .append("g")
-    .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(xAxis)
-    .selectAll("text")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "12px");
+  svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(xAxis)
+      .selectAll("text")
+        .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+        .style("font-size", "12px");
 
-  svg
-    .append("g")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(yAxis)
-    .selectAll("text")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "12px");
+  svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(yAxis)
+      .selectAll("text")
+        .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+        .style("font-size", "12px");
 
-  // Add axis labels
-  svg
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", margin.left - 50)
-    .attr("x", -(height / 2))
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "14px")
-    .style("font-weight", "600")
-    .text("Reaction Time (ms)");
+  // 10) axis labels
+  svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", margin.left - 50)
+      .attr("x", -(height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+      .style("font-size", "14px")
+      .style("font-weight", "600")
+      .text("Reaction Time (ms)");
 
-  svg
-    .append("text")
-    .attr("transform", `translate(${width / 2}, ${height - 10})`)
-    .style("text-anchor", "middle")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "14px")
-    .style("font-weight", "600")
-    .text("Trial Number");
+  svg.append("text")
+      .attr("transform", `translate(${width / 2}, ${height - 10})`)
+      .style("text-anchor", "middle")
+      .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+      .style("font-size", "14px")
+      .style("font-weight", "600")
+      .text("Trial Number");
 
-  // Partition line at halfway point
-  const calmingCount = filtered.filter((d) =>
-    d.condition.startsWith("Calming"),
-  ).length;
+  // 11) partition line + labels
+  const calmingCount = filtered.filter(d => d.condition === "Calming").length;
   if (calmingCount < filtered.length) {
     const partitionX = xScale(calmingCount + 0.5);
-    svg
-      .append("line")
-      .attr("x1", partitionX)
-      .attr("x2", partitionX)
-      .attr("y1", margin.top)
-      .attr("y2", height - margin.bottom)
-      .attr("stroke", "red")
-      .attr("stroke-width", 2)
-      .attr("stroke-dasharray", "4,4");
+    svg.append("line")
+        .attr("x1", partitionX)
+        .attr("x2", partitionX)
+        .attr("y1", margin.top)
+        .attr("y2", height - margin.bottom)
+        .attr("stroke", "red")
+        .attr("stroke-width", 2)
+        .attr("stroke-dasharray", "4,4");
 
-    // Add labels for music conditions
-    svg
-      .append("text")
-      .attr("x", margin.left + (partitionX - margin.left) / 2)
-      .attr("y", margin.top - 20)
-      .style("text-anchor", "middle")
-      .style("font-size", "16px")
-      .style("font-weight", "600")
-      .style("fill", "steelblue")
-      .style(
-        "font-family",
-        "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif",
-      )
-      .text("Calming Music");
+    svg.append("text")
+        .attr("x", margin.left + (partitionX - margin.left) / 2)
+        .attr("y", margin.top - 20)
+        .style("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "600")
+        .style("fill", "steelblue")
+        .text("Calming Music");
 
-    svg
-      .append("text")
-      .attr("x", partitionX + (width - margin.right - partitionX) / 2)
-      .attr("y", margin.top - 20)
-      .style("text-anchor", "middle")
-      .style("font-size", "16px")
-      .style("font-weight", "600")
-      .style("fill", "tomato")
-      .style(
-        "font-family",
-        "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif",
-      )
-      .text("Vexing Music");
+    svg.append("text")
+        .attr("x", partitionX + (width - margin.right - partitionX) / 2)
+        .attr("y", margin.top - 20)
+        .style("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "600")
+        .style("fill", "tomato")
+        .text("Vexing Music");
   }
 
-  // Zones for interaction - adjusted for 60 trials
+  // 12) interaction zones (unchanged)
   const totalTrials = filtered.length;
-
-  // Early phase: first 10 trials of each condition
   const zone1_start = 0;
-  const zone1_end = Math.min(9, calmingCount - 1);
-
-  // Transition phase: 20 trials around the switch (10 before, 10 after)
-  const zone2_size = 20;
-  const zone2_center = calmingCount;
-  const zone2_start = Math.max(0, zone2_center - 10);
-  const zone2_end = Math.min(totalTrials - 1, zone2_center + 9);
-
-  // Late phase: last 10 trials of each condition
+  const zone1_end   = Math.min(9, calmingCount - 1);
+  const zone2_start = Math.max(0, calmingCount - 10);
+  const zone2_end   = Math.min(totalTrials - 1, calmingCount + 9);
   const zone3_start = Math.max(calmingCount, totalTrials - 10);
-  const zone3_end = totalTrials - 1;
+  const zone3_end   = totalTrials - 1;
 
   addInteractionZone(
-    zone1_start,
-    zone1_end,
+    zone1_start, zone1_end,
     "Early Performance: Which Music Type Engages you Earlier",
     () => showZone1Plot(filtered),
-    svg,
-    xScale,
-    margin,
-    height,
+    svg, xScale, margin, height
   );
 
   addInteractionZone(
-    zone2_start,
-    zone2_end,
+    zone2_start, zone2_end,
     "Transition Period: How Your Focus Changes During Music Switch",
     () => showZone2Plot(filtered, zone2_start, zone2_end),
-    svg,
-    xScale,
-    margin,
-    height,
+    svg, xScale, margin, height
   );
 
   addInteractionZone(
-    zone3_start,
-    zone3_end,
-    "Late Performance: Which Music Maintains Yours Focus",
+    zone3_start, zone3_end,
+    "Late Performance: Which Music Maintains Your Focus",
     () => showZone3Plot(filtered),
-    svg,
-    xScale,
-    margin,
-    height,
+    svg, xScale, margin, height
   );
 }
+
+
+// Redraw on window resize so we always re-measure
+window.addEventListener("resize", createVisualization);
+
+// Initial draw
+createVisualization();
+
 
 function addInteractionZone(
   startIndex,
@@ -966,229 +937,226 @@ function showZone3Plot(filtered) {
 }
 
 // === Barplot ===
+// Updated bar‐plot function
 function drawBarplot(data, titleText, subtitleText) {
-  const width = 800;
-  const height = 500;
-  const margin = { top: 80, right: 60, bottom: 60, left: 80 };
+  // Clear & measure container
+  const container = d3.select("#subchart").html("");
+  const { width, height } = container.node().getBoundingClientRect();
+  const margin = { top: 80, right: 60, bottom: 80, left: 80 };
 
-  const subSvg = d3
-    .select("#subchart")
-    .html("")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height);
+  // Responsive SVG
+  const svg = container.append("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .style("width","100%")
+    .style("height","100%");
 
-  subSvg
-    .append("text")
-    .attr("x", width / 2)
-    .attr("y", 30)
+  // Title
+  svg.append("text")
+    .attr("x", width/2).attr("y", 30)
     .attr("text-anchor", "middle")
-    .attr("font-size", "18px")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-weight", "600")
-    .text(titleText);
-
-  // Subtitle, just under the title
-  subSvg
-    .append("text")
-    .attr("x", width / 2)
-    .attr("y", 55)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "14px")
-    .style("font-family", "'Gotham', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-weight", "400")
-    .style("fill", "#555")
-    .text(subtitleText);
-
-  const x = d3
-    .scaleBand()
-    .domain(data.map((d) => d.type))
-    .range([margin.left, width - margin.right])
-    .padding(0.4);
-
-  const y = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, (d) => d.mean_rt)])
-    .nice()
-    .range([height - margin.bottom, margin.top]);
-
-  // Add grid lines
-  subSvg
-    .append("g")
-    .attr("class", "grid")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(
-      d3
-        .axisLeft(y)
-        .tickSize(-(width - margin.left - margin.right))
-        .tickFormat(""),
-    )
-    .selectAll("line")
-    .attr("stroke", "#e0e0e0");
-
-  subSvg
-    .append("g")
-    .selectAll("rect")
-    .data(data)
-    .join("rect")
-    .attr("x", (d) => x(d.type))
-    .attr("y", (d) => y(d.mean_rt))
-    .attr("width", x.bandwidth())
-    .attr("height", (d) => y(0) - y(d.mean_rt))
-    .attr("fill", (d) => (d.type === "Calming" ? "steelblue" : "tomato"));
-
-  subSvg
-    .append("g")
-    .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "14px")
-    .style("font-weight", "600");
-
-  subSvg
-    .append("g")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y))
-    .selectAll("text")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "12px");
-
-  // Add Y-axis label
-  subSvg
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", margin.left - 50)
-    .attr("x", -(height / 2))
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "14px")
-    .style("font-weight", "600")
-    .text("Reaction Time (ms)");
-}
-
-// === Lineplot with Partition ===
-function drawLineplotWithPartition(trials, titleText) {
-  const width = 650;
-  const height = 400;
-  const margin = { top: 80, right: 40, bottom: 60, left: 80 };
-
-  const subSvg = d3
-    .select("#subchart")
-    .html("")
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height);
-
-  subSvg
-    .append("text")
-    .attr("x", width / 2)
-    .attr("y", 30)
-    .attr("text-anchor", "middle")
-    .attr("font-size", "18px")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "18px")
     .style("font-weight", "600")
     .text(titleText);
 
   // Subtitle
-  subSvg
-    .append("text")
-    .attr("x", width / 2)
-    .attr("y", 55)
+  svg.append("text")
+    .attr("x", width/2).attr("y", 55)
     .attr("text-anchor", "middle")
-    .attr("font-size", "14px")
-    .style("font-family", "'Gotham', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-weight", "400")
+    .style("font-size", "14px")
     .style("fill", "#555")
     .text(subtitleText);
 
-  const x = d3
-    .scaleLinear()
-    .domain([0, trials.length - 1])
-    .range([margin.left, width - margin.right]);
-
-  const y = d3
-    .scaleLinear()
-    .domain([0, d3.max(trials, (d) => d.mean_rt)])
-    .nice()
+  // Scales
+  const x = d3.scaleBand()
+    .domain(data.map(d => d.type))
+    .range([margin.left, width - margin.right])
+    .padding(0.4);
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.mean_rt)]).nice()
     .range([height - margin.bottom, margin.top]);
 
-  // Add grid lines
-  subSvg
-    .append("g")
-    .attr("class", "grid")
+  // Horizontal grid lines
+  svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(
+        d3.axisLeft(y)
+          .tickSize(-(width - margin.left - margin.right))
+          .tickFormat("")
+          .tickSizeOuter(0)
+      )
+      .selectAll("line")
+        .attr("stroke", "#e0e0e0");
+
+  // Bars
+  svg.selectAll("rect")
+    .data(data)
+    .join("rect")
+      .attr("x", d => x(d.type))
+      .attr("y", d => y(d.mean_rt))
+      .attr("width", x.bandwidth())
+      .attr("height", d => y(0) - y(d.mean_rt))
+      .attr("fill", d => d.type === "Calming" ? "steelblue" : "tomato");
+
+  // X axis
+  svg.append("g")
+      .attr("transform", `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+        .style("font-size", "14px")
+        .style("font-weight", "600");
+
+  // Y axis
+  svg.append("g")
+      .attr("transform", `translate(${margin.left},0)`)
+      .call(d3.axisLeft(y))
+      .selectAll("text")
+        .style("font-size", "12px");
+
+  // Y-axis label
+  svg.append("text")
+    .attr("transform","rotate(-90)")
+    .attr("x", -height/2)
+    .attr("y", margin.left - 50)
+    .attr("text-anchor","middle")
+    .style("font-size","14px")
+    .style("font-weight","600")
+    .text("Reaction Time (ms)");
+}
+
+
+// Updated line‐plot with partition
+function drawLineplotWithPartition(trials, titleText, subtitleText) {
+  // Clear & measure container
+  const container = d3.select("#subchart").html("");
+  const { width, height } = container.node().getBoundingClientRect();
+  const margin = { top: 80, right: 40, bottom: 60, left: 80 };
+
+  // Responsive SVG
+  const svg = container.append("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .style("width","100%")
+    .style("height","100%");
+
+  // Title
+  svg.append("text")
+    .attr("x", width/2).attr("y", 30)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .style("font-weight", "600")
+    .text(titleText);
+
+  // Subtitle (moved down to avoid collision)
+  svg.append("text")
+    .attr("x", width/2)
+    .attr("y", margin.top - 30)        // was fixed 55, now dynamic
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .style("fill", "#555")
+    .text(subtitleText);
+
+  // Scales
+  const x = d3.scaleLinear()
+    .domain(d3.extent(trials, d => d.trial))
+    .range([margin.left, width - margin.right]);
+
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(trials, d => d.mean_rt)]).nice()
+    .range([height - margin.bottom, margin.top]);
+
+  // Grid lines (no outer ticks, no domain path)
+  svg.append("g")
     .attr("transform", `translate(${margin.left},0)`)
     .call(
-      d3
-        .axisLeft(y)
+      d3.axisLeft(y)
         .tickSize(-(width - margin.left - margin.right))
-        .tickFormat(""),
+        .tickSizeOuter(0)
+        .tickFormat("")
     )
+    .call(g => g.select(".domain").remove())
     .selectAll("line")
-    .attr("stroke", "#e0e0e0");
+      .attr("stroke", "#e0e0e0");
 
-  const line = d3
-    .line()
-    .x((d, i) => x(i))
-    .y((d) => y(d.mean_rt));
+  svg.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(
+      d3.axisBottom(x)
+        .tickSize(-(height - margin.top - margin.bottom))
+        .tickSizeOuter(0)
+        .tickFormat("")
+    )
+    .call(g => g.select(".domain").remove())
+    .selectAll("line")
+      .attr("stroke", "#e0e0e0");
 
-  subSvg
-    .append("path")
+  // Line path
+  svg.append("path")
     .datum(trials)
     .attr("fill", "none")
     .attr("stroke", "steelblue")
     .attr("stroke-width", 3)
-    .attr("d", line);
+    .attr("d", d3.line()
+      .x(d => x(d.trial))
+      .y(d => y(d.mean_rt))
+    );
 
-  // Find partition point in this subset
-  const partitionIndex = trials.findIndex((d) => d.condition === "Vexing");
-  if (partitionIndex > 0) {
-    const partitionX = x(partitionIndex - 0.5);
-    subSvg
-      .append("line")
-      .attr("x1", partitionX)
-      .attr("x2", partitionX)
+  // Axes
+  svg.append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+    .selectAll("text")
+      .attr("transform", "rotate(-45)")
+      .style("text-anchor", "end")
+      .style("font-size", "12px");
+
+  svg.append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y))
+    .selectAll("text")
+      .style("font-size", "12px");
+
+  // Y-axis label
+  svg.append("text")
+    .attr("transform","rotate(-90)")
+    .attr("x", -height/2)
+    .attr("y", margin.left - 60)
+    .attr("text-anchor","middle")
+    .style("font-size","14px")
+    .style("font-weight","600")
+    .text("Reaction Time (ms)");
+
+  // Partition + labels
+  const calmingCount = trials.filter(d => d.condition === "Calming").length;
+  if (calmingCount < trials.length) {
+    const px = x(trials[calmingCount].trial - 0.5);
+
+    svg.append("line")
+      .attr("x1", px).attr("x2", px)
       .attr("y1", margin.top)
       .attr("y2", height - margin.bottom)
       .attr("stroke", "red")
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", "4,4");
+
+    svg.append("text")
+      .attr("x", margin.left + (px - margin.left)/2)
+      .attr("y", margin.top - 20)
+      .attr("text-anchor","middle")
+      .style("font-size","16px")
+      .style("font-weight","600")
+      .style("fill","steelblue")
+      .text("Calming Music");
+
+    svg.append("text")
+      .attr("x", px + (width - margin.right - px)/2)
+      .attr("y", margin.top - 20)
+      .attr("text-anchor","middle")
+      .style("font-size","16px")
+      .style("font-weight","600")
+      .style("fill","tomato")
+      .text("Vexing Music");
   }
-
-  subSvg
-    .append("g")
-    .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(
-      d3.axisBottom(x).tickFormat((d, i) => `Trial ${trials[i]?.trial || ""}`),
-    )
-    .selectAll("text")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "12px")
-    .attr("transform", "rotate(-45)")
-    .style("text-anchor", "end");
-
-  subSvg
-    .append("g")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y))
-    .selectAll("text")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "12px");
-
-  // Add Y-axis label
-  subSvg
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", margin.left - 50)
-    .attr("x", -(height / 2))
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "14px")
-    .style("font-weight", "600")
-    .text("Reaction Time (ms)")
-    .text(titleText);
 }
 
 const x = d3

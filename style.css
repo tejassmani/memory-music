@@ -480,8 +480,8 @@ button:active {
   #chart,
   #subchart {
     width: 100%;
-    max-width: 500px;
-    height: 400px;
+    max-width: 800px;
+    height: 500px;
     padding: 2rem;
   }
 
