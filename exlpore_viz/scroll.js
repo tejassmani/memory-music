@@ -5,6 +5,8 @@ import * as d3    from 'https://cdn.jsdelivr.net/npm/d3@7/+esm';
 // import your two chart modules for side-effects
 import './swarm.js';
 import './eda_line.js';
+// dashboard for step 3
+import './dashboard.js';
 
 const scroller = scrollama();
 

@@ -59,92 +59,63 @@
         </p>
       </div>
       <!-- Add more <div class="step" data-step="3">…</div> blocks here if needed -->
+       <div class="step" data-step="3">
+        <h2>EDA vs. Accuracy Dashboard</h2>
+       <p>
+         This interactive scatterplot shows how physiological arousal (mean EDA) relates 
+          to cognitive accuracy on each trial, under both calming and vexing music.
+        </p>
+        <p>
+          Each point is one trial. Color indicates the music session (<strong>Calming</strong> 
+          vs. <strong>Vexing</strong>). Use the <strong>Controls</strong> panel on the right to:
+        </p>
+        <ul>
+          <li>Filter by participant <em>Gender</em></li>
+          <li>Filter by <em>Task Type</em> (1-back or 3-back)</li>
+          <li>Limit to trials ≤ <span id="trial-slider-value-inline">31</span> via the slider</li>
+        </ul>
+       <p>
+          The <strong>X-axis</strong> is mean EDA (μS); the <strong>Y-axis</strong> is trial accuracy (0–100%). 
+          Hover a point to see participant, trial number, and exact values.
+        </p>
+        <p>
+          <strong>What it reveals:</strong><br/>
+          Explore whether higher arousal correlates with better or worse performance, 
+          and how this relationship changes with music type.
+        </p>
+      </div>
     </div>
 
     <!-- RIGHT: sticky viz area -->
-    <div class="scrolly__graphic">
-      <div id="vis1" class="viz-container"></div>
-      <div id="vis2" class="viz-container"></div>
-      <!-- Add more <div id="vis3" class="viz-container"></div> etc. -->
-    </div>
-  </main>
 
-  <!-- only one script: the scroll handler -->
-  <script type="module" src="scroll.js"></script>
+  <div class="scrolly__graphic">
+    <div id="vis1" class="viz-container"></div>
+    <div id="vis2" class="viz-container"></div>
+
+    <!-- STEP 3: our dashboard goes here -->
+    <div id="vis3" class="viz-container">
+      <div id="dashboard-container" style="display:flex; height:100%;">
+        <div id="eda-accuracy-chart" style="flex:1;"></div>
+        <div id="dashboard-panel">
+          <h3>Controls</h3>
+        <label>
+          Gender:
+          <select id="gender-filter">
+            <option>All</option>
+            <option>Female</option>
+            <option>Male</option>
+          </select>
+        </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script type="module" src="scroll.js"></script>
 </body>
 </html>
 
-    <!-- <div id="controls" style="margin-bottom:20px;">
-  <label>
-    Gender:
-    <select id="gender-filter">
-      <option value="All">All</option>
-      <option value="Female">Female</option>
-      <option value="Male">Male</option>
-    </select>
-  </label>
-
-  <label style="margin-left:20px;">
-    Task Type:
-    <select id="task-filter">
-      <option value="All">All</option>
-      <option value="1-back">1-back</option>
-      <option value="3-back">3-back</option>
-    </select>
-  </label>
-</div>
-
-<div id="eda-accuracy-chart"></div>
-<label style="margin-left:20px;">
-    Trial ≤ 
-    <input type="range" id="trial-slider" min="1" max="31" value="31" />
-    <span id="trial-slider-value">1–31</span>
-  </label> -->
-<!-- wrap both chart and panel in a flex container -->
-<div id="dashboard-container" style="display: flex;">
-
-  <!-- Left: the chart -->
-  <div id="eda-accuracy-chart"></div>
-
-  <!-- Right: the dashboard panel -->
-  <div id="dashboard-panel">
-    <h3>Controls</h3>
-    <label>
-      Gender:
-      <select id="gender-filter">
-        <option>All</option>
-        <option>Female</option>
-        <option>Male</option>
-      </select>
-    </label>
-
-    <label>
-      Task Type:
-      <select id="task-filter">
-        <option>All</option>
-        <option>1-back</option>
-        <option>3-back</option>
-      </select>
-    </label>
-
-    <label>
-      Trial ≤ 
-      <input type="range" id="trial-slider" min="1" max="31" value="31"/>
-      <span id="trial-slider-value">1–31</span>
-    </label>
-  </div>
-
-<!-- </div> -->
 
 
-
-  </div>
-
-    <script type="module" src="../demo.js"></script>
-    <script type="module" src="../main.js"></script>
-    <script type="module" src="swarm.js"></script>
-    <script type="module" src="eda_line.js"></script>
-    <script type="module" src="dashboard.js"></script>
-  
-  </body>
-</html>

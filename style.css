@@ -355,7 +355,7 @@ section.full-width-gray .content-wrapper {
   font-size: 1.6rem;
   font-weight: 600;
   background: linear-gradient(45deg, #c266ea, #764ba2);
-  -webkit-background-clip: text;
+  /* -webkit-background-clip: text; */
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
 }
@@ -438,3 +438,39 @@ body {
 #eda-accuracy-chart .legend {
   /* nothing needed here, inherits your .viz-container look */
 /* }  */
+
+/* Dashboard panel (step 3 controls) */
+#dashboard-panel {
+  width: 260px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  font-family: sans-serif;
+  margin-left: 20px;
+}
+
+/* Gradient heading to match viz‐titles */
+#dashboard-panel h3 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, #c266ea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+/* Viz‐container titles already use the same gradient */
+/* Controls spaced like other form elements */
+#dashboard-panel label {
+  display: block;
+  margin-bottom: 1.2rem;
+  color: #333;
+}
+
+#dashboard-panel select,
+#dashboard-panel input[type="range"] {
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
