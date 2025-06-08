@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   line-height: 1.6;
   background-color: #f9f9f9;
@@ -14,17 +14,10 @@ body {
 
 /* Banner / Header */
 header {
-<<<<<<< HEAD
-  background-color: #3b2c6f;
   padding: 20px 0;
+  height: 150px;
   text-align: center;
 }
-=======
-    padding: 20px 0;
-    height: 150px;
-    text-align: center;
-  }
->>>>>>> deb3d776755ae90423edb46d7fa9442c0710bcb0
 
 img {
   max-height: 200px;
@@ -145,27 +138,17 @@ h1 {
   background-clip: text;
 }
 
-<<<<<<< HEAD
-#nback_canvas {
-  border: 2px solid #818893;
-  border-radius: 15px;
-  background: white;
-  margin: 1rem 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-=======
 .canvas-wrapper {
   /* however wide you want your task to be */
   max-width: 600px;
   margin: 0 auto;
->>>>>>> deb3d776755ae90423edb46d7fa9442c0710bcb0
 }
 
 #nback_canvas {
   display: block;
   width: 100%;
   max-width: 600px;
-  aspect-ratio: 600 / 400;  /* lock 3:2 on-screen ratio */
+  aspect-ratio: 600 / 400; /* lock 3:2 on-screen ratio */
   border: 2px solid #818893;
   border-radius: 15px;
   background: white;
@@ -177,24 +160,65 @@ h1 {
   padding: 1rem;
   border-radius: 10px;
   min-height: 60px;
-}
-#stats {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  border-radius: 10px;
-  min-height: 60px;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #stats h2 {
   color: #2d3748;
   margin-bottom: 0.5rem;
   font-size: 1.8rem;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #stats p {
   margin: 0.5rem 0;
   font-size: 1.1rem;
   color: #4a5568;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.accuracy-breakdown {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  border-left: 4px solid #c266ea;
+}
+
+.accuracy-breakdown h3 {
+  color: #2d3748;
+  margin-bottom: 0.75rem;
+  font-size: 1.4rem;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.accuracy-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 6px;
+}
+
+.accuracy-label {
+  font-weight: 600;
+  color: #4a5568;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.accuracy-value {
+  font-weight: bold;
+  font-size: 1.1rem;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.calming-color {
+  color: steelblue;
+}
+.vexing-color {
+  color: tomato;
 }
 
 button {
@@ -209,6 +233,7 @@ button {
   margin: 0.5rem;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 button:hover {
@@ -251,6 +276,7 @@ button:active {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #chart,
@@ -260,9 +286,19 @@ button:active {
   padding: 1rem;
   margin: 1rem auto;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  width: 600px;
-  height: 400px;
+  width: 100%;
+  max-width: 700px;
+  height: 450px;
   border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#chart svg,
+#subchart svg {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 #subchart {
@@ -295,6 +331,7 @@ button:active {
   opacity: 0;
   transition: opacity 0.3s ease;
   display: block;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .audio-status.show {
@@ -331,7 +368,7 @@ button:active {
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   line-height: 1.6;
 }
@@ -386,7 +423,7 @@ section.full-width-gray .content-wrapper {
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  font-family: sans-serif;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
   margin-left: 20px;
 }
 
@@ -395,7 +432,7 @@ section.full-width-gray .content-wrapper {
   font-size: 1.6rem;
   font-weight: 600;
   background: linear-gradient(45deg, #c266ea, #764ba2);
-  /* -webkit-background-clip: text; */
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1rem;
 }
@@ -412,7 +449,7 @@ section.full-width-gray .content-wrapper {
 /* reset + base */
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* two-column flex container */
@@ -518,7 +555,7 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
   color: #333;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
 }
 
@@ -528,7 +565,7 @@ body {
   font-weight: 600;
   margin-bottom: 1rem;
   color: #333;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Keep your existing #vis3 flex/container styles… */
@@ -548,14 +585,8 @@ body {
   font-size: 1.125rem;
   font-weight: 500;
   color: #555;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
-
-/* Match viz‐container style for consistency */
-/* #eda-accuracy-chart svg,
-#eda-accuracy-chart .legend {
-  /* nothing needed here, inherits your .viz-container look */
-/* }  */
 
 /* Dashboard panel (step 3 controls) */
 #dashboard-panel {
@@ -564,7 +595,7 @@ body {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  font-family: sans-serif;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
   margin-left: 20px;
 }
 

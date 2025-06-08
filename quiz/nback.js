@@ -1,6 +1,6 @@
 const canvas = document.getElementById("nback_canvas");
-const ctx    = canvas.getContext("2d");
-const dpr    = window.devicePixelRatio || 1;
+const ctx = canvas.getContext("2d");
+const dpr = window.devicePixelRatio || 1;
 
 // Recalculate the internal buffer **only**, never touch CSS sizing.
 // Then reset & scale the context so 1 unit = 1 CSS pixel.
@@ -9,22 +9,23 @@ function adjustCanvasDPI() {
   const H = canvas.clientHeight;
   if (!W || !H) return;
 
-  canvas.width  = Math.round(W * dpr);
+  canvas.width = Math.round(W * dpr);
   canvas.height = Math.round(H * dpr);
 
   // reset any old transforms, then scale
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(dpr, dpr);
 
-  ctx.imageSmoothingEnabled  = true;
-  ctx.imageSmoothingQuality  = "high";
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
 }
 
 // A little helper to redraw whatever screen we're on:
 function redrawCurrentScreen() {
-  if (currentScreen === "genre")       drawGenreScreen();
-  else if (currentScreen === "instructions") drawIntroScreen();
-  else /* quiz */                      /* quiz loop paints itself */;
+  if (currentScreen === "genre") drawGenreScreen();
+  else if (currentScreen === "instructions")
+    drawIntroScreen(); /* quiz */ /* quiz loop paints itself */
+  else;
 }
 
 // Hook it up:
@@ -61,12 +62,12 @@ const letters = [
   "R",
   "S",
   "T",
-  "U", 
-  "V", 
-  "W", 
-  "X", 
-  "Y", 
-  "Z"
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
 ];
 
 let sequence = [];
@@ -87,7 +88,7 @@ const matchChance = 0.15;
 
 function drawScreen(lines) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.font = "24px Arial";
+  ctx.font = "24px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif";
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
@@ -104,35 +105,35 @@ function drawGenreScreen() {
   ctx.clearRect(0, 0, W, H);
 
   // header
-  const headerY      = 30;
-  const headerFS     = 32;
+  const headerY = 30;
+  const headerFS = 32;
   const headerBottom = headerY + headerFS + 8;
 
-  ctx.font         = `${headerFS}px Arial`;
-  ctx.fillStyle    = "black";
-  ctx.textAlign    = "center";
+  ctx.font = `${headerFS}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.fillText("Select Preferred Genre", W/2, headerY);
+  ctx.fillText("Select Preferred Genre", W / 2, headerY);
 
   // lines
   ctx.beginPath();
-  ctx.moveTo(0,         headerBottom);
-  ctx.lineTo(W,         headerBottom);
-  ctx.moveTo(W/2,       headerBottom);
-  ctx.lineTo(W/2,       H);
+  ctx.moveTo(0, headerBottom);
+  ctx.lineTo(W, headerBottom);
+  ctx.moveTo(W / 2, headerBottom);
+  ctx.lineTo(W / 2, H);
   ctx.strokeStyle = "black";
-  ctx.lineWidth   = 1;
+  ctx.lineWidth = 1;
   ctx.stroke();
 
   // choices
-  ctx.font         = "28px Arial";
+  ctx.font = "28px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif";
   ctx.textBaseline = "middle";
-  const cy = headerBottom + (H - headerBottom)/2;
+  const cy = headerBottom + (H - headerBottom) / 2;
 
-  ctx.fillText("🎻",                 W/4, cy - 40);
-  ctx.fillText("Click for Classical", W/4, cy + 10);
-  ctx.fillText("🎤",             3*W/4, cy - 40);
-  ctx.fillText("Click for Pop", 3*W/4, cy + 10);
+  ctx.fillText("🎻", W / 4, cy - 40);
+  ctx.fillText("Click for Classical", W / 4, cy + 10);
+  ctx.fillText("🎤", (3 * W) / 4, cy - 40);
+  ctx.fillText("Click for Pop", (3 * W) / 4, cy + 10);
 }
 
 function drawIntroScreen() {
@@ -141,11 +142,11 @@ function drawIntroScreen() {
   ctx.clearRect(0, 0, W, H);
 
   // Text style
-  const fontSize   = 20;
+  const fontSize = 20;
   const lineHeight = 24;
-  ctx.font         = `${fontSize}px Arial`;
-  ctx.fillStyle    = "black";
-  ctx.textAlign    = "center";
+  ctx.font = `${fontSize}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
   ctx.textBaseline = "top";
 
   // Your instruction lines
@@ -165,17 +166,17 @@ function drawIntroScreen() {
     "The task has 60 trials total.",
     "Music will change halfway through.",
     "",
-    "Click the mouse to begin the quiz."
+    "Click the mouse to begin the quiz.",
   ];
 
   // Padding values
-  const topPadding    = 20;
+  const topPadding = 20;
   const bottomPadding = 20;
 
   // Compute usable height and where to start drawing
-  const usableHeight    = H - topPadding - bottomPadding;
+  const usableHeight = H - topPadding - bottomPadding;
   const totalTextHeight = lines.length * lineHeight;
-  let   startY          = topPadding + (usableHeight - totalTextHeight) / 2;
+  let startY = topPadding + (usableHeight - totalTextHeight) / 2;
 
   // Draw every line
   lines.forEach((line, i) => {
@@ -184,15 +185,14 @@ function drawIntroScreen() {
   });
 }
 
-
 function drawStimulus(letter) {
   const W = canvas.clientWidth;
   const H = canvas.clientHeight;
   ctx.clearRect(0, 0, W, H);
-  ctx.font = "150px Arial";
-  ctx.textAlign    = "center";
+  ctx.font = "150px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif";
+  ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(letter, W/2, H/2);
+  ctx.fillText(letter, W / 2, H / 2);
 }
 
 function generateSequence(length) {
@@ -366,6 +366,7 @@ function endTask() {
   stopMusic();
   updateAudioStatus("Quiz completed - Music stopped");
 
+  // Calculate overall stats
   const totalCorrect = rtData.filter((d) => d.correct).length;
   const accuracy = Math.round((totalCorrect / rtData.length) * 100);
   const rtList = rtData.filter((d) => d.response !== "none").map((d) => d.rt);
@@ -374,10 +375,39 @@ function endTask() {
       ? Math.round(rtList.reduce((a, b) => a + b) / rtList.length)
       : "N/A";
 
+  // Calculate accuracy by condition
+  const calmingTrials = rtData.filter((d, i) => i < halfwayPoint);
+  const vexingTrials = rtData.filter((d, i) => i >= halfwayPoint);
+
+  const calmingCorrect = calmingTrials.filter((d) => d.correct).length;
+  const vexingCorrect = vexingTrials.filter((d) => d.correct).length;
+
+  const calmingAccuracy =
+    calmingTrials.length > 0
+      ? Math.round((calmingCorrect / calmingTrials.length) * 100)
+      : 0;
+  const vexingAccuracy =
+    vexingTrials.length > 0
+      ? Math.round((vexingCorrect / vexingTrials.length) * 100)
+      : 0;
+
   document.getElementById("stats").innerHTML = `
     <h2>Task Complete!</h2>
-    <p>Accuracy: ${accuracy}%</p>
+    <p>Overall Accuracy: ${accuracy}%</p>
     <p>Average Reaction Time (for responses): ${avgRT} ms</p>
+    
+    <div class="accuracy-breakdown">
+      <h3>Performance by Music Type</h3>
+      <div class="accuracy-row">
+        <span class="accuracy-label">🎵 Calming Music:</span>
+        <span class="accuracy-value calming-color">${calmingAccuracy}%</span>
+      </div>
+      <div class="accuracy-row">
+        <span class="accuracy-label">🎶 Vexing Music:</span>
+        <span class="accuracy-value vexing-color">${vexingAccuracy}%</span>
+      </div>
+    </div>
+
     <button id="download_button">Download CSV</button>
     <button id="restart_button">Restart Quiz</button>
   `;
@@ -548,9 +578,10 @@ function createVisualization() {
     participant: "current_user",
   }));
 
-  const width = 600,
-    height = 400,
-    margin = { top: 40, right: 40, bottom: 40, left: 60 };
+  const width = 650;
+  const height = 400;
+  const margin = { top: 60, right: 60, bottom: 60, left: 80 };
+
   const svg = d3
     .select("#chart")
     .append("svg")
@@ -559,7 +590,7 @@ function createVisualization() {
 
   const xScale = d3
     .scaleLinear()
-    .domain([0, filtered.length - 1])
+    .domain([1, filtered.length])
     .range([margin.left, width - margin.right]);
 
   const yScale = d3
@@ -570,24 +601,10 @@ function createVisualization() {
 
   const line = d3
     .line()
-    .x((d, i) => xScale(i))
+    .x((d) => xScale(d.trial))
     .y((d) => yScale(d.mean_rt));
 
-  svg
-    .append("path")
-    .datum(filtered)
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 2)
-    .attr("d", line);
-
-  const xAxis = d3
-    .axisBottom(xScale)
-    .ticks(Math.min(filtered.length, 10))
-    .tickFormat((d) => Math.round(d + 1));
-
-  const yAxis = d3.axisLeft(yScale);
-
+  // Add grid lines
   svg
     .append("g")
     .attr("class", "grid")
@@ -599,32 +616,73 @@ function createVisualization() {
         .tickFormat(""),
     )
     .selectAll("line")
-    .attr("stroke", "#ccc");
+    .attr("stroke", "#e0e0e0")
+    .attr("stroke-width", 1);
+
+  svg
+    .append("g")
+    .attr("class", "grid")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(
+      d3
+        .axisBottom(xScale)
+        .tickSize(-(height - margin.top - margin.bottom))
+        .tickFormat(""),
+    )
+    .selectAll("line")
+    .attr("stroke", "#e0e0e0")
+    .attr("stroke-width", 1);
+
+  // Add the line
+  svg
+    .append("path")
+    .datum(filtered)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 3)
+    .attr("d", line);
+
+  // Add axes
+  const xAxis = d3.axisBottom(xScale).ticks(10).tickFormat(d3.format("d"));
+
+  const yAxis = d3.axisLeft(yScale);
 
   svg
     .append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
     .call(xAxis)
     .selectAll("text")
-    .attr("transform", "rotate(-45)")
-    .style("text-anchor", "end");
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px");
 
-  svg.append("g").attr("transform", `translate(${margin.left},0)`).call(yAxis);
+  svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(yAxis)
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px");
 
   // Add axis labels
   svg
     .append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - height / 2)
+    .attr("y", margin.left - 50)
+    .attr("x", -(height / 2))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
     .text("Reaction Time (ms)");
 
   svg
     .append("text")
-    .attr("transform", `translate(${width / 2}, ${height - 5})`)
+    .attr("transform", `translate(${width / 2}, ${height - 10})`)
     .style("text-anchor", "middle")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
     .text("Trial Number");
 
   // Partition line at halfway point
@@ -632,7 +690,7 @@ function createVisualization() {
     d.condition.startsWith("Calming"),
   ).length;
   if (calmingCount < filtered.length) {
-    const partitionX = xScale(calmingCount - 0.5);
+    const partitionX = xScale(calmingCount + 0.5);
     svg
       .append("line")
       .attr("x1", partitionX)
@@ -646,62 +704,81 @@ function createVisualization() {
     // Add labels for music conditions
     svg
       .append("text")
-      .attr("x", partitionX / 2)
-      .attr("y", margin.top - 10)
+      .attr("x", margin.left + (partitionX - margin.left) / 2)
+      .attr("y", margin.top - 20)
       .style("text-anchor", "middle")
-      .style("font-size", "14px")
-      .style("fill", "blue")
+      .style("font-size", "16px")
+      .style("font-weight", "600")
+      .style("fill", "steelblue")
+      .style(
+        "font-family",
+        "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif",
+      )
       .text("Calming Music");
 
     svg
       .append("text")
       .attr("x", partitionX + (width - margin.right - partitionX) / 2)
-      .attr("y", margin.top - 10)
+      .attr("y", margin.top - 20)
       .style("text-anchor", "middle")
-      .style("font-size", "14px")
-      .style("fill", "orange")
+      .style("font-size", "16px")
+      .style("font-weight", "600")
+      .style("fill", "tomato")
+      .style(
+        "font-family",
+        "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif",
+      )
       .text("Vexing Music");
   }
 
-  // Zones for interaction
+  // Zones for interaction - adjusted for 60 trials
   const totalTrials = filtered.length;
 
+  // Early phase: first 10 trials of each condition
   const zone1_start = 0;
-  const zone1_end = Math.min(6, calmingCount - 1);
+  const zone1_end = Math.min(9, calmingCount - 1);
 
-  const zone2_size = 14;
-  const zone2_center = calmingCount - 1;
-  const zone2_start = Math.max(0, zone2_center - Math.floor(zone2_size / 2));
-  const zone2_end = Math.min(totalTrials - 1, zone2_start + zone2_size - 1);
+  // Transition phase: 20 trials around the switch (10 before, 10 after)
+  const zone2_size = 20;
+  const zone2_center = calmingCount;
+  const zone2_start = Math.max(0, zone2_center - 10);
+  const zone2_end = Math.min(totalTrials - 1, zone2_center + 9);
 
-  const zone3_start = totalTrials - 7;
+  // Late phase: last 10 trials of each condition
+  const zone3_start = Math.max(calmingCount, totalTrials - 10);
   const zone3_end = totalTrials - 1;
 
   addInteractionZone(
     zone1_start,
     zone1_end,
-    "Which Music Type Helps you Focus Earlier",
+    "Early Performance: First 10 Trials of Each Music Type",
     () => showZone1Plot(filtered),
     svg,
     xScale,
+    margin,
+    height,
   );
 
   addInteractionZone(
     zone2_start,
     zone2_end,
-    "How Your Focus Shifts When Changing Music",
+    "Transition Period: How Your Focus Changes During Music Switch",
     () => showZone2Plot(filtered, zone2_start, zone2_end),
     svg,
     xScale,
+    margin,
+    height,
   );
 
   addInteractionZone(
     zone3_start,
     zone3_end,
-    "Which Music Type Keeps You Focused",
+    "Late Performance: Last 10 Trials - Which Music Maintains Focus",
     () => showZone3Plot(filtered),
     svg,
     xScale,
+    margin,
+    height,
   );
 }
 
@@ -712,16 +789,18 @@ function addInteractionZone(
   clickHandler,
   svg,
   xScale,
+  margin,
+  height,
 ) {
-  const zoneX = xScale(startIndex);
-  const zoneWidth = xScale(endIndex) - xScale(startIndex) + 20;
+  const zoneX = xScale(startIndex + 1);
+  const zoneWidth = xScale(endIndex + 1) - xScale(startIndex + 1) + 10;
 
   svg
     .append("rect")
-    .attr("x", zoneX)
-    .attr("y", 40)
+    .attr("x", zoneX - 5)
+    .attr("y", margin.top)
     .attr("width", zoneWidth)
-    .attr("height", 320)
+    .attr("height", height - margin.top - margin.bottom)
     .attr("fill", "transparent")
     .style("cursor", "pointer")
     .on("mouseover", function () {
@@ -743,12 +822,15 @@ const tooltip = d3
   .append("div")
   .style("position", "absolute")
   .style("background", "#f9f9f9")
-  .style("padding", "6px 10px")
+  .style("padding", "8px 12px")
   .style("border", "1px solid #ccc")
-  .style("border-radius", "4px")
+  .style("border-radius", "6px")
   .style("visibility", "hidden")
   .style("pointer-events", "none")
-  .style("font-size", "14px");
+  .style("font-size", "14px")
+  .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+  .style("max-width", "200px")
+  .style("z-index", "1000");
 
 // === Zone 1 ===
 function showZone1Plot(filtered) {
@@ -756,19 +838,19 @@ function showZone1Plot(filtered) {
   d3.select("#subchart").style("display", "block");
   d3.select("#backButton").style("display", "block");
 
-  const first7Calming = filtered
+  const first10Calming = filtered
     .filter((d) => d.condition.startsWith("Calming"))
-    .slice(0, 7);
-  const first7Vexing = filtered
+    .slice(0, 10);
+  const first10Vexing = filtered
     .filter((d) => d.condition.startsWith("Vexing"))
-    .slice(0, 7);
+    .slice(0, 10);
 
   const barData = [
-    { type: "Calming", mean_rt: averageMeanRT(first7Calming) },
-    { type: "Vexing", mean_rt: averageMeanRT(first7Vexing) },
+    { type: "Calming", mean_rt: averageMeanRT(first10Calming) },
+    { type: "Vexing", mean_rt: averageMeanRT(first10Vexing) },
   ];
 
-  drawBarplot(barData, "First 7: Calming vs Vexing");
+  drawBarplot(barData, "Early Performance: First 10 Trials of Each Music Type");
 }
 
 // === Zone 2 ===
@@ -779,7 +861,10 @@ function showZone2Plot(filtered, zone2_start, zone2_end) {
 
   const trials = filtered.slice(zone2_start, zone2_end + 1);
 
-  drawLineplotWithPartition(trials, "Middle 14 Rounds: RT Over Time");
+  drawLineplotWithPartition(
+    trials,
+    "Transition Period: 20 Trials Around Music Switch",
+  );
 }
 
 // === Zone 3 ===
@@ -788,26 +873,26 @@ function showZone3Plot(filtered) {
   d3.select("#subchart").style("display", "block");
   d3.select("#backButton").style("display", "block");
 
-  const last7Calming = filtered
+  const last10Calming = filtered
     .filter((d) => d.condition.startsWith("Calming"))
-    .slice(-7);
-  const last7Vexing = filtered
+    .slice(-10);
+  const last10Vexing = filtered
     .filter((d) => d.condition.startsWith("Vexing"))
-    .slice(-7);
+    .slice(-10);
 
   const barData = [
-    { type: "Calming", mean_rt: averageMeanRT(last7Calming) },
-    { type: "Vexing", mean_rt: averageMeanRT(last7Vexing) },
+    { type: "Calming", mean_rt: averageMeanRT(last10Calming) },
+    { type: "Vexing", mean_rt: averageMeanRT(last10Vexing) },
   ];
 
-  drawBarplot(barData, "Last 7: Calming vs Vexing");
+  drawBarplot(barData, "Late Performance: Last 10 Trials of Each Music Type");
 }
 
 // === Barplot ===
 function drawBarplot(data, titleText) {
-  const width = 600,
-    height = 400,
-    margin = { top: 40, right: 40, bottom: 40, left: 60 };
+  const width = 650;
+  const height = 400;
+  const margin = { top: 80, right: 40, bottom: 60, left: 80 };
 
   const subSvg = d3
     .select("#subchart")
@@ -822,6 +907,8 @@ function drawBarplot(data, titleText) {
     .attr("y", 30)
     .attr("text-anchor", "middle")
     .attr("font-size", "18px")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-weight", "600")
     .text(titleText);
 
   const x = d3
@@ -836,6 +923,20 @@ function drawBarplot(data, titleText) {
     .nice()
     .range([height - margin.bottom, margin.top]);
 
+  // Add grid lines
+  subSvg
+    .append("g")
+    .attr("class", "grid")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(
+      d3
+        .axisLeft(y)
+        .tickSize(-(width - margin.left - margin.right))
+        .tickFormat(""),
+    )
+    .selectAll("line")
+    .attr("stroke", "#e0e0e0");
+
   subSvg
     .append("g")
     .selectAll("rect")
@@ -845,24 +946,44 @@ function drawBarplot(data, titleText) {
     .attr("y", (d) => y(d.mean_rt))
     .attr("width", x.bandwidth())
     .attr("height", (d) => y(0) - y(d.mean_rt))
-    .attr("fill", "steelblue");
+    .attr("fill", (d) => (d.type === "Calming" ? "steelblue" : "tomato"));
 
   subSvg
     .append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "600");
 
   subSvg
     .append("g")
     .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y))
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px");
+
+  // Add Y-axis label
+  subSvg
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", margin.left - 50)
+    .attr("x", -(height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
+    .text("Reaction Time (ms)");
 }
 
 // === Lineplot with Partition ===
 function drawLineplotWithPartition(trials, titleText) {
-  const width = 600,
-    height = 400,
-    margin = { top: 40, right: 40, bottom: 40, left: 60 };
+  const width = 650;
+  const height = 400;
+  const margin = { top: 80, right: 40, bottom: 60, left: 80 };
 
   const subSvg = d3
     .select("#subchart")
@@ -877,6 +998,8 @@ function drawLineplotWithPartition(trials, titleText) {
     .attr("y", 30)
     .attr("text-anchor", "middle")
     .attr("font-size", "18px")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-weight", "600")
     .text(titleText);
 
   const x = d3
@@ -890,6 +1013,20 @@ function drawLineplotWithPartition(trials, titleText) {
     .nice()
     .range([height - margin.bottom, margin.top]);
 
+  // Add grid lines
+  subSvg
+    .append("g")
+    .attr("class", "grid")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(
+      d3
+        .axisLeft(y)
+        .tickSize(-(width - margin.left - margin.right))
+        .tickFormat(""),
+    )
+    .selectAll("line")
+    .attr("stroke", "#e0e0e0");
+
   const line = d3
     .line()
     .x((d, i) => x(i))
@@ -900,15 +1037,13 @@ function drawLineplotWithPartition(trials, titleText) {
     .datum(trials)
     .attr("fill", "none")
     .attr("stroke", "steelblue")
-    .attr("stroke-width", 2)
+    .attr("stroke-width", 3)
     .attr("d", line);
 
-  // Partition line
-  const partitionIndexInZone = trials.findIndex((d) =>
-    d.condition.startsWith("Vexing"),
-  );
-  if (partitionIndexInZone > 0) {
-    const partitionX = x(partitionIndexInZone - 0.5);
+  // Find partition point in this subset
+  const partitionIndex = trials.findIndex((d) => d.condition === "Vexing");
+  if (partitionIndex > 0) {
+    const partitionX = x(partitionIndex - 0.5);
     subSvg
       .append("line")
       .attr("x1", partitionX)
@@ -924,19 +1059,37 @@ function drawLineplotWithPartition(trials, titleText) {
     .append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
     .call(
-      d3
-        .axisBottom(x)
-        .ticks(trials.length)
-        .tickFormat((d) => d),
-    );
+      d3.axisBottom(x).tickFormat((d, i) => `Trial ${trials[i]?.trial || ""}`),
+    )
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px")
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end");
 
   subSvg
     .append("g")
     .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y))
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px");
+
+  // Add Y-axis label
+  subSvg
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", margin.left - 50)
+    .attr("x", -(height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
+    .text("Reaction Time (ms)");
 }
 
-// === Average helper ===
-function averageMeanRT(trials) {
-  return d3.mean(trials, (d) => d.mean_rt);
+function averageMeanRT(data) {
+  if (data.length === 0) return 0;
+  return data.reduce((sum, d) => sum + d.mean_rt, 0) / data.length;
 }
