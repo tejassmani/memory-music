@@ -10,7 +10,7 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 // 1) Dimensions
 const margin = { top: 20, right: 150, bottom: 40, left: 60 };
-const singleChartHeight = 250;
+const singleChartHeight = 180;
 const chartSpacing     = 60;
 const svgWidth  = 600;
 const svgHeight = margin.top
@@ -25,7 +25,9 @@ const chartWidth = svgWidth - margin.left - margin.right;
 // const svg = d3.select("#swarm")
 const svg = d3.select("#vis1").append("svg").attr("id", "swarm")
   .attr("width", svgWidth)
-  .attr("height", svgHeight);
+  .attr("height", svgHeight)
+  .style("display", "block")    // make it a block…
+  .style("margin", "0 auto");   // …and auto-center horizontally
 
 // 3) Load data
 d3.csv("../data/df.csv").then(data => {
