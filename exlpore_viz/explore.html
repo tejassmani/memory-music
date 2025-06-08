@@ -126,22 +126,31 @@
     </div>
 
     <div id="vis4" class="viz-container">
-      <div id="dashboard-container" style="display:flex; height:100%;">
-        <div id="eda-accuracy-chart" style="flex:1;"></div>
+      <div id="dashboard-container">
         <div id="dashboard-panel">
           <h3>Controls</h3>
-        <label>
-          Gender:
-          <select id="gender-filter">
-            <option>All</option>
-            <option>Female</option>
-            <option>Male</option>
-          </select>
-        </label>
+
+          <label>
+            Gender:
+            <select id="gender-select">…</select>
+          </label>
+
+          <label>
+            Task Type:
+            <select id="task-select">…</select>
+          </label>
+
+          <label id="trial-label">
+            Trial ≤ <span id="trial-value">32</span>
+            <input type="range" id="trial-slider" …>
+          </label>
+        </div>
+        <div id="eda-accuracy-chart">
+          <!-- your SVG/chart here -->
         </div>
       </div>
     </div>
-  </div>
+
 
 </main>
 

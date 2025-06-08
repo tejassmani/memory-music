@@ -416,35 +416,6 @@ section.full-width-gray .content-wrapper {
   font-size: 16px;
 }
 
-/* Dashboard panel styling (JECC‐Surgeries style, your purples) */
-#dashboard-panel {
-  width: 260px;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
-  margin-left: 20px;
-}
-
-/* Panel heading with purple gradient text */
-#dashboard-panel h3 {
-  font-size: 1.6rem;
-  font-weight: 600;
-  background: linear-gradient(45deg, #c266ea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
-}
-
-/* Form controls full width, spaced */
-#dashboard-panel label {
-  display: block;
-  margin-bottom: 1.2rem;
-  font-size: 0.95rem;
-  color: #444;
-}
-
 /* stuti changes  */
 /* reset + base */
 body {
@@ -501,21 +472,13 @@ body {
   margin: 0.5rem 0 1rem;
 }
 
-/* stuti changes  */
-#dashboard-panel select,
-#dashboard-panel input[type="range"] {
-  display: block;
-  width: 100%;
-  margin-top: 0.4rem;
-}
-
 /* 1) Make #vis3 a flex-centered area */
 #vis3 {
   display: flex;
   justify-content: center; /* center the slideshow horizontally */
   align-items: center; /* center it vertically */
   height: 400px; /* or 100% if you prefer */
-  background: #fafafa; /* a very light background to lift the cards */
+  background: #ffffff; /* a very light background to lift the cards */
   margin: 1rem 0;
 }
 
@@ -595,37 +558,132 @@ body {
   font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Dashboard panel (step 3 controls) */
-#dashboard-panel {
-  width: 260px;
-  padding: 20px;
-  background: #fff;
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  1) ONE BIG “CARD” containing both chart + controls
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+#dashboard-container {
+  display: flex;
+  align-items: flex-start;       /* top-align graph + panel */
+  gap: 32px;                      /* space between them */
+  background: #fff;               /* the single white card */
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
-  margin-left: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  padding: 24px;
 }
 
-/* Gradient heading to match viz‐titles */
+/* kill their old card cards */
+#eda-accuracy-chart,
+#dashboard-panel {
+  background: none !important;
+  box-shadow: none   !important;
+  padding: 0         !important;
+}
+
+/* optional: make chart flex-grow so it fills leftover space */
+#eda-accuracy-chart {
+  flex: 1;
+}
+
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  2) DASHBOARD PANEL LAYOUT
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+#dashboard-panel {
+  width: 260px;
+}
+
+/* panel title */
 #dashboard-panel h3 {
   font-size: 1.6rem;
-  font-weight: 600;
+  margin-bottom: 1.5rem;
   background: linear-gradient(45deg, #c266ea, #764ba2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 1rem;
 }
 
-/* Viz‐container titles already use the same gradient */
-/* Controls spaced like other form elements */
+/* form rows */
 #dashboard-panel label {
   display: block;
-  margin-bottom: 1.2rem;
-  color: #333;
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 0.6rem;
 }
 
-#dashboard-panel select,
-#dashboard-panel input[type="range"] {
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  3) NICE, AESTHETIC SELECTS
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+#dashboard-panel select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  border-radius: 6px;
   width: 100%;
-  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+}
+#dashboard-panel select:focus {
+  outline: none;
+  border-color: #764ba2;
+}
+
+/* optional: add a little down-arrow icon */
+#dashboard-panel select {
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='10' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px 6px;
+}
+
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  4) CUSTOM RANGE SLIDER
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/* track */
+#dashboard-panel input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  margin: 8px 0 4px;
+  cursor: pointer;
+}
+/* thumb (Chrome, Safari, Edge) */
+#dashboard-panel input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #764ba2;
+  border-radius: 50%;
+  border: none;
+  margin-top: -5px; /* center thumb on track */
+}
+/* thumb (Firefox) */
+#dashboard-panel input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #764ba2;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+/* track (Firefox) */
+#dashboard-panel input[type="range"]::-moz-range-track {
+  background: #e0e0e0;
+  height: 6px;
+  border-radius: 3px;
+}
+
+/* optional: display the slider value below */
+#dashboard-panel .slider-value {
+  font-size: 0.85rem;
+  color: #555;
+  text-align: right;
+  margin-top: -4px;
+}
+
+#dashboard-container {
+  background: none !important;
+  box-shadow: none !important;
 }

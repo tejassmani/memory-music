@@ -209,13 +209,13 @@ window.onload = () => {
     .style("height", "100%");
 
   // Left: chart
+  const panel = container.append("div")
+    .attr("id", "dashboard-panel");
+
+  // Right: controls panel
   container.append("div")
     .attr("id", "eda-accuracy-chart")
     .style("flex", "1");
-
-  // Right: controls panel
-  const panel = container.append("div")
-    .attr("id", "dashboard-panel");
 
   // ─── 1) BUILD CONTROL UI ─────────────────────────────────────────────────
   panel.append("h3")
@@ -246,23 +246,28 @@ window.onload = () => {
         .text(d=>d);
 
   // Trial slider
-  panel.append("label").text("Trial ≤")
-    .style("display","block").style("margin-bottom","1rem")
-    .append("input")
-      .attr("type","range")
-      .attr("id","trial-slider")
-      .attr("min",1)
-      .attr("max",32)    // placeholder, will reset below
-      .attr("value",32);
+  // new: label with a span for the dynamic value
+  const trialLabel = panel.append("label")
+    .attr("id","trial-label")
+    .style("display","block")
+    .style("margin-bottom","1rem");
 
-  panel.append("div")
-    .attr("id","trial-slider-value")
-    .style("margin","4px 0 16px")
-    .text("1–32");
+  // initial contents: “Trial ≤ 32”
+  trialLabel.html(`Trial ≤ <span id="trial-value">32</span>`);
+
+  // now append the slider input inside that same label
+  trialLabel.append("input")
+    .attr("type","range")
+    .attr("id","trial-slider")
+    .attr("min", 1)
+    .attr("max", 32)    // we’ll reset max in the CSV callback
+    .attr("value", 32)
+    .style("display", "block")   // move it onto its own line if you like
+    .style("margin-top", "4px");
 
   // ─── 2) SETUP SVG & SCALES ───────────────────────────────────────────────
   const margin = { top: 60, right: 20, bottom: 60, left: 60 },
-        width  = 800 - margin.left - margin.right,
+        width  = 600 - margin.left - margin.right,
         height = 500 - margin.top  - margin.bottom;
 
   const svg = d3.select("#eda-accuracy-chart")
@@ -353,8 +358,11 @@ window.onload = () => {
     // hook controls
     genderFilter.on("change", updateChart);
     taskFilter.on("change", updateChart);
-    trialSlider.on("input", () => {
-      trialSliderValue.text(`1–${trialSlider.node().value}`);
+    d3.select("#trial-slider").on("input", function() {
+      const v = this.value;
+      // update the number inside the span
+      d3.select("#trial-value").text(v);
+      // re-draw
       updateChart();
     });
   });
@@ -377,7 +385,7 @@ window.onload = () => {
     const enter = pts.enter()
       .append("circle").attr("class","point")
       .attr("r",5)
-      .attr("stroke","#333").attr("stroke-width",1)
+      .attr("stroke","none")
       .on("mouseover",(e,d)=>{
         tooltip.html(`
           <strong>Subj:</strong> ${d.participant}<br/>
@@ -404,13 +412,6 @@ window.onload = () => {
   function drawLegend() {
     const lg = svg.append("g")
       .attr("transform", `translate(${width-120},-40)`);
-
-    lg.append("text")
-      .attr("x",0).attr("y",-8)
-      .style("font-family","sans-serif")
-      .style("font-weight","600")
-      .style("font-size","12px")
-      .text("Music Session");
 
     ["Calming","Vexing"].forEach((key,i)=>{
       const g = lg.append("g")
