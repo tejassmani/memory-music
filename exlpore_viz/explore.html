@@ -87,61 +87,10 @@
     </div>
 
     <!-- RIGHT: sticky viz area -->
-    <div class="scrolly__graphic">
-      <div id="vis1" class="viz-container"></div>
-      <div id="vis2" class="viz-container"></div>
-      <!-- Add more <div id="vis3" class="viz-container"></div> etc. -->
-    </div>
-  </main>
-
-  <!-- only one script: the scroll handler -->
-  <script type="module" src="scroll.js"></script>
-</body>
-</html>
-<!-- wrap both chart and panel in a flex container -->
-<div id="dashboard-container" style="display: flex;">
-
-  <!-- Left: the chart -->
-  <div id="eda-accuracy-chart"></div>
-
-  <!-- Right: the dashboard panel -->
-  <div id="dashboard-panel">
-    <h3>Controls</h3>
-    <label>
-      Gender:
-      <select id="gender-filter">
-        <option>All</option>
-        <option>Female</option>
-        <option>Male</option>
-      </select>
-    </label>
-
-    <label>
-      Task Type:
-      <select id="task-filter">
-        <option>All</option>
-        <option>1-back</option>
-        <option>3-back</option>
-      </select>
-    </label>
-
-    <label>
-      Trial ≤ 
-      <input type="range" id="trial-slider" min="1" max="31" value="31"/>
-      <span id="trial-slider-value">1–31</span>
-    </label>
-  </div>
-
-<!-- </div> -->
-
-
-
-
-  <div class="scrolly__graphic">
+     <div class="scrolly__graphic">
     <div id="vis1" class="viz-container"></div>
     <div id="vis2" class="viz-container"></div>
 
-    <!-- STEP 3: our dashboard goes here -->
     <div id="vis3" class="viz-container">
       <div id="dashboard-container" style="display:flex; height:100%;">
         <div id="eda-accuracy-chart" style="flex:1;"></div>
@@ -165,6 +114,15 @@
 <script type="module" src="scroll.js"></script>
 </body>
 </html>
+<!-- wrap both chart and panel in a flex container -->
+
+
+<!-- </div> -->
+
+ 
+
+
+
 
 
 
