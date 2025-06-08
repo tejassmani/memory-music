@@ -138,6 +138,12 @@ h1 {
         border-radius: 10px;
         min-height: 60px;
       }
+#stats {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 10px;
+  min-height: 60px;
+}
 
 #stats h2 {
   color: #2d3748;
@@ -369,7 +375,7 @@ section.full-width-gray .content-wrapper {
 }
 
 /* Match viz‐container style for consistency */
-#eda-accuracy-chart svg,
+/* #eda-accuracy-chart svg,
 #eda-accuracy-chart .legend {
   /* nothing needed here, inherits your .viz-container look */
-}
+/* }  */
