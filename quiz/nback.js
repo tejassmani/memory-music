@@ -1,5 +1,46 @@
 const canvas = document.getElementById("nback_canvas");
-const ctx = canvas.getContext("2d");
+const ctx    = canvas.getContext("2d");
+const dpr    = window.devicePixelRatio || 1;
+
+// Recalculate the internal buffer **only**, never touch CSS sizing.
+// Then reset & scale the context so 1 unit = 1 CSS pixel.
+function adjustCanvasDPI() {
+  const W = canvas.clientWidth;
+  const H = canvas.clientHeight;
+  if (!W || !H) return;
+
+  canvas.width  = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+
+  // reset any old transforms, then scale
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+
+  ctx.imageSmoothingEnabled  = true;
+  ctx.imageSmoothingQuality  = "high";
+}
+
+// A little helper to redraw whatever screen we're on:
+function redrawCurrentScreen() {
+  if (currentScreen === "genre")       drawGenreScreen();
+  else if (currentScreen === "instructions") drawIntroScreen();
+  else /* quiz */                      /* quiz loop paints itself */;
+}
+
+// Hook it up:
+window.addEventListener("load", () => {
+  adjustCanvasDPI();
+  redrawCurrentScreen();
+});
+window.addEventListener("resize", () => {
+  adjustCanvasDPI();
+  redrawCurrentScreen();
+});
+new ResizeObserver(() => {
+  adjustCanvasDPI();
+  redrawCurrentScreen();
+}).observe(canvas);
+
 const letters = [
   "A",
   "B",
@@ -56,69 +97,58 @@ function drawScreen(lines) {
 }
 
 function drawGenreScreen() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const W = canvas.clientWidth;
+  const H = canvas.clientHeight;
 
-  // === Settings ===
-  const borderColor = "black";
-  const borderWidth = 1; // Matches typical canvas border
-  const headerY = 30;
-  const headerFontSize = 32;
-  const headerBottom = headerY + headerFontSize + 8;
+  // clear
+  ctx.clearRect(0, 0, W, H);
 
-  // === Header ===
-  ctx.font = `${headerFontSize}px Arial`;
-  ctx.fillStyle = "black";
-  ctx.textAlign = "center";
+  // header
+  const headerY      = 30;
+  const headerFS     = 32;
+  const headerBottom = headerY + headerFS + 8;
+
+  ctx.font         = `${headerFS}px Arial`;
+  ctx.fillStyle    = "black";
+  ctx.textAlign    = "center";
   ctx.textBaseline = "top";
-  ctx.fillText("Select Preferred Genre", canvas.width / 2, headerY);
+  ctx.fillText("Select Preferred Genre", W/2, headerY);
 
-  // === Underline === (full width, matching border thickness/color)
+  // lines
   ctx.beginPath();
-  ctx.moveTo(0, headerBottom);
-  ctx.lineTo(canvas.width, headerBottom);
-  ctx.strokeStyle = borderColor;
-  ctx.lineWidth = borderWidth;
+  ctx.moveTo(0,         headerBottom);
+  ctx.lineTo(W,         headerBottom);
+  ctx.moveTo(W/2,       headerBottom);
+  ctx.lineTo(W/2,       H);
+  ctx.strokeStyle = "black";
+  ctx.lineWidth   = 1;
   ctx.stroke();
 
-  // === Partition line === (same thickness/color, starts below header)
-  ctx.beginPath();
-  ctx.moveTo(canvas.width / 2, headerBottom);
-  ctx.lineTo(canvas.width / 2, canvas.height);
-  ctx.strokeStyle = borderColor;
-  ctx.lineWidth = borderWidth;
-  ctx.stroke();
-
-  // === Choices ===
-  ctx.font = "28px Arial";
+  // choices
+  ctx.font         = "28px Arial";
   ctx.textBaseline = "middle";
+  const cy = headerBottom + (H - headerBottom)/2;
 
-  // Compute vertical center for text/icon block
-  const choiceCenterY = headerBottom + (canvas.height - headerBottom) / 2;
-
-  // Left side: Classical
-  ctx.fillText("🎻", canvas.width / 4, choiceCenterY - 40);
-  ctx.fillText(
-    "Click Here for Classical",
-    canvas.width / 4,
-    choiceCenterY + 10,
-  );
-
-  // Right side: Pop
-  ctx.fillText("🎤", (3 * canvas.width) / 4, choiceCenterY - 40);
-  ctx.fillText(
-    "Click Here for Pop",
-    (3 * canvas.width) / 4,
-    choiceCenterY + 10,
-  );
+  ctx.fillText("🎻",                 W/4, cy - 40);
+  ctx.fillText("Click for Classical", W/4, cy + 10);
+  ctx.fillText("🎤",             3*W/4, cy - 40);
+  ctx.fillText("Click for Pop", 3*W/4, cy + 10);
 }
 
 function drawIntroScreen() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.font = "22px Arial"; // Slightly smaller font
-  ctx.fillStyle = "black";
-  ctx.textAlign = "center";
+  const W = canvas.clientWidth;
+  const H = canvas.clientHeight;
+  ctx.clearRect(0, 0, W, H);
+
+  // Text style
+  const fontSize   = 20;
+  const lineHeight = 24;
+  ctx.font         = `${fontSize}px Arial`;
+  ctx.fillStyle    = "black";
+  ctx.textAlign    = "center";
   ctx.textBaseline = "top";
 
+  // Your instruction lines
   const lines = [
     "N-back working memory task",
     "",
@@ -135,28 +165,34 @@ function drawIntroScreen() {
     "The task has 60 trials total.",
     "Music will change halfway through.",
     "",
-    "Click the mouse to begin the quiz.",
+    "Click the mouse to begin the quiz."
   ];
 
-  const startY = 30;
-  const lineHeight = 28; // Adjust line spacing
+  // Padding values
+  const topPadding    = 20;
+  const bottomPadding = 20;
 
+  // Compute usable height and where to start drawing
+  const usableHeight    = H - topPadding - bottomPadding;
+  const totalTextHeight = lines.length * lineHeight;
+  let   startY          = topPadding + (usableHeight - totalTextHeight) / 2;
+
+  // Draw every line
   lines.forEach((line, i) => {
     const y = startY + i * lineHeight;
-    // Only draw if line fits within canvas
-    if (y < canvas.height - 20) {
-      ctx.fillText(line, canvas.width / 2, y);
-    }
+    ctx.fillText(line, W / 2, y);
   });
 }
 
-function drawStimulus(stim) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+function drawStimulus(letter) {
+  const W = canvas.clientWidth;
+  const H = canvas.clientHeight;
+  ctx.clearRect(0, 0, W, H);
   ctx.font = "150px Arial";
-  ctx.textAlign = "center";
+  ctx.textAlign    = "center";
   ctx.textBaseline = "middle";
-  ctx.fillStyle = "black";
-  ctx.fillText(stim, canvas.width / 2, canvas.height / 2);
+  ctx.fillText(letter, W/2, H/2);
 }
 
 function generateSequence(length) {
