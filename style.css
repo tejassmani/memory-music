@@ -12,13 +12,11 @@ body {
   background-color: #f9f9f9;
 }
 
-/* Banner / Header */
-header {
-  background-color: #3b2c6f; /* Deep purple/navy tone */
-  padding: 20px 0;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+    /* Banner / Header */
+    header {
+      padding: 20px 0;
+      text-align: center;
+    }
 
 img {
   max-height: 200px;
@@ -120,25 +118,18 @@ h1 {
   background-clip: text;
 }
 
-#nback_canvas {
-  border: 3px solid #4a5568;
-  border-radius: 15px;
-  background: white;
-  margin: 1rem 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-#nback_canvas:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-}
+      #nback_canvas {
+        border: 2px solid #818893;
+        border-radius: 15px;
+        background: white;
+        margin: 1rem 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
 
 #stats {
   margin-top: 1.5rem;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   min-height: 60px;
 }
