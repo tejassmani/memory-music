@@ -366,14 +366,8 @@ function endTask() {
   stopMusic();
   updateAudioStatus("Quiz completed - Music stopped");
 
-  // Calculate overall stats
-  const totalCorrect = rtData.filter((d) => d.correct).length;
-  const accuracy = Math.round((totalCorrect / rtData.length) * 100);
-  const rtList = rtData.filter((d) => d.response !== "none").map((d) => d.rt);
-  const avgRT =
-    rtList.length > 0
-      ? Math.round(rtList.reduce((a, b) => a + b) / rtList.length)
-      : "N/A";
+  // Show quiz completion screen first
+  showQuizCompletionScreen();
 
   // Calculate accuracy by condition
   const calmingTrials = rtData.filter((d, i) => i < halfwayPoint);
@@ -391,46 +385,120 @@ function endTask() {
       ? Math.round((vexingCorrect / vexingTrials.length) * 100)
       : 0;
 
-  document.getElementById("stats").innerHTML = `
-    <h2>Task Complete!</h2>
-    <p>Overall Accuracy: ${accuracy}%</p>
-    <p>Average Reaction Time (for responses): ${avgRT} ms</p>
-    
-    <div class="accuracy-breakdown">
-      <h3>Performance by Music Type</h3>
-      <div class="accuracy-row">
-        <span class="accuracy-label">🎵 Calming Music:</span>
-        <span class="accuracy-value calming-color">${calmingAccuracy}%</span>
-      </div>
-      <div class="accuracy-row">
-        <span class="accuracy-label">🎶 Vexing Music:</span>
-        <span class="accuracy-value vexing-color">${vexingAccuracy}%</span>
-      </div>
-    </div>
+  // Calculate reaction times by condition
+  const calmingRTs = rtData
+    .filter((d, i) => i < halfwayPoint && d.response !== "none")
+    .map((d) => d.rt);
+  const vexingRTs = rtData
+    .filter((d, i) => i >= halfwayPoint && d.response !== "none")
+    .map((d) => d.rt);
 
-    <button id="download_button">Download CSV</button>
-    <button id="restart_button">Restart Quiz</button>
-  `;
+  const calmingAvgRT =
+    calmingRTs.length > 0
+      ? Math.round(calmingRTs.reduce((a, b) => a + b) / calmingRTs.length)
+      : "N/A";
+  const vexingAvgRT =
+    vexingRTs.length > 0
+      ? Math.round(vexingRTs.reduce((a, b) => a + b) / vexingRTs.length)
+      : "N/A";
 
-  // Show the View Analysis button
-  document.getElementById("viewAnalysisButton").style.display = "inline-block";
-
-  // Add event listeners for the dynamically created buttons
-  document
-    .getElementById("download_button")
-    .addEventListener("click", downloadCSV);
-  document.getElementById("restart_button").addEventListener("click", () => {
-    quizStarted = false;
-    genre = null;
-    currentScreen = "genre";
-    drawGenreScreen();
-    document.getElementById("stats").innerHTML = "";
-    // Hide the View Analysis button and visualization on restart
-    document.getElementById("viewAnalysisButton").style.display = "none";
-    document.getElementById("vizContainer").style.display = "none";
-    updateAudioStatus("");
-  });
+  // Store the stats globally so they can be accessed when the completion screen is dismissed
+  window.taskStats = {
+    calmingAccuracy,
+    vexingAccuracy,
+    calmingAvgRT,
+    vexingAvgRT,
+  };
 }
+
+function showQuizCompletionScreen() {
+  const completionScreen = document.createElement("div");
+  completionScreen.className = "quiz-completed";
+  completionScreen.innerHTML = `
+    <div class="quiz-completed-content">
+      <div class="celebration">🎉</div>
+      <h2>Congratulations!</h2>
+      <p>You've successfully completed the N-Back Memory Challenge! Your performance data has been recorded and is ready for analysis.</p>
+      <button class="continue-btn" onclick="hideQuizCompletionScreen()">View Results</button>
+    </div>
+  `;
+  document.body.appendChild(completionScreen);
+}
+
+// Make this function globally accessible
+window.hideQuizCompletionScreen = function () {
+  const completionScreen = document.querySelector(".quiz-completed");
+  if (completionScreen) {
+    completionScreen.remove();
+  }
+
+  // Hide the canvas and switch to results mode
+  const container = document.querySelector(".container");
+  container.classList.add("results-mode");
+
+  // Now display the results using the stored stats
+  if (window.taskStats) {
+    const { calmingAccuracy, vexingAccuracy, calmingAvgRT, vexingAvgRT } =
+      window.taskStats;
+
+    document.getElementById("stats").innerHTML = `
+      <h2>Task Complete!</h2>
+      
+      <div class="accuracy-breakdown">
+        <h3>Accuracy by Music Type</h3>
+        <div class="accuracy-row">
+          <span class="accuracy-label">🎵 Calming Music:</span>
+          <span class="accuracy-value calming-color">${calmingAccuracy}%</span>
+        </div>
+        <div class="accuracy-row">
+          <span class="accuracy-label">🎶 Vexing Music:</span>
+          <span class="accuracy-value vexing-color">${vexingAccuracy}%</span>
+        </div>
+      </div>
+
+      <div class="accuracy-breakdown">
+        <h3>Response Time by Music Type</h3>
+        <div class="accuracy-row">
+          <span class="accuracy-label">🎵 Calming Music:</span>
+          <span class="accuracy-value calming-color">${calmingAvgRT} ms</span>
+        </div>
+        <div class="accuracy-row">
+          <span class="accuracy-label">🎶 Vexing Music:</span>
+          <span class="accuracy-value vexing-color">${vexingAvgRT} ms</span>
+        </div>
+      </div>
+
+      <button id="download_button">Download CSV</button>
+      <button id="restart_button">Restart Quiz</button>
+    `;
+
+    // Show the View Analysis button
+    document.getElementById("viewAnalysisButton").style.display =
+      "inline-block";
+
+    // Add event listeners for the dynamically created buttons
+    document
+      .getElementById("download_button")
+      .addEventListener("click", downloadCSV);
+    document.getElementById("restart_button").addEventListener("click", () => {
+      quizStarted = false;
+      genre = null;
+      currentScreen = "genre";
+
+      // Reset container state
+      container.classList.remove("results-mode");
+
+      drawGenreScreen();
+      document.getElementById("stats").innerHTML = "";
+      // Hide the View Analysis button and visualization on restart
+      document.getElementById("viewAnalysisButton").style.display = "none";
+      document.getElementById("vizContainer").style.display = "none";
+      updateAudioStatus("");
+      // Clear stored stats
+      window.taskStats = null;
+    });
+  }
+};
 
 function downloadCSV() {
   const csvHeader = "Trial,Stimulus,Match,Response,RT(ms),Correct\n";
@@ -578,8 +646,8 @@ function createVisualization() {
     participant: "current_user",
   }));
 
-  const width = 650;
-  const height = 400;
+  const width = 800;
+  const height = 500;
   const margin = { top: 60, right: 60, bottom: 60, left: 80 };
 
   const svg = d3
@@ -890,9 +958,9 @@ function showZone3Plot(filtered) {
 
 // === Barplot ===
 function drawBarplot(data, titleText) {
-  const width = 650;
-  const height = 400;
-  const margin = { top: 80, right: 40, bottom: 60, left: 80 };
+  const width = 800;
+  const height = 500;
+  const margin = { top: 80, right: 60, bottom: 60, left: 80 };
 
   const subSvg = d3
     .select("#subchart")
@@ -981,9 +1049,9 @@ function drawBarplot(data, titleText) {
 
 // === Lineplot with Partition ===
 function drawLineplotWithPartition(trials, titleText) {
-  const width = 650;
-  const height = 400;
-  const margin = { top: 80, right: 40, bottom: 60, left: 80 };
+  const width = 800;
+  const height = 500;
+  const margin = { top: 80, right: 60, bottom: 60, left: 80 };
 
   const subSvg = d3
     .select("#subchart")
@@ -1080,6 +1148,93 @@ function drawLineplotWithPartition(trials, titleText) {
     .append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", margin.left - 50)
+    .attr("x", -(height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
+    .text("Reaction Time (ms)")
+    .text(titleText);
+}
+
+const x = d3
+  .scaleLinear()
+  .domain([0, trials.length - 1])
+  .range([margin.left, width - margin.right]);
+
+const y = d3
+  .scaleLinear()
+  .domain([0, d3.max(trials, (d) => d.mean_rt)])
+  .nice()
+  .range([height - margin.bottom, margin.top]);
+
+// Add grid lines
+subSvg
+  .append("g")
+  .attr("class", "grid")
+  .attr("transform", `translate(${margin.left},0)`)
+  .call(
+    d3
+      .axisLeft(y)
+      .tickSize(-(width - margin.left - margin.right))
+      .tickFormat(""),
+  )
+  .selectAll("line")
+  .attr("stroke", "#e0e0e0");
+
+const line = d3
+  .line()
+  .x((d, i) => x(i))
+  .y((d) => y(d.mean_rt));
+
+subSvg
+  .append("path")
+  .datum(trials)
+  .attr("fill", "none")
+  .attr("stroke", "steelblue")
+  .attr("stroke-width", 3)
+  .attr("d", line);
+
+// Find partition point in this subset
+const partitionIndex = trials.findIndex((d) => d.condition === "Vexing");
+if (partitionIndex > 0) {
+  const partitionX = x(partitionIndex - 0.5);
+  subSvg
+    .append("line")
+    .attr("x1", partitionX)
+    .attr("x2", partitionX)
+    .attr("y1", margin.top)
+    .attr("y2", height - margin.bottom)
+    .attr("stroke", "red")
+    .attr("stroke-width", 2)
+    .attr("stroke-dasharray", "4,4");
+
+  subSvg
+    .append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(
+      d3.axisBottom(x).tickFormat((d, i) => `Trial ${trials[i]?.trial || ""}`),
+    )
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px")
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end");
+
+  subSvg
+    .append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y))
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px");
+
+  // Add Y-axis label
+  subSvg
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", margin.left - 60)
     .attr("x", -(height / 2))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
