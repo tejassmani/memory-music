@@ -20,14 +20,14 @@ header {
 }
 
 img {
-  max-height: 200px;
+  max-height: 150px;
   width: auto;
 }
 
 /* Main container */
 #index {
   max-width: 75%;
-  margin: 40px auto;
+  margin: 20px auto;
   padding: 0 20px;
   text-align: center;
 }
@@ -693,6 +693,13 @@ body {
   margin-bottom: 1rem;
   color: #333;
   font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.happy-avg {
+  margin-top: 0.5em;
+  font-size: 0.9em;
+  color: #555;
+  text-align: center;
 }
 
 /* Keep your existing #vis3 flex/container styles… */
