@@ -59,7 +59,19 @@
         </p>
       </div>
       <!-- Add more <div class="step" data-step="3">…</div> blocks here if needed -->
-       <div class="step" data-step="3">
+      <div class="step" data-step="3">
+        <h2>Average Mood over the Study</h2>
+        <p>
+          This line chart tracks the average Electrodermal Activity (EDA) - a common stress indicator - over time across 16 trials. We compare EDA responses during calming music and vexing music sessions.
+        </p>
+        <p>The purple line shows average EDA under calming music.</p>
+        <p>The orange line shows EDA under vexing music.</p>
+        <p>The chart updates dynamically based on participant and session type filters.</p>
+        <p><strong>What it reveals:</strong><br/>
+          Higher EDA typically reflects greater physiological arousal or stress. Here, we can explore whether vexing music consistently elicits higher stress responses or whether calming music helps reduce arousal over time.
+        </p>
+      </div>
+      <div class="step" data-step="4">
         <h2>EDA vs. Accuracy Dashboard</h2>
        <p>
          This interactive scatterplot shows how physiological arousal (mean EDA) relates 
@@ -87,11 +99,33 @@
     </div>
 
     <!-- RIGHT: sticky viz area -->
-     <div class="scrolly__graphic">
+  <div class="scrolly__graphic">
     <div id="vis1" class="viz-container"></div>
     <div id="vis2" class="viz-container"></div>
 
     <div id="vis3" class="viz-container">
+      <h2 class="slideshow-title">
+        Average Mood of Study Participants by round
+      </h2>
+
+      <div class="slideshow">
+        <div id="calming-box" class="box">
+          <img src="" alt="calming emotion">
+          <div class="label">Calming</div>
+        </div>
+        <div id="vexing-box" class="box">
+          <img src="" alt="vexing emotion">
+          <div class="label">Vexing</div>
+        </div>
+      </div>
+
+      <!-- 2) Trial counter below the cards -->
+      <div id="trial-counter" class="trial-counter">
+        Round: 1
+      </div>
+    </div>
+
+    <div id="vis4" class="viz-container">
       <div id="dashboard-container" style="display:flex; height:100%;">
         <div id="eda-accuracy-chart" style="flex:1;"></div>
         <div id="dashboard-panel">

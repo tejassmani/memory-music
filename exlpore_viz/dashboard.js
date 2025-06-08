@@ -197,13 +197,13 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 window.onload = () => {
   // ─── 0) CLEAR & CREATE PANES ─────────────────────────────────────────────
-  // Make sure #vis3 exists and is empty
-  const vis3 = d3.select("#vis3")
+  // Make sure #vis4 exists and is empty
+  const vis4 = d3.select("#vis4")
     .style("display", null)    // scroller will hide/show it
     .html("");
 
   // Build a flex container inside it
-  const container = vis3.append("div")
+  const container = vis4.append("div")
     .attr("id", "dashboard-container")
     .style("display", "flex")
     .style("height", "100%");

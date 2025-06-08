@@ -434,6 +434,86 @@ body {
   margin-top: 0.4rem;
 }
 
+/* 1) Make #vis3 a flex-centered area */
+#vis3 {
+  display: flex;
+  justify-content: center;    /* center the slideshow horizontally */
+  align-items: center;        /* center it vertically */
+  height: 400px;              /* or 100% if you prefer */
+  background: #fafafa;        /* a very light background to lift the cards */
+  margin: 1rem 0;
+}
+
+/* 2) Layout the two .box elements side-by-side */
+#vis3 .slideshow {
+  display: flex;
+  justify-content: center;  /* ← centers the cards */
+  align-items: center;
+  gap: 2rem;
+}
+
+/* 3) Style each card */
+#vis3 .box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform .2s ease;
+}
+#vis3 .box:hover {
+  transform: translateY(-4px);
+}
+
+/* 4) Tidy up the icon itself */
+#vis3 .box img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 0.75rem;
+}
+
+/* 5) Beef up the label text */
+#vis3 .box .label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+#vis3 .slideshow-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Keep your existing #vis3 flex/container styles… */
+
+/* Color the calming/vexing labels differently */
+#calming-box .label {
+  color: steelblue;
+}
+#vexing-box  .label {
+  color: tomato;
+}
+
+/* Trial counter styling */
+.trial-counter {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #555;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
 /* Match viz‐container style for consistency */
 /* #eda-accuracy-chart svg,
 #eda-accuracy-chart .legend {
