@@ -47,6 +47,7 @@ function renderFrame() {
   const calm = calmingTimeline[currentRound - 1];
   const vex  = vexingTimeline[currentRound - 1];
 
+  // swap in the per-round emoticons
   d3.select("#calming-box img")
     .attr("src", ICON_PATH(calm.emotion))
     .attr("alt", calm.emotion);
@@ -55,9 +56,26 @@ function renderFrame() {
     .attr("src", ICON_PATH(vex.emotion))
     .attr("alt", vex.emotion);
 
+  // show this round's Happy average under each box
+  d3.select("#calming-box")
+    .selectAll("p.happy-round")
+    .data([calm.happy])
+    .join("p")
+      .attr("class", "happy-round")
+      .text(`Happy: ${calm.happy.toFixed(3)}`);
+
+  d3.select("#vexing-box")
+    .selectAll("p.happy-round")
+    .data([vex.happy])
+    .join("p")
+      .attr("class", "happy-round")
+      .text(`Happy: ${vex.happy.toFixed(3)}`);
+
+  // update the round counter
   d3.select("#trial-counter")
     .text(`Round: ${currentRound}`);
 }
+
 
 // — 3) Show the final summary
 function showSummary() {
@@ -74,24 +92,24 @@ function showSummary() {
     .attr("src", ICON_PATH(emoVex))
     .attr("alt", emoVex);
 
-  // 2) under each box, show the numeric Happy Avg
+  // 2) REUSE the .happy-round under each box to now show the overall average
   d3.select("#calming-box")
-    .selectAll("p.happy-avg")
+    .selectAll("p.happy-round")
     .data([avgCalm])
     .join("p")
-      .attr("class", "happy-avg")
+      .attr("class", "happy-round")
       .text(`Happy Avg: ${avgCalm.toFixed(3)}`);
 
   d3.select("#vexing-box")
-    .selectAll("p.happy-avg")
+    .selectAll("p.happy-round")
     .data([avgVex])
     .join("p")
-      .attr("class", "happy-avg")
+      .attr("class", "happy-round")
       .text(`Happy Avg: ${avgVex.toFixed(3)}`);
 
-  // 3) replace round counter with a summary title
+  // 3) repurpose your trial-counter to label the summary
   d3.select("#trial-counter")
-    .text("Average Happiness Per Music Type");
+    .text("Overall Average Happiness");
 }
 
 
