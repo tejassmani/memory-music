@@ -568,6 +568,13 @@ body {
   font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.happy-avg {
+  margin-top: 0.5em;
+  font-size: 0.9em;
+  color: #555;
+  text-align: center;
+}
+
 /* Keep your existing #vis3 flex/container styles… */
 
 /* Color the calming/vexing labels differently */
