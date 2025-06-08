@@ -73,3 +73,78 @@
   <script type="module" src="scroll.js"></script>
 </body>
 </html>
+
+    <!-- <div id="controls" style="margin-bottom:20px;">
+  <label>
+    Gender:
+    <select id="gender-filter">
+      <option value="All">All</option>
+      <option value="Female">Female</option>
+      <option value="Male">Male</option>
+    </select>
+  </label>
+
+  <label style="margin-left:20px;">
+    Task Type:
+    <select id="task-filter">
+      <option value="All">All</option>
+      <option value="1-back">1-back</option>
+      <option value="3-back">3-back</option>
+    </select>
+  </label>
+</div>
+
+<div id="eda-accuracy-chart"></div>
+<label style="margin-left:20px;">
+    Trial ≤ 
+    <input type="range" id="trial-slider" min="1" max="31" value="31" />
+    <span id="trial-slider-value">1–31</span>
+  </label> -->
+<!-- wrap both chart and panel in a flex container -->
+<div id="dashboard-container" style="display: flex;">
+
+  <!-- Left: the chart -->
+  <div id="eda-accuracy-chart"></div>
+
+  <!-- Right: the dashboard panel -->
+  <div id="dashboard-panel">
+    <h3>Controls</h3>
+    <label>
+      Gender:
+      <select id="gender-filter">
+        <option>All</option>
+        <option>Female</option>
+        <option>Male</option>
+      </select>
+    </label>
+
+    <label>
+      Task Type:
+      <select id="task-filter">
+        <option>All</option>
+        <option>1-back</option>
+        <option>3-back</option>
+      </select>
+    </label>
+
+    <label>
+      Trial ≤ 
+      <input type="range" id="trial-slider" min="1" max="31" value="31"/>
+      <span id="trial-slider-value">1–31</span>
+    </label>
+  </div>
+
+<!-- </div> -->
+
+
+
+  </div>
+
+    <script type="module" src="../demo.js"></script>
+    <script type="module" src="../main.js"></script>
+    <script type="module" src="swarm.js"></script>
+    <script type="module" src="eda_line.js"></script>
+    <script type="module" src="dashboard.js"></script>
+  
+  </body>
+</html>
