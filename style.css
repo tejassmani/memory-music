@@ -63,27 +63,29 @@ img {
   gap: 20px;
 }
 
+/* give the links a gradient background, and white text */
 .button-group a {
   text-decoration: none;
-  color: linear-gradient(45deg, #c266ea, #764ba2);
-  color: #fff;
+  background: linear-gradient(45deg, #c266ea, #764ba2);
+  color: white;
   padding: 14px 28px;
   border-radius: 25px;
   font-size: 1rem;
   font-weight: bold;
   transition:
-    background-color 0.2s ease-in-out,
     transform 0.1s ease;
 }
 
+/* on hover, only lift the button—don’t change its colors */
 .button-group a:hover {
-  background-color: #5a4480;
   transform: translateY(-2px);
 }
 
+/* on click, return to original position */
 .button-group a:active {
   transform: translateY(0);
 }
+
 
 /* Mission statement styling */
 .mission {
