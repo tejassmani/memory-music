@@ -955,7 +955,7 @@ function createVisualization() {
   addInteractionZone(
     zone1_start,
     zone1_end,
-    "Early Performance: Which Music Type Engages you Earlier",
+    "Early Performance: Which Music Type Engages you Earlier (CLICK TO VIEW)",
     () => showZone1Plot(filtered),
     svg,
     xScale,
@@ -966,7 +966,7 @@ function createVisualization() {
   addInteractionZone(
     zone2_start,
     zone2_end,
-    "Transition Period: How Your Focus Changes During Music Switch",
+    "Transition Period: How Your Focus Changes During Music Switch (CLICK TO VIEW)",
     () => showZone2Plot(filtered, zone2_start, zone2_end),
     svg,
     xScale,
@@ -977,7 +977,7 @@ function createVisualization() {
   addInteractionZone(
     zone3_start,
     zone3_end,
-    "Late Performance: Which Music Maintains Your Focus",
+    "Late Performance: Which Music Maintains Your Focus (CLICK TO VIEW)",
     () => showZone3Plot(filtered),
     svg,
     xScale,
