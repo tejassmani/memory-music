@@ -966,3 +966,77 @@ header.page-header {
 a {
   color: #6c5497
 }
+
+/* ─── HEADER ROUNDED CORNERS → SQUARE, LESS PADDING ─── */
+header.page-header {
+  border-radius: 0 !important;   
+  padding: 1rem 2rem !important;
+  margin-bottom: 0 !important;      
+}
+
+/* ─── TYPOGRAPHY SCALE & SPACING ─── */
+body {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+h1, .scrolly__text h2 {
+  line-height: 1.2;
+  margin: 0 0 0.75rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+.scrolly__text h2 {
+  font-size: 1.75rem;
+}
+
+.scrolly__text p {
+  margin: 0 0 1rem;
+}
+
+/* ─── BOTH PANELS WHITE (TEXT + VIZ) ─── */
+.scrolly__text,
+.scrolly__graphic .viz-container {
+  background: #fff !important;
+}
+
+/* ─── CITATION & CONTROLS BREATHING ROOM ─── */
+header.page-header p.citation {
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+#dashboard-panel {
+  width: 300px !important;          /* a bit wider */
+  padding: 1.5rem !important;       /* more padding inside */
+}
+#dashboard-panel label {
+  margin-bottom: 1.5rem !important; /* more space between controls */
+}
+
+/* ─── TONE DOWN THE PURPLE GRADIENT ─── */
+/* Reserve the gradient for only the main site title & primary CTA buttons */
+
+header.page-header h1,
+button.primary {
+  background: linear-gradient(45deg, #c266ea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.scrolly__text h2,
+#dashboard-panel h3 {
+  /* switch to solid purple for subheadings */
+  color: #764ba2 !important;
+  background: none;
+}
+
+
+
+
+
