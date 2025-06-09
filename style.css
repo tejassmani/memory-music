@@ -952,5 +952,12 @@ section.full-width-gray .content-wrapper {
 }
 
 a {
-  color: #6c5497
+  color: #6c5497;
+}
+
+iframe {
+  border: none;           /* remove default border if you like */
+  border-radius: 20px;     /* adjust to taste */
+  overflow: hidden;        /* clip the iframe’s contents to the rounded shape */
+  padding: 10px;
 }
