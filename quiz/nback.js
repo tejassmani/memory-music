@@ -142,56 +142,59 @@ function drawIntroScreen() {
   ctx.clearRect(0, 0, W, H);
 
   // Text style
-  const fontSize = 20;
-  const lineHeight = 24;
-  ctx.font = `${fontSize}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
-  ctx.fillStyle = "black";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
+  const baseFontSize = Math.floor(H * 0.04);    // 4% of height
+  const lineHeight   = Math.floor(baseFontSize * 1.2);
+  ctx.font          = `${baseFontSize}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
+  ctx.fillStyle     = "black";
+  ctx.textAlign     = "center";
+  ctx.textBaseline  = "top";
 
-  // Your instruction lines
   const lines = [
-    "N-back working memory task",
+    "2-Back Working Memory Task Instructions",
     "",
-    "In this task, you will see a sequence of letters.",
-    "Each letter is shown for 1 second.",
-    "You need to decide if you saw the same letter",
-    "2 trials ago. This is a n=2-back task.",
+    "You will see a stream of letters, one at a time.", 
+    "Each letter appears for 1 second—that’s one trial.",
     "",
-    "Press LEFT ARROW if NO match",
-    "(different letter 2 trials ago)",
-    "Press RIGHT ARROW if MATCH",
-    "(same letter 2 trials ago)",
+    "For every letter, each trial, decide if it matches the letter you saw two trials ago.",
     "",
-    "The task has 60 trials total.",
-    "Music will change halfway through.",
+    "How to Respond (EVERY TRIAL)",
+    "RIGHT ARROW: if the current letter is the same as the letter shown two trials earlier",
+    "LEFT ARROW: if the current letter is different from the letter shown two trials earlier",
+    "(Be ready to press one of these keys on every trial.)",
     "",
-    "Click the mouse to begin the quiz.",
+    "There will be 60 trials.",
+    "Background music will switch at trial halfway through."
   ];
 
-  // Padding values
-  const topPadding = 20;
-  const bottomPadding = 20;
+  // vertically center the block of text
+  const textBlockHeight = lines.length * lineHeight;
+  let y = (H - textBlockHeight) / 2;
 
-  // Compute usable height and where to start drawing
-  const usableHeight = H - topPadding - bottomPadding;
-  const totalTextHeight = lines.length * lineHeight;
-  let startY = topPadding + (usableHeight - totalTextHeight) / 2;
-
-  // Draw every line
-  lines.forEach((line, i) => {
-    const y = startY + i * lineHeight;
-    ctx.fillText(line, W / 2, y);
-  });
+  for (let i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i], W / 2, y + i * lineHeight);
+  }
 }
 
 function drawStimulus(letter) {
   const W = canvas.clientWidth;
   const H = canvas.clientHeight;
   ctx.clearRect(0, 0, W, H);
-  ctx.font = "150px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif";
-  ctx.textAlign = "center";
+
+  ctx.textAlign    = "center";
   ctx.textBaseline = "middle";
+
+  // Start with a font size that fills 80% of the canvas height
+  let fontSize = H * 0.8;
+  ctx.font = `${fontSize}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
+
+  // If the letter is too wide, scale it down to fit 90% of canvas width
+  const metrics = ctx.measureText(letter);
+  if (metrics.width > W * 0.9) {
+    fontSize = fontSize * (W * 0.9 / metrics.width);
+    ctx.font = `${fontSize}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
+  }
+
+  // Finally draw it perfectly centered
   ctx.fillText(letter, W / 2, H / 2);
 }
 
