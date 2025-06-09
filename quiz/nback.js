@@ -472,9 +472,10 @@ window.hideQuizCompletionScreen = function () {
       <button id="restart_button">Restart Quiz</button>
     `;
 
-    // Show the View Analysis button
+    // Show the View Analysis button and Playlist Generation button
     document.getElementById("viewAnalysisButton").style.display =
       "inline-block";
+    document.getElementById("playlistSection").style.display = "block";
 
     // Add event listeners for the dynamically created buttons
     document
@@ -490,8 +491,9 @@ window.hideQuizCompletionScreen = function () {
 
       drawGenreScreen();
       document.getElementById("stats").innerHTML = "";
-      // Hide the View Analysis button and visualization on restart
+      // Hide the View Analysis button, playlist section, and visualization on restart
       document.getElementById("viewAnalysisButton").style.display = "none";
+      document.getElementById("playlistSection").style.display = "none";
       document.getElementById("vizContainer").style.display = "none";
       updateAudioStatus("");
       // Clear stored stats
@@ -499,6 +501,120 @@ window.hideQuizCompletionScreen = function () {
     });
   }
 };
+
+// Playlist generation logic
+function calculatePlaylistRecommendation() {
+  if (!window.taskStats) return null;
+
+  const { calmingAccuracy, vexingAccuracy, calmingAvgRT, vexingAvgRT } =
+    window.taskStats;
+
+  // Weights for scoring (accuracy is weighted higher than speed)
+  const accuracyWeight = 0.7;
+  const speedWeight = 0.3;
+
+  // Convert RT to inverse score (lower RT = better performance)
+  const calmingRTScore =
+    calmingAvgRT !== "N/A" ? (1000 / calmingAvgRT) * 100 : 0;
+  const vexingRTScore = vexingAvgRT !== "N/A" ? (1000 / vexingAvgRT) * 100 : 0;
+
+  // Calculate composite scores
+  const calmingScore =
+    accuracyWeight * calmingAccuracy + speedWeight * calmingRTScore;
+  const vexingScore =
+    accuracyWeight * vexingAccuracy + speedWeight * vexingRTScore;
+
+  // Determine threshold for "significant difference"
+  const threshold = 5; // 5% difference threshold
+
+  let musicType, reason;
+
+  if (calmingScore > vexingScore + threshold) {
+    musicType = "calming";
+    const accuracyDiff = calmingAccuracy - vexingAccuracy;
+    const rtDiff =
+      calmingAvgRT !== "N/A" && vexingAvgRT !== "N/A"
+        ? vexingAvgRT - calmingAvgRT
+        : 0;
+
+    if (accuracyDiff > 10) {
+      reason = `Your focus was ${accuracyDiff}% more accurate with calming music, helping you maintain better concentration throughout the task.`;
+    } else if (rtDiff > 50) {
+      reason = `You responded ${rtDiff}ms faster with calming music, showing improved reaction times during focused listening.`;
+    } else {
+      reason = `Your overall performance was consistently better with calming music, showing improved focus and response quality.`;
+    }
+  } else if (vexingScore > calmingScore + threshold) {
+    musicType = "vexing";
+    const accuracyDiff = vexingAccuracy - calmingAccuracy;
+    const rtDiff =
+      calmingAvgRT !== "N/A" && vexingAvgRT !== "N/A"
+        ? calmingAvgRT - vexingAvgRT
+        : 0;
+
+    if (accuracyDiff > 10) {
+      reason = `Your focus was ${accuracyDiff}% more accurate with energetic music, suggesting you thrive under stimulating conditions.`;
+    } else if (rtDiff > 50) {
+      reason = `You responded ${rtDiff}ms faster with energetic music, showing that upbeat rhythms enhance your cognitive speed.`;
+    } else {
+      reason = `Your overall performance was consistently better with energetic music, indicating you focus best with stimulating audio.`;
+    }
+  } else {
+    musicType = "balanced";
+    reason = `You maintained consistent performance across both music types, showing adaptability. This balanced playlist combines both styles for optimal focus.`;
+  }
+
+  return { musicType, reason, genre };
+}
+
+function getPlaylistEmbed(recommendation) {
+  const { musicType, genre } = recommendation;
+
+  const playlists = {
+    calming_pop:
+      '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/39Ypx8PoYKlI0JCFjOdyDd?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+    calming_classical:
+      '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2Wj9fpWh2d7MONBDkjZe6l?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+    vexing_pop:
+      '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2EqJCxDz0rnAJ7NDvGByVp?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+    vexing_classical:
+      '<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5nMIGAANzybrUg0diersp5?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+  };
+
+  if (musicType === "balanced") {
+    // For balanced, choose based on slightly better performance or default to calming
+    const { calmingAccuracy, vexingAccuracy } = window.taskStats;
+    const defaultType =
+      calmingAccuracy >= vexingAccuracy ? "calming" : "vexing";
+    return playlists[`${defaultType}_${genre}`];
+  }
+
+  return playlists[`${musicType}_${genre}`];
+}
+
+function generatePlaylist() {
+  const recommendation = calculatePlaylistRecommendation();
+  if (!recommendation) return;
+
+  const playlistContainer = document.getElementById("playlistContainer");
+  const playlistReason = document.getElementById("playlistReason");
+  const playlistEmbed = document.getElementById("playlistEmbed");
+
+  // Show the recommendation reason
+  playlistReason.innerHTML = `
+    <h3>🎯 Your Personalized Focus Playlist</h3>
+    <p>${recommendation.reason}</p>
+  `;
+
+  // Show the Spotify embed
+  playlistEmbed.innerHTML = getPlaylistEmbed(recommendation);
+
+  // Show the container
+  playlistContainer.style.display = "block";
+
+  // Hide the generate button
+  document.getElementById("generatePlaylistButton").style.display = "none";
+}
 
 function downloadCSV() {
   const csvHeader = "Trial,Stimulus,Match,Response,RT(ms),Correct\n";
@@ -612,6 +728,14 @@ document.addEventListener("DOMContentLoaded", function () {
       d3.select("#backButton").style("display", "none");
     });
   }
+
+  // Playlist Generation Button Event Listener
+  const generatePlaylistButton = document.getElementById(
+    "generatePlaylistButton",
+  );
+  if (generatePlaylistButton) {
+    generatePlaylistButton.addEventListener("click", generatePlaylist);
+  }
 });
 
 // Also add event listeners immediately in case DOM is already loaded
@@ -632,6 +756,13 @@ setTimeout(() => {
       d3.select("#backButton").style("display", "none");
     });
   }
+
+  const generatePlaylistButton = document.getElementById(
+    "generatePlaylistButton",
+  );
+  if (generatePlaylistButton && !generatePlaylistButton.onclick) {
+    generatePlaylistButton.addEventListener("click", generatePlaylist);
+  }
 }, 100);
 
 function createVisualization() {
@@ -641,185 +772,219 @@ function createVisualization() {
 
   // 2) prep your data
   const filtered = rtData.map((d, i) => ({
-    trial:     d.trial,
-    mean_rt:   d.rt,
+    trial: d.trial,
+    mean_rt: d.rt,
     condition: i < halfwayPoint ? "Calming" : "Vexing",
   }));
 
   // 3) measure how big #chart actually is
   const { width, height } = container.node().getBoundingClientRect();
-  const margin = { top: 60, right: 60, bottom: 60, left: 80 };
+  const margin = { top: 80, right: 60, bottom: 60, left: 80 };
 
   // 4) append a responsive SVG
   const svg = container
     .append("svg")
-      .attr("viewBox", `0 0 ${width} ${height}`)
-      .attr("preserveAspectRatio", "xMidYMid meet")
-      .style("width",  "100%")
-      .style("height", "100%");
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .style("width", "100%")
+    .style("height", "100%");
+
+  // Add title at the top with proper spacing
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 25)
+    .attr("text-anchor", "middle")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "18px")
+    .style("font-weight", "600")
+    .style("fill", "#2d3748")
+    .text("Your Reaction Time Throughout the Experiment");
 
   // 5) build scales against that dynamic width/height
   //    → use actual trial numbers so the first point sits on the y-axis
-  const xScale = d3.scaleLinear()
-    .domain(d3.extent(filtered, d => d.trial))
+  const xScale = d3
+    .scaleLinear()
+    .domain(d3.extent(filtered, (d) => d.trial))
     .range([margin.left, width - margin.right]);
 
-  const yScale = d3.scaleLinear()
-    .domain([0, d3.max(filtered, d => d.mean_rt)])
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(filtered, (d) => d.mean_rt)])
     .nice()
     .range([height - margin.bottom, margin.top]);
 
   // 6) line generator
-  const line = d3.line()
-    .x(d => xScale(d.trial))
-    .y(d => yScale(d.mean_rt));
+  const line = d3
+    .line()
+    .x((d) => xScale(d.trial))
+    .y((d) => yScale(d.mean_rt));
 
   // 7) grid lines
   //    → add tickSizeOuter(0) + remove the domain path to drop that stray bar
-  svg.append("g")
-      .attr("class", "grid")
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(
-        d3.axisLeft(yScale)
-          .tickSize(-(width - margin.left - margin.right))
-          .tickSizeOuter(0)
-          .tickFormat("")
-      )
-      .call(g => g.select(".domain").remove())
+  svg
+    .append("g")
+    .attr("class", "grid")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(
+      d3
+        .axisLeft(yScale)
+        .tickSize(-(width - margin.left - margin.right))
+        .tickSizeOuter(0)
+        .tickFormat(""),
+    )
+    .call((g) => g.select(".domain").remove())
     .selectAll("line")
-      .attr("stroke", "#e0e0e0")
-      .attr("stroke-width", 1);
+    .attr("stroke", "#e0e0e0")
+    .attr("stroke-width", 1);
 
-  svg.append("g")
-      .attr("class", "grid")
-      .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(
-        d3.axisBottom(xScale)
-          .tickSize(-(height - margin.top - margin.bottom))
-          .tickSizeOuter(0)
-          .tickFormat("")
-      )
-      .call(g => g.select(".domain").remove())
+  svg
+    .append("g")
+    .attr("class", "grid")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(
+      d3
+        .axisBottom(xScale)
+        .tickSize(-(height - margin.top - margin.bottom))
+        .tickSizeOuter(0)
+        .tickFormat(""),
+    )
+    .call((g) => g.select(".domain").remove())
     .selectAll("line")
-      .attr("stroke", "#e0e0e0")
-      .attr("stroke-width", 1);
+    .attr("stroke", "#e0e0e0")
+    .attr("stroke-width", 1);
 
   // 8) the performance line
-  svg.append("path")
-      .datum(filtered)
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 3)
-      .attr("d", line);
+  svg
+    .append("path")
+    .datum(filtered)
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 3)
+    .attr("d", line);
 
   // 9) axes
   const xAxis = d3.axisBottom(xScale).ticks(10).tickFormat(d3.format("d"));
   const yAxis = d3.axisLeft(yScale);
 
-  svg.append("g")
-      .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(xAxis)
-      .selectAll("text")
-        .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-        .style("font-size", "12px");
+  svg
+    .append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(xAxis)
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px");
 
-  svg.append("g")
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(yAxis)
-      .selectAll("text")
-        .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-        .style("font-size", "12px");
+  svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(yAxis)
+    .selectAll("text")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "12px");
 
   // 10) axis labels
-  svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", margin.left - 50)
-      .attr("x", -(height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-      .style("font-size", "14px")
-      .style("font-weight", "600")
-      .text("Reaction Time (ms)");
+  svg
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", margin.left - 50)
+    .attr("x", -(height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
+    .text("Reaction Time (ms)");
 
-  svg.append("text")
-      .attr("transform", `translate(${width / 2}, ${height - 10})`)
-      .style("text-anchor", "middle")
-      .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-      .style("font-size", "14px")
-      .style("font-weight", "600")
-      .text("Trial Number");
+  svg
+    .append("text")
+    .attr("transform", `translate(${width / 2}, ${height - 10})`)
+    .style("text-anchor", "middle")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
+    .text("Trial Number");
 
   // 11) partition line + labels
-  const calmingCount = filtered.filter(d => d.condition === "Calming").length;
+  const calmingCount = filtered.filter((d) => d.condition === "Calming").length;
   if (calmingCount < filtered.length) {
     const partitionX = xScale(calmingCount + 0.5);
-    svg.append("line")
-        .attr("x1", partitionX)
-        .attr("x2", partitionX)
-        .attr("y1", margin.top)
-        .attr("y2", height - margin.bottom)
-        .attr("stroke", "red")
-        .attr("stroke-width", 2)
-        .attr("stroke-dasharray", "4,4");
+    svg
+      .append("line")
+      .attr("x1", partitionX)
+      .attr("x2", partitionX)
+      .attr("y1", margin.top)
+      .attr("y2", height - margin.bottom)
+      .attr("stroke", "red")
+      .attr("stroke-width", 2)
+      .attr("stroke-dasharray", "4,4");
 
-    svg.append("text")
-        .attr("x", margin.left + (partitionX - margin.left) / 2)
-        .attr("y", margin.top - 20)
-        .style("text-anchor", "middle")
-        .style("font-size", "16px")
-        .style("font-weight", "600")
-        .style("fill", "steelblue")
-        .text("Calming Music");
+    svg
+      .append("text")
+      .attr("x", margin.left + (partitionX - margin.left) / 2)
+      .attr("y", margin.top - 5)
+      .style("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("font-weight", "600")
+      .style("fill", "steelblue")
+      .text("Calming Music");
 
-    svg.append("text")
-        .attr("x", partitionX + (width - margin.right - partitionX) / 2)
-        .attr("y", margin.top - 20)
-        .style("text-anchor", "middle")
-        .style("font-size", "16px")
-        .style("font-weight", "600")
-        .style("fill", "tomato")
-        .text("Vexing Music");
+    svg
+      .append("text")
+      .attr("x", partitionX + (width - margin.right - partitionX) / 2)
+      .attr("y", margin.top - 5)
+      .style("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("font-weight", "600")
+      .style("fill", "tomato")
+      .text("Vexing Music");
   }
 
   // 12) interaction zones (unchanged)
   const totalTrials = filtered.length;
   const zone1_start = 0;
-  const zone1_end   = Math.min(9, calmingCount - 1);
+  const zone1_end = Math.min(9, calmingCount - 1);
   const zone2_start = Math.max(0, calmingCount - 10);
-  const zone2_end   = Math.min(totalTrials - 1, calmingCount + 9);
+  const zone2_end = Math.min(totalTrials - 1, calmingCount + 9);
   const zone3_start = Math.max(calmingCount, totalTrials - 10);
-  const zone3_end   = totalTrials - 1;
+  const zone3_end = totalTrials - 1;
 
   addInteractionZone(
-    zone1_start, zone1_end,
+    zone1_start,
+    zone1_end,
     "Early Performance: Which Music Type Engages you Earlier",
     () => showZone1Plot(filtered),
-    svg, xScale, margin, height
+    svg,
+    xScale,
+    margin,
+    height,
   );
 
   addInteractionZone(
-    zone2_start, zone2_end,
+    zone2_start,
+    zone2_end,
     "Transition Period: How Your Focus Changes During Music Switch",
     () => showZone2Plot(filtered, zone2_start, zone2_end),
-    svg, xScale, margin, height
+    svg,
+    xScale,
+    margin,
+    height,
   );
 
   addInteractionZone(
-    zone3_start, zone3_end,
+    zone3_start,
+    zone3_end,
     "Late Performance: Which Music Maintains Your Focus",
     () => showZone3Plot(filtered),
-    svg, xScale, margin, height
+    svg,
+    xScale,
+    margin,
+    height,
   );
 }
 
-
 // Redraw on window resize so we always re-measure
 window.addEventListener("resize", createVisualization);
-
-// Initial draw
-createVisualization();
-
 
 function addInteractionZone(
   startIndex,
@@ -937,312 +1102,264 @@ function showZone3Plot(filtered) {
 }
 
 // === Barplot ===
-// Updated bar‐plot function
 function drawBarplot(data, titleText, subtitleText) {
   // Clear & measure container
   const container = d3.select("#subchart").html("");
   const { width, height } = container.node().getBoundingClientRect();
-  const margin = { top: 80, right: 60, bottom: 80, left: 80 };
+  const margin = { top: 100, right: 60, bottom: 80, left: 80 };
 
   // Responsive SVG
-  const svg = container.append("svg")
+  const svg = container
+    .append("svg")
     .attr("viewBox", `0 0 ${width} ${height}`)
     .attr("preserveAspectRatio", "xMidYMid meet")
-    .style("width","100%")
-    .style("height","100%");
+    .style("width", "100%")
+    .style("height", "100%");
 
   // Title
-  svg.append("text")
-    .attr("x", width/2).attr("y", 30)
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 25)
     .attr("text-anchor", "middle")
     .style("font-size", "18px")
     .style("font-weight", "600")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
     .text(titleText);
 
   // Subtitle
-  svg.append("text")
-    .attr("x", width/2).attr("y", 55)
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 50)
     .attr("text-anchor", "middle")
     .style("font-size", "14px")
     .style("fill", "#555")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
     .text(subtitleText);
 
   // Scales
-  const x = d3.scaleBand()
-    .domain(data.map(d => d.type))
+  const x = d3
+    .scaleBand()
+    .domain(data.map((d) => d.type))
     .range([margin.left, width - margin.right])
     .padding(0.4);
-  const y = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.mean_rt)]).nice()
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(data, (d) => d.mean_rt)])
+    .nice()
     .range([height - margin.bottom, margin.top]);
 
   // Horizontal grid lines
-  svg.append("g")
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(
-        d3.axisLeft(y)
-          .tickSize(-(width - margin.left - margin.right))
-          .tickFormat("")
-          .tickSizeOuter(0)
-      )
-      .selectAll("line")
-        .attr("stroke", "#e0e0e0");
+  svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(
+      d3
+        .axisLeft(y)
+        .tickSize(-(width - margin.left - margin.right))
+        .tickFormat("")
+        .tickSizeOuter(0),
+    )
+    .selectAll("line")
+    .attr("stroke", "#e0e0e0");
 
   // Bars
-  svg.selectAll("rect")
+  svg
+    .selectAll("rect")
     .data(data)
     .join("rect")
-      .attr("x", d => x(d.type))
-      .attr("y", d => y(d.mean_rt))
-      .attr("width", x.bandwidth())
-      .attr("height", d => y(0) - y(d.mean_rt))
-      .attr("fill", d => d.type === "Calming" ? "steelblue" : "tomato");
+    .attr("x", (d) => x(d.type))
+    .attr("y", (d) => y(d.mean_rt))
+    .attr("width", x.bandwidth())
+    .attr("height", (d) => y(0) - y(d.mean_rt))
+    .attr("fill", (d) => (d.type === "Calming" ? "steelblue" : "tomato"));
 
   // X axis
-  svg.append("g")
-      .attr("transform", `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x))
-      .selectAll("text")
-        .style("font-size", "14px")
-        .style("font-weight", "600");
+  svg
+    .append("g")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("font-size", "14px")
+    .style("font-weight", "600");
 
   // Y axis
-  svg.append("g")
-      .attr("transform", `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y))
-      .selectAll("text")
-        .style("font-size", "12px");
+  svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y))
+    .selectAll("text")
+    .style("font-size", "12px");
 
   // Y-axis label
-  svg.append("text")
-    .attr("transform","rotate(-90)")
-    .attr("x", -height/2)
+  svg
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -height / 2)
     .attr("y", margin.left - 50)
-    .attr("text-anchor","middle")
-    .style("font-size","14px")
-    .style("font-weight","600")
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
     .text("Reaction Time (ms)");
 }
 
-
-// Updated line‐plot with partition
+// === Lineplot with Partition ===
 function drawLineplotWithPartition(trials, titleText, subtitleText) {
   // Clear & measure container
   const container = d3.select("#subchart").html("");
   const { width, height } = container.node().getBoundingClientRect();
-  const margin = { top: 80, right: 40, bottom: 60, left: 80 };
+  const margin = { top: 100, right: 40, bottom: 60, left: 80 };
 
   // Responsive SVG
-  const svg = container.append("svg")
+  const svg = container
+    .append("svg")
     .attr("viewBox", `0 0 ${width} ${height}`)
     .attr("preserveAspectRatio", "xMidYMid meet")
-    .style("width","100%")
-    .style("height","100%");
+    .style("width", "100%")
+    .style("height", "100%");
 
   // Title
-  svg.append("text")
-    .attr("x", width/2).attr("y", 30)
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 25)
     .attr("text-anchor", "middle")
     .style("font-size", "18px")
     .style("font-weight", "600")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
     .text(titleText);
 
-  // Subtitle (moved down to avoid collision)
-  svg.append("text")
-    .attr("x", width/2)
-    .attr("y", margin.top - 30)        // was fixed 55, now dynamic
+  // Subtitle
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 50)
     .attr("text-anchor", "middle")
     .style("font-size", "14px")
     .style("fill", "#555")
+    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
     .text(subtitleText);
 
   // Scales
-  const x = d3.scaleLinear()
-    .domain(d3.extent(trials, d => d.trial))
+  const x = d3
+    .scaleLinear()
+    .domain(d3.extent(trials, (d) => d.trial))
     .range([margin.left, width - margin.right]);
 
-  const y = d3.scaleLinear()
-    .domain([0, d3.max(trials, d => d.mean_rt)]).nice()
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(trials, (d) => d.mean_rt)])
+    .nice()
     .range([height - margin.bottom, margin.top]);
 
   // Grid lines (no outer ticks, no domain path)
-  svg.append("g")
+  svg
+    .append("g")
     .attr("transform", `translate(${margin.left},0)`)
     .call(
-      d3.axisLeft(y)
+      d3
+        .axisLeft(y)
         .tickSize(-(width - margin.left - margin.right))
         .tickSizeOuter(0)
-        .tickFormat("")
+        .tickFormat(""),
     )
-    .call(g => g.select(".domain").remove())
+    .call((g) => g.select(".domain").remove())
     .selectAll("line")
-      .attr("stroke", "#e0e0e0");
+    .attr("stroke", "#e0e0e0");
 
-  svg.append("g")
+  svg
+    .append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
     .call(
-      d3.axisBottom(x)
+      d3
+        .axisBottom(x)
         .tickSize(-(height - margin.top - margin.bottom))
         .tickSizeOuter(0)
-        .tickFormat("")
+        .tickFormat(""),
     )
-    .call(g => g.select(".domain").remove())
+    .call((g) => g.select(".domain").remove())
     .selectAll("line")
-      .attr("stroke", "#e0e0e0");
+    .attr("stroke", "#e0e0e0");
 
   // Line path
-  svg.append("path")
+  svg
+    .append("path")
     .datum(trials)
     .attr("fill", "none")
     .attr("stroke", "steelblue")
     .attr("stroke-width", 3)
-    .attr("d", d3.line()
-      .x(d => x(d.trial))
-      .y(d => y(d.mean_rt))
+    .attr(
+      "d",
+      d3
+        .line()
+        .x((d) => x(d.trial))
+        .y((d) => y(d.mean_rt)),
     );
 
   // Axes
-  svg.append("g")
+  svg
+    .append("g")
     .attr("transform", `translate(0,${height - margin.bottom})`)
     .call(d3.axisBottom(x).tickFormat(d3.format("d")))
     .selectAll("text")
-      .attr("transform", "rotate(-45)")
-      .style("text-anchor", "end")
-      .style("font-size", "12px");
+    .attr("transform", "rotate(-45)")
+    .style("text-anchor", "end")
+    .style("font-size", "12px");
 
-  svg.append("g")
+  svg
+    .append("g")
     .attr("transform", `translate(${margin.left},0)`)
     .call(d3.axisLeft(y))
     .selectAll("text")
-      .style("font-size", "12px");
+    .style("font-size", "12px");
 
   // Y-axis label
-  svg.append("text")
-    .attr("transform","rotate(-90)")
-    .attr("x", -height/2)
+  svg
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -height / 2)
     .attr("y", margin.left - 60)
-    .attr("text-anchor","middle")
-    .style("font-size","14px")
-    .style("font-weight","600")
+    .attr("text-anchor", "middle")
+    .style("font-size", "14px")
+    .style("font-weight", "600")
     .text("Reaction Time (ms)");
 
   // Partition + labels
-  const calmingCount = trials.filter(d => d.condition === "Calming").length;
+  const calmingCount = trials.filter((d) => d.condition === "Calming").length;
   if (calmingCount < trials.length) {
     const px = x(trials[calmingCount].trial - 0.5);
 
-    svg.append("line")
-      .attr("x1", px).attr("x2", px)
+    svg
+      .append("line")
+      .attr("x1", px)
+      .attr("x2", px)
       .attr("y1", margin.top)
       .attr("y2", height - margin.bottom)
       .attr("stroke", "red")
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", "4,4");
 
-    svg.append("text")
-      .attr("x", margin.left + (px - margin.left)/2)
-      .attr("y", margin.top - 20)
-      .attr("text-anchor","middle")
-      .style("font-size","16px")
-      .style("font-weight","600")
-      .style("fill","steelblue")
+    svg
+      .append("text")
+      .attr("x", margin.left + (px - margin.left) / 2)
+      .attr("y", margin.top - 10)
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("font-weight", "600")
+      .style("fill", "steelblue")
       .text("Calming Music");
 
-    svg.append("text")
-      .attr("x", px + (width - margin.right - px)/2)
-      .attr("y", margin.top - 20)
-      .attr("text-anchor","middle")
-      .style("font-size","16px")
-      .style("font-weight","600")
-      .style("fill","tomato")
+    svg
+      .append("text")
+      .attr("x", px + (width - margin.right - px) / 2)
+      .attr("y", margin.top - 10)
+      .attr("text-anchor", "middle")
+      .style("font-size", "16px")
+      .style("font-weight", "600")
+      .style("fill", "tomato")
       .text("Vexing Music");
   }
-}
-
-const x = d3
-  .scaleLinear()
-  .domain([0, trials.length - 1])
-  .range([margin.left, width - margin.right]);
-
-const y = d3
-  .scaleLinear()
-  .domain([0, d3.max(trials, (d) => d.mean_rt)])
-  .nice()
-  .range([height - margin.bottom, margin.top]);
-
-// Add grid lines
-subSvg
-  .append("g")
-  .attr("class", "grid")
-  .attr("transform", `translate(${margin.left},0)`)
-  .call(
-    d3
-      .axisLeft(y)
-      .tickSize(-(width - margin.left - margin.right))
-      .tickFormat(""),
-  )
-  .selectAll("line")
-  .attr("stroke", "#e0e0e0");
-
-const line = d3
-  .line()
-  .x((d, i) => x(i))
-  .y((d) => y(d.mean_rt));
-
-subSvg
-  .append("path")
-  .datum(trials)
-  .attr("fill", "none")
-  .attr("stroke", "steelblue")
-  .attr("stroke-width", 3)
-  .attr("d", line);
-
-// Find partition point in this subset
-const partitionIndex = trials.findIndex((d) => d.condition === "Vexing");
-if (partitionIndex > 0) {
-  const partitionX = x(partitionIndex - 0.5);
-  subSvg
-    .append("line")
-    .attr("x1", partitionX)
-    .attr("x2", partitionX)
-    .attr("y1", margin.top)
-    .attr("y2", height - margin.bottom)
-    .attr("stroke", "red")
-    .attr("stroke-width", 2)
-    .attr("stroke-dasharray", "4,4");
-
-  subSvg
-    .append("g")
-    .attr("transform", `translate(0,${height - margin.bottom})`)
-    .call(
-      d3.axisBottom(x).tickFormat((d, i) => `Trial ${trials[i]?.trial || ""}`),
-    )
-    .selectAll("text")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "12px")
-    .attr("transform", "rotate(-45)")
-    .style("text-anchor", "end");
-
-  subSvg
-    .append("g")
-    .attr("transform", `translate(${margin.left},0)`)
-    .call(d3.axisLeft(y))
-    .selectAll("text")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "12px");
-
-  // Add Y-axis label
-  subSvg
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", margin.left - 60)
-    .attr("x", -(height / 2))
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .style("font-family", "'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif")
-    .style("font-size", "14px")
-    .style("font-weight", "600")
-    .text("Reaction Time (ms)");
 }
 
 function averageMeanRT(data) {

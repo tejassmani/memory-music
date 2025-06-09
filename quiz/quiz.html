@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
+    <!-- Navigation buttons -->
+    <div class="nav-buttons">
+      <a href="../index.html" class="nav-btn">🏠 Home</a>
+      <a href="../exlpore_viz/explore.html" class="nav-btn"
+        >📊 Explore the Data</a
+      >
+    </div>
+
     <div class="container">
       <h1>🧠 N-Back Memory Challenge</h1>
       <canvas id="nback_canvas"></canvas>
@@ -17,6 +25,17 @@
         <button id="viewAnalysisButton" style="display: none">
           📊 View Performance Analysis
         </button>
+      </div>
+
+      <!-- Playlist Generation Section -->
+      <div id="playlistSection" style="display: none">
+        <button id="generatePlaylistButton">
+          🎵 Generate Your Personalized Focus Playlist
+        </button>
+        <div id="playlistContainer" style="display: none">
+          <div id="playlistReason"></div>
+          <div id="playlistEmbed"></div>
+        </div>
       </div>
 
       <!-- Visualization Section -->

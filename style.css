@@ -116,6 +116,42 @@ body {
   position: relative;
 }
 
+/* Navigation buttons styling */
+.nav-buttons {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 1001;
+}
+
+.nav-btn {
+  background: linear-gradient(45deg, #c266ea, #764ba2);
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #a855d4, #5b3c7a);
+}
+
+.nav-btn:active {
+  transform: translateY(0);
+}
+
 .container {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
@@ -160,7 +196,7 @@ h1 {
   width: 100%;
   max-width: 600px;
   aspect-ratio: 600 / 400; /* lock 3:2 on-screen ratio */
-  border: 2px solid #818893;
+  box-shadow: 0 4px 15px rgba(129, 136, 147, 0.2);
   border-radius: 15px;
   background: white;
   margin: 1rem auto;
@@ -194,7 +230,7 @@ h1 {
   padding: 1rem;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
-  border: 2px solid #c266ea;
+  box-shadow: 0 4px 15px rgba(194, 102, 234, 0.15);
 }
 
 .accuracy-breakdown h3 {
@@ -269,6 +305,61 @@ button:active {
 
 #viewAnalysisButton:hover {
   background: linear-gradient(45deg, #0056b3, #004085);
+}
+
+/* Playlist Section Styling */
+#playlistSection {
+  margin-top: 1.5rem;
+  padding: 1rem;
+}
+
+#generatePlaylistButton {
+  background: linear-gradient(45deg, #4a90e2, #357abd);
+  font-size: 1.1rem;
+  padding: 15px 30px;
+  border-radius: 30px;
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
+}
+
+#generatePlaylistButton:hover {
+  background: linear-gradient(45deg, #357abd, #2968a3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+}
+
+#playlistContainer {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(74, 144, 226, 0.15);
+}
+
+#playlistReason {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.1);
+}
+
+#playlistReason h3 {
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#playlistReason p {
+  color: #4a5568;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-family: "Gotham Bold", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#playlistEmbed iframe {
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(74, 144, 226, 0.15);
 }
 
 /* Quiz completion screen */
@@ -406,11 +497,10 @@ button:active {
   border-radius: 15px;
   padding: 1rem;
   margin: 1rem auto;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(194, 102, 234, 0.1);
   width: 100%;
   max-width: 850px;
   height: 550px;
-  border: 1px solid #e0e0e0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -442,7 +532,7 @@ button:active {
 /* Audio status indicator */
 .audio-status {
   position: fixed;
-  top: 20px;
+  top: 80px;
   right: 20px;
   background: rgba(0, 0, 0, 0.8);
   color: white;
@@ -487,6 +577,29 @@ button:active {
 
   .viz-container {
     padding: 1rem 2rem;
+  }
+
+  #playlistEmbed iframe {
+    height: 280px;
+  }
+
+  /* Mobile responsive navigation */
+  .nav-buttons {
+    top: 10px;
+    right: 10px;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .nav-btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .audio-status {
+    top: 120px;
+    right: 10px;
+    font-size: 10px;
   }
 }
 
@@ -686,15 +799,15 @@ body {
 }
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  1) ONE BIG “CARD” containing both chart + controls
+  1) ONE BIG "CARD" containing both chart + controls
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
 #dashboard-container {
   display: flex;
-  align-items: flex-start;       /* top-align graph + panel */
-  gap: 32px;                      /* space between them */
-  background: #fff;               /* the single white card */
+  align-items: flex-start; /* top-align graph + panel */
+  gap: 32px; /* space between them */
+  background: #fff; /* the single white card */
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 24px;
 }
 
@@ -702,8 +815,8 @@ body {
 #eda-accuracy-chart,
 #dashboard-panel {
   background: none !important;
-  box-shadow: none   !important;
-  padding: 0         !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 
 /* optional: make chart flex-grow so it fills leftover space */
