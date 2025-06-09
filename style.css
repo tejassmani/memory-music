@@ -1007,10 +1007,7 @@ header.page-header p.citation {
   color: #555;
 }
 
-#dashboard-panel {
-  width: 300px !important;          /* a bit wider */
-  padding: 1.5rem !important;       /* more padding inside */
-}
+
 #dashboard-panel label {
   margin-bottom: 1.5rem !important; /* more space between controls */
 }

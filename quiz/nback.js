@@ -142,18 +142,18 @@ function drawIntroScreen() {
   ctx.clearRect(0, 0, W, H);
 
   // Text style
-  const baseFontSize = Math.floor(H * 0.04);    // 4% of height
-  const lineHeight   = Math.floor(baseFontSize * 1.2);
-  ctx.font          = `${baseFontSize}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
-  ctx.fillStyle     = "black";
-  ctx.textAlign     = "center";
-  ctx.textBaseline  = "top";
+  const baseFontSize = Math.floor(H * 0.04); // 4% of height
+  const lineHeight = Math.floor(baseFontSize * 1.2);
+  ctx.font = `${baseFontSize}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
 
   const lines = [
     "2-Back Working Memory Task Instructions",
     "",
-    "You will see a stream of letters, one at a time.", 
-    "Each letter appears for 1 second—that’s one trial.",
+    "You will see a stream of letters, one at a time.",
+    "Each letter appears for 1 second—that's one trial.",
     "",
     "For every letter, each trial, decide if it matches the letter you saw two trials ago.",
     "",
@@ -163,7 +163,8 @@ function drawIntroScreen() {
     "(Be ready to press one of these keys on every trial.)",
     "",
     "There will be 60 trials.",
-    "Background music will switch at trial halfway through."
+    "Background music will switch at trial halfway through.",
+    "Click anywhere to begin the quiz!",
   ];
 
   // vertically center the block of text
@@ -180,7 +181,7 @@ function drawStimulus(letter) {
   const H = canvas.clientHeight;
   ctx.clearRect(0, 0, W, H);
 
-  ctx.textAlign    = "center";
+  ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
   // Start with a font size that fills 80% of the canvas height
@@ -190,7 +191,7 @@ function drawStimulus(letter) {
   // If the letter is too wide, scale it down to fit 90% of canvas width
   const metrics = ctx.measureText(letter);
   if (metrics.width > W * 0.9) {
-    fontSize = fontSize * (W * 0.9 / metrics.width);
+    fontSize = fontSize * ((W * 0.9) / metrics.width);
     ctx.font = `${fontSize}px 'Gotham Bold', Tahoma, Geneva, Verdana, sans-serif`;
   }
 
@@ -286,7 +287,12 @@ function runTrial() {
 
   // Switch to vexing at halfway point (after 30 trials)
   if (currentIndex === halfwayPoint) {
-    playMusic("vexing");
+    console.log(
+      `Reached halfway point (trial ${currentIndex}), switching to vexing music`,
+    );
+    setTimeout(() => {
+      playMusic("vexing");
+    }, 100);
   }
 
   drawStimulus(sequence[currentIndex]);
@@ -332,19 +338,59 @@ function runTrial() {
 }
 
 function playMusic(type) {
-  stopMusic();
-  const path = `../audio/${genre}/${type}.mp3`;
-  currentAudio = new Audio(path);
-  currentAudio.loop = true;
-  currentAudio.play();
+  console.log(`playMusic called with type: ${type}, current genre: ${genre}`);
 
-  // Update audio status indicator using CSS class
-  updateAudioStatus(`Playing: ${genre} ${type} music`);
+  stopMusic();
+
+  // Add cache busting parameter to force reload
+  const timestamp = new Date().getTime();
+  const path = `../audio/${genre}/${type}.mp3?t=${timestamp}`;
+
+  console.log(`Attempting to load: ${path}`);
+
+  currentAudio = new Audio();
+
+  // Set up event listeners before setting src
+  currentAudio.addEventListener("loadstart", () => {
+    console.log(`Loading started for: ${path}`);
+  });
+
+  currentAudio.addEventListener("canplaythrough", () => {
+    console.log(`Can play through: ${path}`);
+    updateAudioStatus(`Playing: ${genre} ${type} music`);
+  });
+
+  currentAudio.addEventListener("error", (e) => {
+    console.error(`Audio error for ${path}:`, e);
+    console.error("Error code:", currentAudio.error?.code);
+    console.error("Error message:", currentAudio.error?.message);
+    updateAudioStatus(`Error: Could not load ${genre} ${type} music`);
+  });
+
+  // Set the source and load
+  currentAudio.src = path;
+  currentAudio.loop = true;
+  currentAudio.load(); // Force reload
+
+  // Play with promise handling
+  currentAudio
+    .play()
+    .then(() => {
+      console.log(`Successfully playing: ${path}`);
+      updateAudioStatus(`Playing: ${genre} ${type} music`);
+    })
+    .catch((error) => {
+      console.error("Play error:", error);
+      updateAudioStatus(`Playback error: ${error.message}`);
+    });
 }
 
 function stopMusic() {
   if (currentAudio) {
+    console.log("Stopping current audio");
     currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio.src = ""; // Clear the source
     currentAudio = null;
   }
 }
@@ -638,24 +684,45 @@ function downloadCSV() {
   URL.revokeObjectURL(url);
 }
 
-// Handle canvas clicks (for genre selection and starting quiz only)
+// Handle canvas clicks (for genre selection and starting quiz only) - UPDATED
 canvas.addEventListener("click", (e) => {
   if (currentScreen === "genre") {
     // Select genre by canvas side
-    const x = e.offsetX;
-    genre = x < canvas.width / 2 ? "classical" : "pop";
-    console.log(`Genre selected: ${genre}`);
-    currentScreen = "instructions";
-    drawIntroScreen();
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const canvasWidth = rect.width;
+
+    // Make genre selection more explicit
+    if (x < canvasWidth / 2) {
+      genre = "classical";
+    } else {
+      genre = "pop";
+    }
+
+    console.log(
+      `Genre selected: "${genre}" (click at x=${x}, canvas width=${canvasWidth})`,
+    );
+
+    // Visual feedback - update the canvas to show selection
+    setTimeout(() => {
+      currentScreen = "instructions";
+      drawIntroScreen();
+    }, 100);
   } else if (currentScreen === "instructions") {
     // Start quiz
+    console.log(`Starting quiz with confirmed genre: "${genre}"`);
     currentScreen = "quiz";
     quizStarted = true;
     sequence = generateSequence(numTrials);
     currentIndex = 0;
     rtData = [];
     document.getElementById("stats").innerHTML = "";
-    playMusic("calming");
+
+    // Delay music start slightly to ensure everything is ready
+    setTimeout(() => {
+      playMusic("calming");
+    }, 200);
+
     runTrial();
   }
   // NO CLICK HANDLING DURING QUIZ - only arrow keys work
