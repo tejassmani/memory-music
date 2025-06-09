@@ -963,10 +963,6 @@ header.page-header {
   min-height: 150px; /* still keep at least the old banner height */
 }
 
-a {
-  color: #6c5497
-}
-
 /* ─── HEADER ROUNDED CORNERS → SQUARE, LESS PADDING ─── */
 header.page-header {
   border-radius: 0 !important;   
@@ -1036,7 +1032,16 @@ button.primary {
   background: none;
 }
 
+a {
+  color: #6c5497
+}
 
+iframe {
+  border: none;           /* remove default border if you like */
+  border-radius: 20px;     /* adjust to taste */
+  overflow: hidden;        /* clip the iframe’s contents to the rounded shape */
+}
 
-
-
+#vid-title {
+  padding: 10px;
+}
