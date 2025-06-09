@@ -825,9 +825,7 @@ section.full-width-gray .content-wrapper {
   display: flex;
   align-items: flex-start; /* top-align graph + panel */
   gap: 32px; /* space between them */
-  background: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   padding: 24px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
