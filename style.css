@@ -962,3 +962,7 @@ header.page-header {
   height: auto;      /* let it expand to fit the citation */
   min-height: 150px; /* still keep at least the old banner height */
 }
+
+a {
+  color: #6c5497
+}
