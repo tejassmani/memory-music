@@ -952,7 +952,7 @@ function createVisualization() {
   addInteractionZone(
     zone1_start,
     zone1_end,
-    "Early Performance: Which Music Type Engages you Earlier",
+    "Early Performance: Which Music Type Engages you Earlier (CLICK TO VIEW)",
     () => showZone1Plot(filtered),
     svg,
     xScale,
@@ -963,7 +963,7 @@ function createVisualization() {
   addInteractionZone(
     zone2_start,
     zone2_end,
-    "Transition Period: How Your Focus Changes During Music Switch",
+    "Transition Period: How Your Focus Changes During Music Switch (CLICK TO VIEW)",
     () => showZone2Plot(filtered, zone2_start, zone2_end),
     svg,
     xScale,
@@ -974,7 +974,7 @@ function createVisualization() {
   addInteractionZone(
     zone3_start,
     zone3_end,
-    "Late Performance: Which Music Maintains Your Focus",
+    "Late Performance: Which Music Maintains Your Focus (CLICK TO VIEW)",
     () => showZone3Plot(filtered),
     svg,
     xScale,
@@ -1056,7 +1056,7 @@ function showZone1Plot(filtered) {
 
   drawBarplot(
     barData,
-    "Early Performance: Which Music Engages You Earlier (CLICK TO VIEW)",
+    "Early Performance: Which Music Engages You Earlier",
     "Compare the First 10 Rounds of Calming versus the First 10 Rounds of Vexing",
   );
 }
@@ -1071,7 +1071,7 @@ function showZone2Plot(filtered, zone2_start, zone2_end) {
 
   drawLineplotWithPartition(
     trials,
-    "Transition Period: How Your Focus Changes During Music Switch (CLCIK TO VIEW)",
+    "Transition Period: How Your Focus Changes During Music Switch",
     "Compare How Your Focus Fluctuates Over the 20 Rounds Surrounding the Music Switch",
   );
 }
@@ -1096,7 +1096,7 @@ function showZone3Plot(filtered) {
 
   drawBarplot(
     barData,
-    "Late Performance: Which Music Type Keeps You Engaged (CLICK TO VIEW)",
+    "Late Performance: Which Music Type Keeps You Engaged",
     "Compare the Last 10 Rounds of Calming versus the Last 10 Rounds of Vexing",
   );
 }
