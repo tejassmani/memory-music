@@ -65,10 +65,10 @@ img {
 
 .button-group a {
   text-decoration: none;
-  background-color: #6c5497; /* complementary purple shade */
+  color: linear-gradient(45deg, #c266ea, #764ba2);
   color: #fff;
   padding: 14px 28px;
-  border-radius: 4px;
+  border-radius: 25px;
   font-size: 1rem;
   font-weight: bold;
   transition:
@@ -154,7 +154,7 @@ body {
 }
 
 .container {
-  background: rgba(255, 255, 255, 0.95);
+  background: white;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   padding: 2rem;
@@ -197,7 +197,6 @@ h1 {
   width: 100%;
   max-width: 600px;
   aspect-ratio: 600 / 400; /* lock 3:2 on-screen ratio */
-  box-shadow: 0 4px 15px rgba(129, 136, 147, 0.2);
   border-radius: 15px;
   background: white;
   margin: 1rem auto;
