@@ -9,9 +9,9 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 
 // 1) Dimensions
-const margin = { top: 20, right: 150, bottom: 40, left: 60 };
-const singleChartHeight = 180;
-const chartSpacing     = 60;
+const margin = { top: 20, right: 150, bottom: 40, left: 50 };
+const singleChartHeight = 230;
+const chartSpacing     = 70;
 const svgWidth  = 600;
 const svgHeight = margin.top
                 + singleChartHeight
@@ -19,6 +19,9 @@ const svgHeight = margin.top
                 + singleChartHeight
                 + margin.bottom;
 const chartWidth = svgWidth - margin.left - margin.right;
+// right after you set margin/sizes up
+const titleOffset = 30;  // px of extra space below the title
+
 
 // 2) Create SVG
 
@@ -27,7 +30,17 @@ const svg = d3.select("#vis1").append("svg").attr("id", "swarm")
   .attr("width", svgWidth)
   .attr("height", svgHeight)
   .style("display", "block")    // make it a block…
-  .style("margin", "0 auto");   // …and auto-center horizontally
+  .style("margin", "0 auto")   // …and auto-center horizontally
+
+  // ─── Chart Title ─────────────────────────────────────────────────────────
+svg.append("text")
+  .attr("class", "chart-title")
+  .attr("x", svgWidth/2 - 25)
+  .attr("y", margin.top - 5)
+  .style("text-anchor", "middle")
+  .style("font-size", "20px")
+  .style("font-weight", "600")
+  .text("Beeswarm of Trial Accuracy & Response Time");
 
 // 3) Load data
 d3.csv("../data/df.csv").then(data => {
@@ -73,7 +86,8 @@ d3.csv("../data/df.csv").then(data => {
 
   // 5) Chart groups
   const accG = svg.append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+  .attr("transform",
+        `translate(${margin.left},${margin.top + titleOffset})`);
   const rtG  = svg.append("g")
     .attr("transform", `translate(${margin.left},${margin.top + singleChartHeight + chartSpacing})`);
 
@@ -112,6 +126,7 @@ d3.csv("../data/df.csv").then(data => {
         .attr("y", margin.bottom-10)
         .attr("text-anchor","middle")
         .attr("fill","#000")
+        .attr("font-size","12px")
         .text(xLabel);
 
     // Y-axis
@@ -123,12 +138,14 @@ d3.csv("../data/df.csv").then(data => {
         .attr("y",-margin.left+15)
         .attr("text-anchor","middle")
         .attr("fill","#000")
+        .attr("font-size","12px")
         .text("Condition");
   }
 
   // 7) Draw both plots
   drawSwarm(accG, "accuracy", xAcc, "acc", "Accuracy");
   drawSwarm(rtG,  "mean_rt",  xRT,  "rt",  "Mean RT (ms)");
+
 
   // 8) Shared legend with hover & click
   let currentFilter = null;
@@ -191,6 +208,8 @@ d3.csv("../data/df.csv").then(data => {
 
   // Legend swatches
   items.append("rect")
+    .attr("x", 18)
+    .attr("y", 230)
     .attr("width",12)
     .attr("height",12)
     .attr("fill", d=> partColor(d))
@@ -198,10 +217,32 @@ d3.csv("../data/df.csv").then(data => {
 
   // Legend labels
   items.append("text")
-    .attr("x", 18)
-    .attr("y", 10)
+    .attr("x", 38)
+    .attr("y", 240)
     .attr("font-size","12px")
     .attr("fill","#000")
     .text(d=>d);
 
-})
+    // ─── Legend Behavior Annotation ────────────────────────────────────────
+legend.append("text")
+  .attr("class", "legend-annotation")
+  .attr("x", 0)
+  .attr("y", participants.length * 20 + 90)  // 20px per item + 20px gap
+  .style("font-size", "14px")
+  .style("font-style", "italic")
+  .style("fill", "#333")
+  .text("Hover to highlight,");
+
+  legend.append("text")
+  .attr("class", "legend-annotation")
+  .attr("x", 0)
+  .attr("y", participants.length * 20 + 110)  // 20px per item + 20px gap
+  .style("font-size", "14px")
+  .style("font-style", "italic")
+  .style("fill", "#333")
+  .text("Hover to highlight;click to filter")
+  .text("Click to filter - ");
+    })
+
+
+
