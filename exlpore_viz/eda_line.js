@@ -78,7 +78,7 @@ d3.csv("../data/df.csv").then(raw => {
     .attr("text-anchor","middle")
     .attr("font-size","16px")
     .attr("font-weight","bold")
-    .text("Average EDA by Trial (1–16): Calming vs Vexing");
+    .text("How Stressful is the Music");
 
   // 9) Legend (fixed spacing)
   const legend = svg.append("g")

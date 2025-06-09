@@ -615,9 +615,7 @@ body {
 
 /* === HEADER === */
 header.page-header {
-  padding: 40px 20px 20px 20px;
-  border-bottom: 1px solid #ddd;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   text-align: center;
 }
@@ -637,7 +635,7 @@ header.page-header p.citation {
 }
 
 header.page-header p.citation a {
-  color: #3366cc;
+  color: #b041ec;
   text-decoration: none;
 }
 
