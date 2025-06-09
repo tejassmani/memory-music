@@ -959,5 +959,8 @@ iframe {
   border: none;           /* remove default border if you like */
   border-radius: 20px;     /* adjust to taste */
   overflow: hidden;        /* clip the iframe’s contents to the rounded shape */
+}
+
+#vid-title {
   padding: 10px;
 }
