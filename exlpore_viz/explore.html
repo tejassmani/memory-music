@@ -1,166 +1,204 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Music for Memory: Explore the Data</title>
-  <link rel="stylesheet" href="../style.css" type="text/css" />
-</head>
-<body>
-
-  <!-- Navigation buttons -->
-  <div class="nav-buttons">
-    <a href="../index.html" class="nav-btn">🏠 Home</a>
-    <a href="../quiz/quiz.html" class="nav-btn">🧠 Take the Quiz</a>
-  </div>
-
-  <header class="page-header">
-    <h1>Does Music Affect Cognitive Function?</h1>
-    <h3 class="subheading">
-      By: Stuti Verma, Prithvi Kochhar, Willem DeHaan, Tejas Mani 
-    </h3>
-    <p class="citation">
-      Khazaei, S., Parshi, S., Alam, S., Amin, M. R., &amp; Faghih, R. T. (2025). 
-      <em>A Multimodal Dataset for Investigating Working Memory in Presence of Music</em><br>
-      Data Source: <a href="https://physionet.org/content/multimodal-nback-music/1.0.0/" target="_blank">https://physionet.org/content/multimodal-nback-music/1.0.0/</a>
-    </p>
-  </header>
-
-  <main id="scrolly" class="scrolly">
-    <!-- LEFT: narrative steps -->
-    <div class="scrolly__text">
-      <div class="step" data-step="1">
-        <h2>Accuracy &amp; Response Time Distribution</h2>
-        <p>
-          This double beeswarm plot shows the distribution of <strong>accuracy</strong> (top) and 
-          <strong>response time</strong> (bottom) across two types of music: calming and vexing. 
-          Each dot represents a single trial performed by a participant.
-        </p>
-        <p>
-          Dots are color-coded by participant ID and grouped by music type.
-        </p>
-        <p>
-          On the top chart, we see how accurate participants were under calming vs. vexing music. 
-          On the bottom chart, we visualize how fast they responded in each case.
-        </p>
-        <p>
-          You can <em>hover</em> over participants to highlight their data, or <em>click</em> on a 
-          participant to filter the charts.
-        </p>
-        <p>
-          <strong>What it reveals:</strong><br/>
-          Some participants may be more accurate under calming music but respond faster under vexing music. 
-          Others may show the opposite trend. This chart helps identify individual variability in how 
-          music affects cognitive control and performance.
-        </p>
-      </div>
-      <div class="step" data-step="2">
-        <h2>Mean EDA by Trial</h2>
-        <p>
-          This line chart tracks the average Electrodermal Activity (EDA) - a common stress indicator - over time across 16 trials. We compare EDA responses during calming music and vexing music sessions.
-        </p>
-        <p>The purple line shows average EDA under calming music.</p>
-        <p>The orange line shows EDA under vexing music.</p>
-        <p>The chart updates dynamically based on participant and session type filters.</p>
-        <p><strong>What it reveals:</strong><br/>
-          Higher EDA typically reflects greater physiological arousal or stress. Here, we can explore whether vexing music consistently elicits higher stress responses or whether calming music helps reduce arousal over time.
-        </p>
-      </div>
-      <!-- Add more <div class="step" data-step="3">…</div> blocks here if needed -->
-      <div class="step" data-step="3">
-        <h2>Average Mood over the Study</h2>
-        <p>
-          This line chart tracks the average Electrodermal Activity (EDA) - a common stress indicator - over time across 16 trials. We compare EDA responses during calming music and vexing music sessions.
-        </p>
-        <p>The purple line shows average EDA under calming music.</p>
-        <p>The orange line shows EDA under vexing music.</p>
-        <p>The chart updates dynamically based on participant and session type filters.</p>
-        <p><strong>What it reveals:</strong><br/>
-          Higher EDA typically reflects greater physiological arousal or stress. Here, we can explore whether vexing music consistently elicits higher stress responses or whether calming music helps reduce arousal over time.
-        </p>
-      </div>
-      <div class="step" data-step="4">
-        <h2>EDA vs. Accuracy Dashboard</h2>
-       <p>
-         This interactive scatterplot shows how physiological arousal (mean EDA) relates 
-          to cognitive accuracy on each trial, under both calming and vexing music.
-        </p>
-        <p>
-          Each point is one trial. Color indicates the music session (<strong>Calming</strong> 
-          vs. <strong>Vexing</strong>). Use the <strong>Controls</strong> panel on the right to:
-        </p>
-        <ul>
-          <li>Filter by participant <em>Gender</em></li>
-          <li>Filter by <em>Task Type</em> (1-back or 3-back)</li>
-          <li>Limit to trials ≤ <span id="trial-slider-value-inline">31</span> via the slider</li>
-        </ul>
-       <p>
-          The <strong>X-axis</strong> is mean EDA (μS); the <strong>Y-axis</strong> is trial accuracy (0–100%). 
-          Hover a point to see participant, trial number, and exact values.
-        </p>
-        <p>
-          <strong>What it reveals:</strong><br/>
-          Explore whether higher arousal correlates with better or worse performance, 
-          and how this relationship changes with music type.
-        </p>
-      </div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Music for Memory: Explore the Data</title>
+    <link rel="stylesheet" href="../style.css" type="text/css" />
+  </head>
+  <body>
+    <!-- Navigation buttons -->
+    <div class="nav-buttons">
+      <a href="../index.html" class="nav-btn">🏠 Home</a>
+      <a href="../quiz/quiz.html" class="nav-btn">🧠 Take the Quiz</a>
     </div>
 
-    <!-- RIGHT: sticky viz area -->
-  <div class="scrolly__graphic">
-    <div id="vis1" class="viz-container"></div>
-    <div id="vis2" class="viz-container"></div>
+    <header class="page-header">
+      <h1>Does Music Affect Cognitive Function?</h1>
+      <h3 class="subheading">
+        By: Stuti Verma, Prithvi Kochhar, Willem DeHaan, Tejas Mani
+      </h3>
+      <p class="citation">
+        Khazaei, S., Parshi, S., Alam, S., Amin, M. R., &amp; Faghih, R. T.
+        (2025).
+        <em
+          >A Multimodal Dataset for Investigating Working Memory in Presence of
+          Music</em
+        ><br />
+        Data Source:
+        <a
+          href="https://physionet.org/content/multimodal-nback-music/1.0.0/"
+          target="_blank"
+          >https://physionet.org/content/multimodal-nback-music/1.0.0/</a
+        >
+      </p>
+    </header>
 
-    <div id="vis3" class="viz-container">
-      <h2 class="slideshow-title">
-        Average Mood of Study Participants by round
-      </h2>
-
-      <div class="slideshow">
-        <div id="calming-box" class="box">
-          <img src="" alt="calming emotion">
-          <div class="label">Calming</div>
+    <main id="scrolly" class="scrolly">
+      <!-- LEFT: narrative steps -->
+      <div class="scrolly__text">
+        <div class="step" data-step="1">
+          <h2>Accuracy &amp; Response Time Distribution</h2>
+          <p>
+            This double beeswarm plot shows the distribution of
+            <strong>accuracy</strong> (top) and
+            <strong>response time</strong> (bottom) across two types of music:
+            calming and vexing. Each dot represents a single trial performed by
+            a participant.
+          </p>
+          <p>
+            Dots are color-coded by participant ID and grouped by music type.
+          </p>
+          <p>
+            On the top chart, we see how accurate participants were under
+            calming vs. vexing music. On the bottom chart, we visualize how fast
+            they responded in each case.
+          </p>
+          <p>
+            You can <em>hover</em> over participants to highlight their data, or
+            <em>click</em> on a participant to filter the charts.
+          </p>
+          <p>
+            <strong>What it reveals:</strong><br />
+            Some participants may be more accurate under calming music but
+            respond faster under vexing music. Others may show the opposite
+            trend. This chart helps identify individual variability in how music
+            affects cognitive control and performance.
+          </p>
         </div>
-        <div id="vexing-box" class="box">
-          <img src="" alt="vexing emotion">
-          <div class="label">Vexing</div>
+        <div class="step" data-step="2">
+          <h2>Mean EDA by Trial</h2>
+          <p>
+            This line chart tracks the average Electrodermal Activity (EDA) - a
+            common stress indicator - over time across 16 trials. We compare EDA
+            responses during calming music and vexing music sessions.
+          </p>
+          <p>The purple line shows average EDA under calming music.</p>
+          <p>The orange line shows EDA under vexing music.</p>
+          <p>
+            The chart updates dynamically based on participant and session type
+            filters.
+          </p>
+          <p>
+            <strong>What it reveals:</strong><br />
+            Higher EDA typically reflects greater physiological arousal or
+            stress. Here, we can explore whether vexing music consistently
+            elicits higher stress responses or whether calming music helps
+            reduce arousal over time.
+          </p>
+        </div>
+        <div class="step" data-step="3">
+          <h2>Average Mood over the Study</h2>
+          <p>
+            This line chart tracks the average Electrodermal Activity (EDA) - a
+            common stress indicator - over time across 16 trials. We compare EDA
+            responses during calming music and vexing music sessions.
+          </p>
+          <p>The purple line shows average EDA under calming music.</p>
+          <p>The orange line shows EDA under vexing music.</p>
+          <p>
+            The chart updates dynamically based on participant and session type
+            filters.
+          </p>
+          <p>
+            <strong>What it reveals:</strong><br />
+            Higher EDA typically reflects greater physiological arousal or
+            stress. Here, we can explore whether vexing music consistently
+            elicits higher stress responses or whether calming music helps
+            reduce arousal over time.
+          </p>
+        </div>
+        <div class="step" data-step="4">
+          <h2>EDA vs. Accuracy Dashboard</h2>
+          <p>
+            This interactive scatterplot shows how physiological arousal (mean
+            EDA) relates to cognitive accuracy on each trial, under both calming
+            and vexing music.
+          </p>
+          <p>
+            Each point is one trial. Color indicates the music session (<strong
+              >Calming</strong
+            >
+            vs. <strong>Vexing</strong>). Use the
+            <strong>Controls</strong> panel on the right to:
+          </p>
+          <ul>
+            <li>Filter by participant <em>Gender</em></li>
+            <li>Filter by <em>Task Type</em> (1-back or 3-back)</li>
+            <li>
+              Limit to trials ≤
+              <span id="trial-slider-value-inline">31</span> via the slider
+            </li>
+          </ul>
+          <p>
+            The <strong>X-axis</strong> is mean EDA (μS); the
+            <strong>Y-axis</strong> is trial accuracy (0–100%). Hover a point to
+            see participant, trial number, and exact values.
+          </p>
+          <p>
+            <strong>What it reveals:</strong><br />
+            Explore whether higher arousal correlates with better or worse
+            performance, and how this relationship changes with music type.
+          </p>
         </div>
       </div>
 
-      <!-- 2) Trial counter below the cards -->
-      <div id="trial-counter" class="trial-counter">
-        Round: 1
-      </div>
-    </div>
+      <!-- RIGHT: sticky viz area -->
+      <div class="scrolly__graphic">
+        <div id="vis1" class="viz-container"></div>
+        <div id="vis2" class="viz-container"></div>
 
-    <div id="vis4" class="viz-container">
-      <div id="dashboard-container">
-        <div id="dashboard-panel">
-          <h3>Controls</h3>
+        <div id="vis3" class="viz-container">
+          <h2 class="slideshow-title">
+            Average Mood of Study Participants by round
+          </h2>
 
-          <label>
-            Gender:
-            <select id="gender-select">…</select>
-          </label>
+          <div class="slideshow">
+            <div id="calming-box" class="box">
+              <img src="" alt="calming emotion" />
+              <div class="label">Calming</div>
+            </div>
+            <div id="vexing-box" class="box">
+              <img src="" alt="vexing emotion" />
+              <div class="label">Vexing</div>
+            </div>
+          </div>
 
-          <label>
-            Task Type:
-            <select id="task-select">…</select>
-          </label>
-
-          <label id="trial-label">
-            Trial ≤ <span id="trial-value">32</span>
-            <input type="range" id="trial-slider" …>
-          </label>
+          <!-- Trial counter below the cards -->
+          <div id="trial-counter" class="trial-counter">Round: 1</div>
         </div>
-        <div id="eda-accuracy-chart">
-          <!-- your SVG/chart here -->
+
+        <div id="vis4" class="viz-container">
+          <div id="dashboard-container">
+            <div id="dashboard-panel">
+              <h3>Controls</h3>
+
+              <label>
+                Gender:
+                <select id="gender-select">
+                  …
+                </select>
+              </label>
+
+              <label>
+                Task Type:
+                <select id="task-select">
+                  …
+                </select>
+              </label>
+
+              <label id="trial-label">
+                Trial ≤ <span id="trial-value">32</span>
+                <input type="range" id="trial-slider" … />
+              </label>
+            </div>
+            <div id="eda-accuracy-chart">
+              <!-- your SVG/chart here -->
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
 
-
-</main>
-
-<script type="module" src="scroll.js"></script>
-</body>
+    <script type="module" src="scroll.js"></script>
+  </body>
 </html>
