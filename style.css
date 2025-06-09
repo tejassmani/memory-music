@@ -265,10 +265,10 @@ h1 {
 }
 
 .calming-color {
-  color: steelblue;
+  color: #641A80;
 }
 .vexing-color {
-  color: tomato;
+  color: #F7705C;
 }
 
 button {
@@ -316,7 +316,7 @@ button:active {
 }
 
 #generatePlaylistButton {
-  background: linear-gradient(45deg, #4a90e2, #357abd);
+  background: linear-gradient(45deg, #007bff, #0056b3);
   font-size: 1.1rem;
   padding: 15px 30px;
   border-radius: 30px;
@@ -324,7 +324,7 @@ button:active {
 }
 
 #generatePlaylistButton:hover {
-  background: linear-gradient(45deg, #357abd, #2968a3);
+  background: linear-gradient(45deg, #0056b3, #004085);
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
 }
